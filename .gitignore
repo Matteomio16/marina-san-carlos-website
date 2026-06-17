@@ -1,0 +1,17 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+*.swp
+
+# Uploads (user content - keep tracked in repo if needed)
+# project/uploads/
+
+# Node
+node_modules/
+package-lock.json
+
+# Vercel
+.vercel/

@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Archivo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  body{margin:0;}
+  ::selection{background:#122c44;color:#fff;}
+  .msc-scroll::-webkit-scrollbar{width:0;height:0;}
+  input::placeholder,textarea::placeholder{color:#9aa7b2;font-family:'Archivo',sans-serif;}
+  @keyframes mscFade{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:none;}}
+  @keyframes mscZoom{from{transform:scale(1.1);}to{transform:scale(1);}}
+</style>
+</helmet>
+<div style="{{ rootStyle }}">
+  <div class="msc-scroll" style="font-family:'Archivo',system-ui,sans-serif;color:#11202e;background:#fff;min-height:100vh;width:100%;overflow-x:hidden;-webkit-font-smoothing:antialiased;">
+
+    <!-- ===================== TOP BAR ===================== -->
+    <div style="background:#0a1c2e;color:#9fb1c0;font-size:12px;letter-spacing:.06em;">
+      <div style="max-width:1320px;margin:0 auto;padding:9px 36px;display:flex;justify-content:space-between;align-items:center;gap:16px;">
+        <div style="display:flex;align-items:center;gap:20px;">
+          <span style="display:flex;align-items:center;gap:7px;"><span style="width:6px;height:6px;border-radius:50%;background:#6fd09b;box-shadow:0 0 0 3px rgba(111,208,155,.18);"></span>{{ t.topbar.open }}</span>
+          <span style="opacity:.35;">·</span>
+          <span style="opacity:.85;">{{ t.topbar.vhf }}</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:18px;">
+          <a href="tel:+526222261202" style="color:#9fb1c0;text-decoration:none;" style-hover="color:#fff;">+52 622 226 12 02</a>
+          <span style="opacity:.35;">·</span>
+          <a href="mailto:info@marinasancarlos.com" style="color:#9fb1c0;text-decoration:none;" style-hover="color:#fff;">info@marinasancarlos.com</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== NAV ===================== -->
+    <nav style="position:sticky;top:0;z-index:50;background:rgba(10,28,46,.86);backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.08);">
+      <div style="max-width:1320px;margin:0 auto;padding:0 36px;height:80px;display:flex;align-items:center;justify-content:space-between;gap:24px;">
+        <button onClick="{{ goHome }}" style="background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:13px;padding:0;white-space:nowrap;">
+          <span style="width:42px;height:42px;border:1px solid rgba(255,255,255,.28);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="24" height="20" viewBox="0 0 26 22" fill="none"><path d="M12.4 1.5 4.6 13.2h7.8z" fill="#fff"/><path d="M13.7 4.2v9h6.6z" fill="#cfd9e1"/><path d="M1.5 16.3c2.3 1.7 3.8 1.7 6 0 2.3 1.7 3.8 1.7 6 0 2.3 1.7 3.8 1.7 6 0 2.3 1.7 3.8 1.7 6 0" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </span>
+          <span style="text-align:left;line-height:1.1;">
+            <span style="display:block;font-family:'Marcellus',serif;color:#fff;font-size:16px;letter-spacing:.2em;white-space:nowrap;">MARINA SAN CARLOS</span>
+            <span style="display:block;color:#7e93a4;font-size:9px;letter-spacing:.36em;margin-top:3px;">{{ t.brand.tag }}</span>
+          </span>
+        </button>
+        <div style="display:flex;align-items:center;gap:2px;">
+          <sc-for list="{{ navItems }}" as="item" hint-placeholder-count="4">
+            <button onClick="{{ item.onClick }}" style="background:none;border:none;cursor:pointer;font-family:'Archivo',sans-serif;font-size:12px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:#cfd9e1;padding:10px 16px;position:relative;white-space:nowrap;" style-hover="color:#fff;">
+              {{ item.label }}
+              <sc-if value="{{ item.active }}" hint-placeholder-val="{{ true }}"><span style="position:absolute;left:16px;right:16px;bottom:4px;height:1px;background:#c2a978;"></span></sc-if>
+            </button>
+          </sc-for>
+          <div style="display:flex;align-items:center;border:1px solid rgba(255,255,255,.18);border-radius:999px;margin-left:16px;overflow:hidden;">
+            <button onClick="{{ setEN }}" style="{{ langEnStyle }}">EN</button>
+            <button onClick="{{ setES }}" style="{{ langEsStyle }}">ES</button>
+          </div>
+          <button onClick="{{ goReserve }}" style="margin-left:12px;background:#fff;color:#0a1c2e;border:none;border-radius:999px;cursor:pointer;font-family:'Archivo',sans-serif;font-weight:600;font-size:12px;letter-spacing:.1em;text-transform:uppercase;padding:13px 22px;white-space:nowrap;" style-hover="background:#dde6ec;">{{ t.nav.reserve }}</button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ===================== PAGE: HOME ===================== -->
+    <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+    <div data-screen-label="Home">
+
+      <!-- HERO A — centered, minimal, video background -->
+      <section style="position:relative;height:90vh;min-height:640px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#0a1c2e;">
+        <video autoplay loop muted playsinline poster="assets/marina-building.jpg" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);min-width:100%;min-height:100%;width:auto;height:auto;object-fit:cover;">
+          <source src="assets/marina-hero.mp4" type="video/mp4">
+        </video>
+        <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,28,46,.62),rgba(10,28,46,.42) 45%,rgba(10,28,46,.86));"></div>
+        <div style="position:relative;text-align:center;padding:0 24px;animation:mscFade 1s ease both;">
+          <div style="display:flex;align-items:center;gap:14px;justify-content:center;margin-bottom:26px;"><span style="width:34px;height:1px;background:rgba(255,255,255,.5);"></span><span style="font-family:'Archivo',sans-serif;font-size:12px;letter-spacing:.34em;text-transform:uppercase;color:#cfd9e1;">{{ t.hero.eyebrow }}</span><span style="width:34px;height:1px;background:rgba(255,255,255,.5);"></span></div>
+          <h1 style="font-family:'Marcellus',serif;color:#fff;font-size:clamp(42px,7vw,98px);line-height:1;font-weight:400;margin:0;letter-spacing:.01em;">{{ t.hero.titleA1 }}<br>{{ t.hero.titleA2 }}</h1>
+          <p style="color:#dbe4ec;font-size:clamp(16px,1.4vw,20px);max-width:560px;margin:28px auto 0;line-height:1.65;font-weight:300;">{{ t.hero.subA }}</p>
+          <div style="display:flex;gap:14px;justify-content:center;margin-top:40px;flex-wrap:wrap;">
+            <button onClick="{{ goReserve }}" style="background:#fff;color:#0a1c2e;border:none;border-radius:999px;cursor:pointer;font-weight:600;font-size:13.5px;letter-spacing:.08em;text-transform:uppercase;padding:17px 34px;" style-hover="background:#dde6ec;">{{ t.hero.ctaPrimary }}</button>
+            <button onClick="{{ goServices }}" style="background:rgba(255,255,255,.06);color:#fff;border:1px solid rgba(255,255,255,.45);border-radius:999px;cursor:pointer;font-weight:500;font-size:13.5px;letter-spacing:.08em;text-transform:uppercase;padding:17px 34px;" style-hover="background:rgba(255,255,255,.16);">{{ t.hero.ctaSecondary }}</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- INTRO -->
+      <section style="max-width:1040px;margin:0 auto;padding:clamp(72px,10vw,130px) 36px;text-align:center;">
+        <div style="display:flex;align-items:center;gap:14px;justify-content:center;margin-bottom:28px;"><span style="width:30px;height:1px;background:#c2a978;"></span><span style="font-family:'Archivo',sans-serif;font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:#7d8b97;">{{ t.intro.eyebrow }}</span><span style="width:30px;height:1px;background:#c2a978;"></span></div>
+        <p style="font-family:'Marcellus',serif;font-size:clamp(25px,3.2vw,42px);line-height:1.32;color:#122c44;margin:0;text-wrap:balance;font-weight:400;">{{ t.intro.lead }}</p>
+        <p style="font-size:17px;line-height:1.85;color:#5a6b78;max-width:680px;margin:32px auto 0;font-weight:300;">{{ t.intro.body }}</p>
+      </section>
+
+      <!-- ABOUT / MISSION VISION VALUES -->
+      <section style="background:#f5f7f8;border-top:1px solid #e6eaed;border-bottom:1px solid #e6eaed;padding:clamp(64px,9vw,116px) 0;">
+        <div style="max-width:1320px;margin:0 auto;padding:0 36px;">
+          <div style="display:flex;flex-direction:column;align-items:center;text-align:center;margin-bottom:54px;">
+            <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px;"><span style="width:30px;height:1px;background:#c2a978;"></span><span style="font-family:'Archivo',sans-serif;font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:#7d8b97;">{{ t.about.eyebrow }}</span><span style="width:30px;height:1px;background:#c2a978;"></span></div>
+            <h2 style="font-family:'Marcellus',serif;color:#122c44;font-size:clamp(30px,4vw,52px);font-weight:400;margin:0;">{{ t.about.est }}</h2>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(258px,1fr));gap:1px;background:#e6eaed;border:1px solid #e6eaed;">
+            <div style="background:#fff;padding:40px 34px;">
+              <h3 style="font-family:'Marcellus',serif;color:#122c44;font-size:24px;font-weight:400;margin:0 0 14px;">{{ t.about.missionT }}</h3>
+              <p style="font-size:15.5px;line-height:1.75;color:#5a6b78;margin:0;font-weight:300;">{{ t.about.mission }}</p>
+            </div>
+            <div style="background:#fff;padding:40px 34px;">
+              <h3 style="font-family:'Marcellus',serif;color:#122c44;font-size:24px;font-weight:400;margin:0 0 14px;">{{ t.about.visionT }}</h3>
+              <p style="font-size:15.5px;line-height:1.75;color:#5a6b78;margin:0;font-weight:300;">{{ t.about.vision }}</p>
+            </div>
+            <div style="background:#fff;padding:40px 34px;">
+              <h3 style="font-family:'Marcellus',serif;color:#122c44;font-size:24px;font-weight:400;margin:0 0 16px;">{{ t.about.valuesT }}</h3>
+              <div style="display:flex;flex-direction:column;gap:12px;">
+                <sc-for list="{{ t.about.values }}" as="v" hint-placeholder-count="3">
+                  <div style="display:flex;align-items:center;gap:12px;"><span style="width:6px;height:6px;border-radius:50%;background:#c2a978;flex-shrink:0;"></span><span style="font-size:15.5px;color:#3a4b58;">{{ v }}</span></div>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SERVICES OVERVIEW -->
+      <section style="background:#0a1c2e;padding:clamp(72px,10vw,120px) 0;">
+        <div style="max-width:1320px;margin:0 auto;padding:0 36px;">
+          <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:20px;margin-bottom:50px;">
+            <div>
+              <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;"><span style="width:30px;height:1px;background:#c2a978;"></span><span style="font-family:'Archivo',sans-serif;font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:#8aa0b2;">{{ t.servicesHome.eyebrow }}</span></div>
+              <h2 style="font-family:'Marcellus',serif;color:#fff;font-size:clamp(30px,4vw,54px);font-weight:400;margin:0;line-height:1.05;">{{ t.servicesHome.title }}</h2>
+            </div>
+            <button onClick="{{ goServices }}" style="background:none;border:1px solid rgba(255,255,255,.4);color:#fff;border-radius:999px;cursor:pointer;font-size:12px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;padding:14px 26px;" style-hover="background:rgba(255,255,255,.1);">{{ t.servicesHome.all }} →</button>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.1);">
+            <sc-for list="{{ servicesTop }}" as="s" hint-placeholder-count="4">
+              <div style="background:#0a1c2e;padding:40px 32px;cursor:pointer;transition:background .3s;" style-hover="background:#122c44;" onClick="{{ goServices }}">
+                <div style="color:#aab9c6;margin-bottom:24px;">{{ s.icon }}</div>
+                <h3 style="font-family:'Marcellus',serif;color:#fff;font-size:23px;font-weight:400;margin:0 0 11px;">{{ s.title }}</h3>
+                <p style="color:#8aa0b2;font-size:14.5px;line-height:1.65;margin:0;font-weight:300;">{{ s.desc }}</p>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </section>
+
+      <!-- WHY SAN CARLOS -->
+      <section style="max-width:1320px;margin:0 auto;padding:clamp(72px,10vw,120px) 36px;display:grid;grid-template-columns:1fr 1fr;gap:clamp(40px,6vw,90px);align-items:center;">
+        <div style="position:relative;aspect-ratio:4/5;border-radius:4px;overflow:hidden;background:url('assets/promenade.jpg') center/cover;">
+          <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,28,46,0) 50%,rgba(10,28,46,.35));"></div>
+          <div style="position:absolute;bottom:24px;left:24px;right:24px;background:rgba(255,255,255,.95);backdrop-filter:blur(6px);border-radius:4px;padding:22px 24px;">
+            <div style="font-family:'Marcellus',serif;font-size:30px;color:#122c44;">27°57′ N</div>
+            <div style="font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#7d8b97;margin-top:5px;">{{ t.why.coords }}</div>
+          </div>
+        </div>
+        <div>
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;"><span style="width:30px;height:1px;background:#c2a978;"></span><span style="font-family:'Archivo',sans-serif;font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:#7d8b97;">{{ t.why.eyebrow }}</span></div>
+          <h2 style="font-family:'Marcellus',serif;color:#122c44;font-size:clamp(30px,3.6vw,46px);font-weight:400;margin:0 0 26px;line-height:1.1;">{{ t.why.title }}</h2>
+          <div style="display:flex;flex-direction:column;gap:0;">
+            <sc-for list="{{ whyItems }}" as="w" hint-placeholder-count="4">
+              <div style="display:flex;gap:20px;align-items:flex-start;border-top:1px solid #e6eaed;padding:22px 0;">
+                <span style="font-family:'Marcellus',serif;font-size:16px;color:#b9a079;line-height:1.4;flex-shrink:0;width:28px;">{{ w.num }}</span>
+                <div>
+                  <h3 style="font-size:16.5px;font-weight:600;color:#122c44;margin:0 0 6px;">{{ w.title }}</h3>
+                  <p style="font-size:15px;line-height:1.7;color:#5a6b78;margin:0;font-weight:300;">{{ w.desc }}</p>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </section>
+
+      <!-- TESTIMONIALS -->
+      <section style="background:#f5f7f8;padding:clamp(72px,10vw,120px) 0;border-top:1px solid #e6eaed;">
+        <div style="max-width:1320px;margin:0 auto;padding:0 36px;">
+          <div style="text-align:center;margin-bottom:56px;">
+            <div style="display:flex;align-items:center;gap:14px;justify-content:center;margin-bottom:18px;"><span style="width:30px;height:1px;background:#c2a978;"></span><span style="font-family:'Archivo',sans-serif;font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:#7d8b97;">{{ t.testimonials.eyebrow }}</span><span style="width:30px;height:1px;background:#c2a978;"></span></div>
+            <h2 style="font-family:'Marcellus',serif;color:#122c44;font-size:clamp(30px,4vw,52px);font-weight:400;margin:0;">{{ t.testimonials.title }}</h2>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;">
+            <sc-for list="{{ testimonials }}" as="r" hint-placeholder-count="3">
+              <div style="background:#fff;border:1px solid #e6eaed;border-radius:6px;padding:36px 32px;">
+                <div style="color:#c2a978;letter-spacing:.25em;font-size:13px;margin-bottom:20px;">★★★★★</div>
+                <p style="font-family:'Marcellus',serif;color:#1a2e40;font-size:19px;line-height:1.55;margin:0 0 26px;">“{{ r.quote }}”</p>
+                <div style="display:flex;align-items:center;gap:13px;">
+                  <span style="width:42px;height:42px;border-radius:50%;background:#0a1c2e;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:13px;flex-shrink:0;">{{ r.initials }}</span>
+                  <div>
+                    <div style="color:#122c44;font-weight:600;font-size:14px;">{{ r.name }}</div>
+                    <div style="color:#7d8b97;font-size:12.5px;">{{ r.boat }}</div>
+                  </div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </section>
+
+      <!-- AFFILIATES -->
+      <section style="max-width:1320px;margin:0 auto;padding:clamp(72px,10vw,116px) 36px;">
+        <div style="text-align:center;margin-bottom:50px;">
+          <div style="display:flex;align-items:center;gap:14px;justify-content:center;margin-bottom:18px;"><span style="width:30px;height:1px;background:#c2a978;"></span><span style="font-family:'Archivo',sans-serif;font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:#7d8b97;">{{ t.affiliates.eyebrow }}</span><span style="width:30px;height:1px;background:#c2a978;"></span></div>
+          <h2 style="font-family:'Marcellus',serif;color:#122c44;font-size:clamp(28px,3.6vw,46px);font-weight:400;margin:0;">{{ t.affiliates.title }}</h2>
+          <p style="font-size:16px;color:#5a6b78;max-width:560px;margin:18px auto 0;line-height:1.75;font-weight:300;">{{ t.affiliates.body }}</p>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px;">
+          <sc-for list="{{ affiliates }}" as="a" hint-placeholder-count="3">
+            <div style="border:1px solid #e6eaed;border-radius:6px;padding:34px 32px;background:#fff;cursor:pointer;transition:box-shadow .3s,transform .3s,border-color .3s;" style-hover="box-shadow:0 18px 44px rgba(10,28,46,.1);transform:translateY(-3px);border-color:#d3dbe1;">
+              <div style="height:30px;display:flex;align-items:center;font-family:'Marcellus',serif;font-size:22px;color:#122c44;letter-spacing:.03em;">{{ a.name }}</div>
+              <p style="font-size:14.5px;line-height:1.65;color:#5a6b78;margin:16px 0 18px;font-weight:300;">{{ a.desc }}</p>
+              <span style="font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:#122c44;font-weight:600;">{{ t.affiliates.visit }} →</span>
+            </div>
+          </sc-for>
+        </div>
+      </section>
+
+      <!-- CTA banner -->
+      <section style="position:relative;overflow:hidden;background:#0a1c2e;">
+        <div style="position:absolute;inset:0;background:url('assets/marina-building.jpg') center/cover;opacity:.32;"></div>
+        <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,28,46,.82),rgba(10,28,46,.92));"></div>
+        <div style="position:relative;max-width:900px;margin:0 auto;padding:clamp(72px,10vw,120px) 36px;text-align:center;">
+          <h2 style="font-family:'Marcellus',serif;color:#fff;font-size:clamp(32px,4.6vw,60px);font-weight:400;margin:0;line-height:1.06;">{{ t.cta.title }}</h2>
+          <p style="color:#9fb1c0;font-size:18px;line-height:1.75;margin:22px auto 0;max-width:520px;font-weight:300;">{{ t.cta.body }}</p>
+          <button onClick="{{ goReserve }}" style="margin-top:38px;background:#fff;color:#0a1c2e;border:none;border-radius:999px;cursor:pointer;font-weight:600;font-size:14px;letter-spacing:.08em;text-transform:uppercase;padding:18px 40px;" style-hover="background:#dde6ec;">{{ t.cta.button }}</button>
+        </div>
+      </section>
+
+    </div>
+    </sc-if>
+
+    <!-- ===================== PAGE: SERVICES ===================== -->
+    <sc-if value="{{ isServices }}" hint-placeholder-val="{{ true }}"><div data-screen-label="Services">
+      <section style="background:#0a1c2e;padding:clamp(60px,8vw,100px) 0 clamp(48px,6vw,72px);">
+        <div style="max-width:1320px;margin:0 auto;padding:0 36px;animation:mscFade .6s ease both;">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;"><span style="width:30px;height:1px;background:#c2a978;"></span><span style="font-family:'Archivo',sans-serif;font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:#8aa0b2;">{{ tp.services.eyebrow }}</span></div>
+          <h1 style="font-family:'Marcellus',serif;color:#fff;font-size:clamp(34px,5vw,66px);font-weight:400;margin:0;line-height:1.04;max-width:880px;">{{ tp.services.title }}</h1>
+          <p style="color:#9fb1c0;font-size:18px;line-height:1.75;margin:24px 0 0;max-width:640px;font-weight:300;">{{ tp.services.intro }}</p>
+        </div>
+      </section>
+      <section style="max-width:1240px;margin:0 auto;padding:clamp(48px,6vw,84px) 36px;display:flex;flex-direction:column;gap:clamp(40px,5vw,80px);">
+        <sc-for list="{{ servicesDetail }}" as="s" hint-placeholder-count="6">
+          <div style="{{ s.rowStyle }}">
+            <div style="flex:1 1 360px;min-width:280px;">
+              <div style="{{ s.imgStyle }}"></div>
+            </div>
+            <div style="flex:1 1 360px;min-width:280px;">
+              <h3 style="font-family:'Marcellus',serif;color:#122c44;font-size:clamp(26px,3vw,36px);font-weight:400;margin:0 0 16px;">{{ s.title }}</h3>
+              <p style="color:#5a6b78;font-size:16px;line-height:1.8;margin:0 0 28px;font-weight:300;text-wrap:pretty;">{{ s.desc }}</p>
+              <button onClick="{{ s.onClick }}" style="background:none;border:1px solid #0a1c2e;color:#0a1c2e;border-radius:999px;cursor:pointer;font-family:'Archivo',sans-serif;font-weight:600;font-size:12px;letter-spacing:.12em;text-transform:uppercase;padding:14px 30px;" style-hover="background:#0a1c2e;color:#fff;">{{ s.ctaLabel }}</button>
+            </div>
+          </div>
+        </sc-for>
+      </section>
+      <section style="background:#f5f7f8;border-top:1px solid #e6eaed;border-bottom:1px solid #e6eaed;padding:clamp(64px,9vw,110px) 0;">
+        <div style="max-width:1100px;margin:0 auto;padding:0 36px;text-align:center;">
+          <div style="display:flex;align-items:center;gap:14px;justify-content:center;margin-bottom:18px;"><span style="width:30px;height:1px;background:#c2a978;"></span><span style="font-family:'Archivo',sans-serif;font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:#7d8b97;">{{ tp.services.amenEyebrow }}</span><span style="width:30px;height:1px;background:#c2a978;"></span></div>
+          <h2 style="font-family:'Marcellus',serif;color:#122c44;font-size:clamp(28px,3.6vw,46px);font-weight:400;margin:0 0 50px;">{{ tp.services.amenTitle }}</h2>
+          <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:36px 24px;">
+            <sc-for list="{{ amenities }}" as="a" hint-placeholder-count="10">
+              <div style="display:flex;flex-direction:column;align-items:center;gap:14px;">
+                <span style="color:#122c44;">{{ a.icon }}</span>
+                <span style="font-size:13.5px;color:#3a4b58;letter-spacing:.02em;">{{ a.label }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </section>
+      <section style="position:relative;overflow:hidden;background:#0a1c2e;">
+        <div style="position:absolute;inset:0;background:url('assets/work-yard.jpg') center/cover;opacity:.3;"></div>
+        <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,28,46,.84),rgba(10,28,46,.92));"></div>
+        <div style="position:relative;max-width:840px;margin:0 auto;padding:clamp(64px,9vw,104px) 36px;text-align:center;">
+          <h2 style="font-family:'Marcellus',serif;color:#fff;font-size:clamp(30px,4.4vw,54px);font-weight:400;margin:0;line-height:1.08;">{{ tp.services.ctaTitle }}</h2>
+          <p style="color:#9fb1c0;font-size:17px;line-height:1.75;margin:20px auto 0;max-width:480px;font-weight:300;">{{ tp.services.ctaBody }}</p>
+          <button onClick="{{ goReserve }}" style="margin-top:34px;background:#fff;color:#0a1c2e;border:none;border-radius:999px;cursor:pointer;font-weight:600;font-size:14px;letter-spacing:.08em;text-transform:uppercase;padding:17px 38px;" style-hover="background:#dde6ec;">{{ tp.services.ctaBtn }}</button>
+        </div>
+      </section>
+    </div></sc-if>
+    <!-- ===================== PAGE: VISITOR ===================== -->
+    <sc-if value="{{ isVisitor }}" hint-placeholder-val="{{ true }}"><div data-screen-label="Visitor Info">
+      <section style="background:#0a1c2e;padding:clamp(60px,8vw,100px) 0 clamp(48px,6vw,72px);">
+        <div style="max-width:1320px;margin:0 auto;padding:0 36px;animation:mscFade .6s ease both;">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;"><span style="width:30px;height:1px;background:#c2a978;"></span><span style="font-family:'Archivo',sans-serif;font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:#8aa0b2;">{{ tp.visitor.eyebrow }}</span></div>
+          <h1 style="font-family:'Marcellus',serif;color:#fff;font-size:clamp(34px,5vw,66px);font-weight:400;margin:0;line-height:1.04;max-width:880px;">{{ tp.visitor.title }}</h1>
+          <p style="color:#9fb1c0;font-size:18px;line-height:1.75;margin:24px 0 0;max-width:640px;font-weight:300;">{{ tp.visitor.intro }}</p>
+        </div>
+      </section>
+
+      <section style="max-width:1320px;margin:0 auto;padding:clamp(56px,7vw,96px) 36px clamp(40px,5vw,60px);">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:30px;"><span style="width:30px;height:1px;background:#c2a978;"></span><span style="font-family:'Archivo',sans-serif;font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:#7d8b97;">{{ tp.visitor.hereEyebrow }}</span></div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;">
+          <sc-for list="{{ gettingHere }}" as="g" hint-placeholder-count="3">
+            <div style="border:1px solid #e6eaed;border-radius:6px;padding:34px 32px;background:#fff;">
+              <h3 style="font-family:'Marcellus',serif;color:#122c44;font-size:24px;font-weight:400;margin:0 0 14px;">{{ g.t }}</h3>
+              <p style="color:#5a6b78;font-size:15px;line-height:1.75;margin:0;font-weight:300;">{{ g.d }}</p>
+            </div>
+          </sc-for>
+        </div>
+      </section>
+
+      <section style="background:#f5f7f8;border-top:1px solid #e6eaed;border-bottom:1px solid #e6eaed;padding:clamp(60px,8vw,100px) 0;">
+        <div style="max-width:1320px;margin:0 auto;padding:0 36px;">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;"><span style="width:30px;height:1px;background:#c2a978;"></span><span style="font-family:'Archivo',sans-serif;font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:#7d8b97;">{{ tp.visitor.entryEyebrow }}</span></div>
+          <h2 style="font-family:'Marcellus',serif;color:#122c44;font-size:clamp(28px,3.6vw,46px);font-weight:400;margin:0 0 44px;">{{ tp.visitor.entryTitle }}</h2>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:0 56px;">
+            <sc-for list="{{ entryReqs }}" as="e" hint-placeholder-count="4">
+              <div style="display:flex;gap:20px;align-items:flex-start;border-top:1px solid #dfe4e8;padding:26px 0;">
+                <span style="font-family:'Marcellus',serif;font-size:16px;color:#b9a079;line-height:1.4;flex-shrink:0;width:28px;">{{ e.num }}</span>
+                <div>
+                  <h3 style="font-size:17px;font-weight:600;color:#122c44;margin:0 0 7px;">{{ e.t }}</h3>
+                  <p style="font-size:15px;line-height:1.7;color:#5a6b78;margin:0;font-weight:300;">{{ e.d }}</p>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </section>
+
+      <section style="max-width:920px;margin:0 auto;padding:clamp(60px,8vw,100px) 36px;">
+        <div style="text-align:center;margin-bottom:44px;">
+          <div style="display:flex;align-items:center;gap:14px;justify-content:center;margin-bottom:16px;"><span style="width:30px;height:1px;background:#c2a978;"></span><span style="font-family:'Archivo',sans-serif;font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:#7d8b97;">{{ tp.visitor.faqEyebrow }}</span><span style="width:30px;height:1px;background:#c2a978;"></span></div>
+          <h2 style="font-family:'Marcellus',serif;color:#122c44;font-size:clamp(28px,3.6vw,46px);font-weight:400;margin:0;">{{ tp.visitor.faqTitle }}</h2>
+        </div>
+        <div style="border-top:1px solid #e6eaed;">
+          <sc-for list="{{ faqs }}" as="f" hint-placeholder-count="6">
+            <div style="border-bottom:1px solid #e6eaed;">
+              <button onClick="{{ f.onClick }}" style="width:100%;background:none;border:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:20px;text-align:left;padding:24px 4px;font-family:'Archivo',sans-serif;">
+                <span style="font-size:17px;font-weight:500;color:#122c44;">{{ f.q }}</span>
+                <span style="font-family:'Marcellus',serif;font-size:24px;color:#b9a079;line-height:1;flex-shrink:0;">{{ f.sign }}</span>
+              </button>
+              <sc-if value="{{ f.open }}" hint-placeholder-val="{{ false }}">
+                <p style="font-size:15.5px;line-height:1.8;color:#5a6b78;margin:0;padding:0 4px 26px;max-width:760px;font-weight:300;">{{ f.a }}</p>
+              </sc-if>
+            </div>
+          </sc-for>
+        </div>
+      </section>
+
+      <section style="background:#0a1c2e;padding:clamp(60px,8vw,100px) 0;">
+        <div style="max-width:1320px;margin:0 auto;padding:0 36px;">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;"><span style="width:30px;height:1px;background:#c2a978;"></span><span style="font-family:'Archivo',sans-serif;font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:#8aa0b2;">{{ tp.visitor.resEyebrow }}</span></div>
+          <h2 style="font-family:'Marcellus',serif;color:#fff;font-size:clamp(28px,3.6vw,46px);font-weight:400;margin:0 0 42px;">{{ tp.visitor.resTitle }}</h2>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:1px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.1);">
+            <sc-for list="{{ resources }}" as="r" hint-placeholder-count="6">
+              <div style="background:#0a1c2e;padding:30px 30px;display:flex;align-items:flex-start;gap:18px;cursor:pointer;transition:background .3s;" style-hover="background:#122c44;">
+                <span style="width:42px;height:42px;border:1px solid rgba(255,255,255,.2);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:9px;letter-spacing:.06em;color:#c2a978;flex-shrink:0;font-weight:600;">{{ r.tag }}</span>
+                <div style="flex:1;">
+                  <h3 style="font-size:16px;font-weight:600;color:#fff;margin:0 0 5px;">{{ r.t }}</h3>
+                  <p style="font-size:13.5px;line-height:1.6;color:#8aa0b2;margin:0 0 10px;font-weight:300;">{{ r.d }}</p>
+                  <span style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#cfd9e1;font-weight:600;">↓ {{ tp.visitor.download }}</span>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </section>
+    </div></sc-if>
+    <!-- ===================== PAGE: RESERVE ===================== -->
+    <sc-if value="{{ isReserve }}" hint-placeholder-val="{{ true }}"><div data-screen-label="Reserve" style="background:#f5f7f8;">
+      <section style="background:#0a1c2e;padding:clamp(60px,8vw,96px) 0 clamp(44px,6vw,64px);">
+        <div style="max-width:780px;margin:0 auto;padding:0 36px;animation:mscFade .6s ease both;">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;"><span style="width:30px;height:1px;background:#c2a978;"></span><span style="font-family:'Archivo',sans-serif;font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:#8aa0b2;">{{ tp.reserve.eyebrow }}</span></div>
+          <h1 style="font-family:'Marcellus',serif;color:#fff;font-size:clamp(34px,5vw,62px);font-weight:400;margin:0;line-height:1.04;">{{ tp.reserve.title }}</h1>
+          <p style="color:#9fb1c0;font-size:17px;line-height:1.75;margin:22px 0 0;font-weight:300;">{{ tp.reserve.intro }}</p>
+        </div>
+      </section>
+
+      <section style="max-width:780px;margin:0 auto;padding:clamp(40px,5vw,64px) 36px clamp(64px,9vw,110px);">
+        <sc-if value="{{ submitted }}" hint-placeholder-val="{{ false }}">
+          <div style="background:#fff;border:1px solid #e6eaed;border-radius:8px;padding:clamp(40px,6vw,64px) 40px;text-align:center;animation:mscFade .5s ease both;">
+            <span style="width:64px;height:64px;border-radius:50%;background:#0a1c2e;display:inline-flex;align-items:center;justify-content:center;margin-bottom:26px;">
+              <svg width="30" height="30" viewBox="0 0 30 30" fill="none" stroke="#fff" stroke-width="2"><path d="M7 15.5l5 5L23 9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <h2 style="font-family:'Marcellus',serif;color:#122c44;font-size:34px;font-weight:400;margin:0 0 14px;">{{ tp.reserve.successTitle }}</h2>
+            <p style="color:#3a4b58;font-size:17px;line-height:1.7;margin:0 auto 10px;max-width:440px;">{{ tp.reserve.successBody }}</p>
+            <p style="color:#7d8b97;font-size:14.5px;line-height:1.7;margin:0 auto 30px;max-width:440px;font-weight:300;">{{ tp.reserve.successNote }}</p>
+            <button onClick="{{ resetReserve }}" style="background:none;border:1px solid #d3dbe1;color:#122c44;border-radius:999px;cursor:pointer;font-weight:600;font-size:13px;letter-spacing:.06em;text-transform:uppercase;padding:14px 28px;" style-hover="background:#f5f7f8;">{{ tp.reserve.another }}</button>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ notSubmitted }}" hint-placeholder-val="{{ true }}">
+          <div style="background:#fff;border:1px solid #e6eaed;border-radius:8px;padding:clamp(30px,4vw,48px);">
+
+            <div style="font-family:'Archivo',sans-serif;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#7d8b97;font-weight:600;margin-bottom:16px;">{{ tp.reserve.typeLabel }}</div>
+            <div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:42px;">
+              <sc-for list="{{ reserveTypes }}" as="rt" hint-placeholder-count="4">
+                <button onClick="{{ rt.onClick }}" style="{{ rt.chipStyle }}">{{ rt.label }}</button>
+              </sc-for>
+            </div>
+
+            <h2 style="font-family:'Marcellus',serif;color:#122c44;font-size:24px;font-weight:400;margin:0 0 6px;">{{ tp.reserve.ownerTitle }}</h2>
+            <div style="width:100%;height:1px;background:#e6eaed;margin:0 0 24px;"></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px 20px;margin-bottom:42px;">
+              <sc-for list="{{ ownerFields }}" as="f" hint-placeholder-count="5">
+                <div style="{{ f.wrapStyle }}">
+                  <label style="display:block;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#5a6b78;font-weight:600;margin-bottom:8px;">{{ f.label }}</label>
+                  <input type="{{ f.type }}" value="{{ f.value }}" onChange="{{ f.onChange }}" style="{{ f.inputStyle }}" style-focus="border-color:#0a1c2e;box-shadow:0 0 0 3px rgba(10,28,46,.07);">
+                </div>
+              </sc-for>
+            </div>
+
+            <h2 style="font-family:'Marcellus',serif;color:#122c44;font-size:24px;font-weight:400;margin:0 0 6px;">{{ tp.reserve.vesselTitle }}</h2>
+            <div style="width:100%;height:1px;background:#e6eaed;margin:0 0 24px;"></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px 20px;margin-bottom:42px;">
+              <sc-for list="{{ vesselFields }}" as="f" hint-placeholder-count="8">
+                <div style="{{ f.wrapStyle }}">
+                  <label style="display:block;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#5a6b78;font-weight:600;margin-bottom:8px;">{{ f.label }}</label>
+                  <input type="{{ f.type }}" value="{{ f.value }}" onChange="{{ f.onChange }}" style="{{ f.inputStyle }}" style-focus="border-color:#0a1c2e;box-shadow:0 0 0 3px rgba(10,28,46,.07);">
+                </div>
+              </sc-for>
+            </div>
+
+            <h2 style="font-family:'Marcellus',serif;color:#122c44;font-size:24px;font-weight:400;margin:0 0 6px;">{{ tp.reserve.docsTitle }}</h2>
+            <div style="width:100%;height:1px;background:#e6eaed;margin:0 0 12px;"></div>
+            <p style="font-size:14px;color:#7d8b97;line-height:1.6;margin:0 0 22px;font-weight:300;">{{ tp.reserve.docsNote }}</p>
+            <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:38px;">
+              <sc-for list="{{ docUploads }}" as="d" hint-placeholder-count="4">
+                <label style="{{ d.boxStyle }}">
+                  <input type="file" onChange="{{ d.onChange }}" style="display:none;">
+                  <span style="width:40px;height:40px;border-radius:6px;background:#eef2f5;display:flex;align-items:center;justify-content:center;color:#122c44;flex-shrink:0;">
+                    <svg width="20" height="20" viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M6 3h9l5 5v15H6V3Z" stroke-linejoin="round"/><path d="M15 3v5h5" stroke-linejoin="round"/></svg>
+                  </span>
+                  <span style="flex:1;min-width:0;">
+                    <span style="display:block;font-size:14.5px;font-weight:500;color:#122c44;">{{ d.label }}</span>
+                    <sc-if value="{{ d.done }}" hint-placeholder-val="{{ false }}"><span style="display:block;font-size:13px;color:#8a7a4e;margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">✓ {{ d.fileName }}</span></sc-if>
+                    <sc-if value="{{ d.notDone }}" hint-placeholder-val="{{ true }}"><span style="display:block;font-size:12.5px;color:#9aa7b2;margin-top:3px;">{{ d.note }}</span></sc-if>
+                  </span>
+                  <span style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#0a1c2e;font-weight:600;flex-shrink:0;border:1px solid #d3dbe1;border-radius:999px;padding:9px 16px;">{{ tp.reserve.choose }}</span>
+                </label>
+              </sc-for>
+            </div>
+
+            <sc-if value="{{ showReserveError }}" hint-placeholder-val="{{ false }}">
+              <div style="background:#fdf5f3;border:1px solid #e9c4b9;border-radius:6px;padding:14px 18px;margin-bottom:22px;color:#b04a30;font-size:14px;">{{ tp.reserve.required }}</div>
+            </sc-if>
+
+            <button onClick="{{ submitReserve }}" style="width:100%;background:#0a1c2e;color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:600;font-size:14px;letter-spacing:.1em;text-transform:uppercase;padding:19px;" style-hover="background:#122c44;">{{ tp.reserve.submit }}</button>
+          </div>
+        </sc-if>
+      </section>
+    </div></sc-if>
+    <!-- ===================== PAGE: CONTACT ===================== -->
+    <sc-if value="{{ isContact }}" hint-placeholder-val="{{ true }}"><div data-screen-label="Contact">
+      <section style="background:#0a1c2e;padding:clamp(60px,8vw,96px) 0 clamp(44px,6vw,64px);">
+        <div style="max-width:1320px;margin:0 auto;padding:0 36px;animation:mscFade .6s ease both;">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;"><span style="width:30px;height:1px;background:#c2a978;"></span><span style="font-family:'Archivo',sans-serif;font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:#8aa0b2;">{{ tp.contact.eyebrow }}</span></div>
+          <h1 style="font-family:'Marcellus',serif;color:#fff;font-size:clamp(34px,5vw,62px);font-weight:400;margin:0;line-height:1.04;">{{ tp.contact.title }}</h1>
+          <p style="color:#9fb1c0;font-size:17px;line-height:1.75;margin:22px 0 0;max-width:560px;font-weight:300;">{{ tp.contact.intro }}</p>
+        </div>
+      </section>
+
+      <section style="max-width:1320px;margin:0 auto;padding:clamp(52px,7vw,90px) 36px;display:grid;grid-template-columns:1fr 1.05fr;gap:clamp(32px,4vw,56px);align-items:start;">
+        <!-- LEFT: map + info -->
+        <div style="display:flex;flex-direction:column;gap:28px;">
+          <div style="position:relative;height:300px;border-radius:8px;overflow:hidden;border:1px solid #e6eaed;background:#e8edf0;background-image:repeating-linear-gradient(0deg,#dde4e9,#dde4e9 1px,transparent 1px,transparent 40px),repeating-linear-gradient(90deg,#dde4e9,#dde4e9 1px,transparent 1px,transparent 40px);">
+            <div style="position:absolute;top:14px;left:16px;font-family:monospace;font-size:10.5px;letter-spacing:.1em;color:#8597a4;">{{ tp.contact.mapLabel }}</div>
+            <div style="position:absolute;left:50%;top:48%;transform:translate(-50%,-100%);display:flex;flex-direction:column;align-items:center;">
+              <span style="width:30px;height:30px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:#0a1c2e;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(10,28,46,.3);"><span style="width:9px;height:9px;border-radius:50%;background:#fff;transform:rotate(45deg);"></span></span>
+            </div>
+            <button style="position:absolute;bottom:16px;right:16px;background:#fff;border:1px solid #d3dbe1;border-radius:999px;cursor:pointer;font-family:'Archivo',sans-serif;font-size:12px;font-weight:600;letter-spacing:.04em;color:#122c44;padding:10px 18px;" style-hover="background:#f5f7f8;">{{ tp.contact.directions }} →</button>
+          </div>
+          <div style="background:#fff;border:1px solid #e6eaed;border-radius:8px;padding:32px 30px;">
+            <div style="font-family:'Marcellus',serif;font-size:22px;color:#122c44;margin-bottom:20px;">{{ tp.contact.infoTitle }}</div>
+            <div style="display:flex;flex-direction:column;gap:16px;font-size:15px;color:#3a4b58;">
+              <div style="display:flex;gap:13px;align-items:flex-start;"><span style="color:#b9a079;flex-shrink:0;margin-top:1px;"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M10 1.5c-3.3 0-6 2.6-6 5.9 0 4.4 6 11.1 6 11.1s6-6.7 6-11.1c0-3.3-2.7-5.9-6-5.9Z"/><circle cx="10" cy="7.4" r="2.2"/></svg></span><span>Edificio Marina San Carlos<br>Sonora 85506, México</span></div>
+              <div style="display:flex;gap:13px;align-items:flex-start;"><span style="color:#b9a079;flex-shrink:0;margin-top:2px;"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M4 3h3l1.5 4-2 1.5a11 11 0 0 0 5 5l1.5-2 4 1.5v3a1.5 1.5 0 0 1-1.6 1.5C8.5 20.5 -.5 11.5.5 4.1A1.5 1.5 0 0 1 2 2.5"/></svg></span><span style="display:flex;flex-direction:column;gap:6px;"><a href="tel:+526222261202" style="color:#3a4b58;text-decoration:none;" style-hover="color:#0a1c2e;">Marina San Carlos · +52 (622) 226 12 02</a><a href="tel:+526222261061" style="color:#3a4b58;text-decoration:none;" style-hover="color:#0a1c2e;">Marina Seca · +52 (622) 226 10 61</a><a href="tel:+15202250478" style="color:#3a4b58;text-decoration:none;" style-hover="color:#0a1c2e;">USA · +1 (520) 225 04 78</a><a href="tel:+526221494664" style="color:#3a4b58;text-decoration:none;" style-hover="color:#0a1c2e;">WhatsApp · +52 (622) 149 46 64</a></span></div>
+              <div style="display:flex;gap:13px;align-items:center;"><span style="color:#b9a079;flex-shrink:0;"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="4" width="16" height="12" rx="1.5"/><path d="M2.5 5 10 11l7.5-6"/></svg></span><a href="mailto:info@marinasancarlos.com" style="color:#3a4b58;text-decoration:none;word-break:break-all;" style-hover="color:#0a1c2e;">info@marinasancarlos.com</a></div>
+              <div style="height:1px;background:#e6eaed;margin:4px 0;"></div>
+              <div><div style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#7d8b97;font-weight:600;margin-bottom:6px;">{{ tp.contact.hoursTitle }}</div>{{ tp.contact.hours }}</div>
+            </div>
+            <div style="margin-top:22px;background:#0a1c2e;border-radius:6px;padding:20px 22px;">
+              <div style="display:flex;align-items:center;gap:9px;margin-bottom:8px;"><span style="width:7px;height:7px;border-radius:50%;background:#c2a978;"></span><span style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#c2a978;font-weight:600;">{{ tp.contact.emergencyTitle }}</span></div>
+              <p style="font-size:14px;line-height:1.6;color:#cfd9e1;margin:0;font-weight:300;">{{ tp.contact.emergencyBody }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: form -->
+        <div style="background:#fff;border:1px solid #e6eaed;border-radius:8px;padding:clamp(30px,4vw,44px);">
+          <sc-if value="{{ contactSent }}" hint-placeholder-val="{{ false }}">
+            <div style="text-align:center;padding:30px 10px;animation:mscFade .5s ease both;">
+              <span style="width:60px;height:60px;border-radius:50%;background:#0a1c2e;display:inline-flex;align-items:center;justify-content:center;margin-bottom:22px;"><svg width="28" height="28" viewBox="0 0 30 30" fill="none" stroke="#fff" stroke-width="2"><path d="M7 15.5l5 5L23 9" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <h2 style="font-family:'Marcellus',serif;color:#122c44;font-size:30px;font-weight:400;margin:0 0 12px;">{{ tp.contact.sentTitle }}</h2>
+              <p style="color:#3a4b58;font-size:16px;line-height:1.7;margin:0 auto;max-width:380px;">{{ tp.contact.sentBody }}</p>
+            </div>
+          </sc-if>
+          <sc-if value="{{ notContactSent }}" hint-placeholder-val="{{ true }}">
+            <div>
+              <div style="font-family:'Marcellus',serif;font-size:24px;color:#122c44;margin-bottom:26px;">{{ tp.contact.formTitle }}</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px 20px;">
+                <sc-for list="{{ contactFields }}" as="f" hint-placeholder-count="4">
+                  <div style="{{ f.wrapStyle }}">
+                    <label style="display:block;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#5a6b78;font-weight:600;margin-bottom:8px;">{{ f.label }}</label>
+                    <input type="{{ f.type }}" value="{{ f.value }}" onChange="{{ f.onChange }}" style="{{ f.inputStyle }}" style-focus="border-color:#0a1c2e;box-shadow:0 0 0 3px rgba(10,28,46,.07);">
+                  </div>
+                </sc-for>
+                <div style="grid-column:1 / -1;">
+                  <label style="display:block;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#5a6b78;font-weight:600;margin-bottom:8px;">{{ tp.contact.message }} *</label>
+                  <textarea value="{{ msgValue }}" onChange="{{ msgOnChange }}" style="{{ msgStyle }}" style-focus="border-color:#0a1c2e;box-shadow:0 0 0 3px rgba(10,28,46,.07);"></textarea>
+                </div>
+              </div>
+              <button onClick="{{ submitContact }}" style="width:100%;margin-top:22px;background:#0a1c2e;color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:600;font-size:14px;letter-spacing:.1em;text-transform:uppercase;padding:18px;" style-hover="background:#122c44;">{{ tp.contact.send }}</button>
+            </div>
+          </sc-if>
+        </div>
+      </section>
+    </div></sc-if>
+
+    <!-- ===================== FOOTER ===================== -->
+    <footer style="background:#0a1c2e;color:#8aa0b2;padding:clamp(56px,7vw,82px) 0 36px;border-top:1px solid rgba(255,255,255,.06);">
+      <div style="max-width:1320px;margin:0 auto;padding:0 36px;display:grid;grid-template-columns:1.7fr 1fr 1fr 1fr;gap:40px;">
+        <div>
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
+            <span style="width:40px;height:40px;border:1px solid rgba(255,255,255,.24);border-radius:50%;display:flex;align-items:center;justify-content:center;">
+              <svg width="22" height="18" viewBox="0 0 26 22" fill="none"><path d="M12.4 1.5 4.6 13.2h7.8z" fill="#fff"/><path d="M13.7 4.2v9h6.6z" fill="#cfd9e1"/><path d="M1.5 16.3c2.3 1.7 3.8 1.7 6 0 2.3 1.7 3.8 1.7 6 0 2.3 1.7 3.8 1.7 6 0 2.3 1.7 3.8 1.7 6 0" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg>
+            </span>
+            <span style="font-family:'Marcellus',serif;color:#fff;font-size:15px;letter-spacing:.18em;">MARINA SAN CARLOS</span>
+          </div>
+          <p style="font-size:14px;line-height:1.75;max-width:300px;margin:0;font-weight:300;">{{ t.footer.blurb }}</p>
+        </div>
+        <div>
+          <div style="color:#fff;font-size:11px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:18px;">{{ t.footer.explore }}</div>
+          <div style="display:flex;flex-direction:column;gap:11px;font-size:14px;">
+            <button onClick="{{ goHome }}" style="background:none;border:none;color:#8aa0b2;text-align:left;cursor:pointer;padding:0;font-family:inherit;font-size:14px;" style-hover="color:#fff;">{{ t.nav.home }}</button>
+            <button onClick="{{ goServices }}" style="background:none;border:none;color:#8aa0b2;text-align:left;cursor:pointer;padding:0;font-family:inherit;font-size:14px;" style-hover="color:#fff;">{{ t.nav.services }}</button>
+            <button onClick="{{ goVisitor }}" style="background:none;border:none;color:#8aa0b2;text-align:left;cursor:pointer;padding:0;font-family:inherit;font-size:14px;" style-hover="color:#fff;">{{ t.nav.visitor }}</button>
+            <button onClick="{{ goContact }}" style="background:none;border:none;color:#8aa0b2;text-align:left;cursor:pointer;padding:0;font-family:inherit;font-size:14px;" style-hover="color:#fff;">{{ t.nav.contact }}</button>
+          </div>
+        </div>
+        <div>
+          <div style="color:#fff;font-size:11px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:18px;">{{ t.footer.partners }}</div>
+          <div style="display:flex;flex-direction:column;gap:11px;font-size:14px;">
+            <span style="cursor:pointer;" style-hover="color:#fff;">Star Marine</span>
+            <span style="cursor:pointer;" style-hover="color:#fff;">Loma del Mar</span>
+            <span style="cursor:pointer;" style-hover="color:#fff;">AMMT</span>
+            <span style="cursor:pointer;" style-hover="color:#fff;">Charter Boats</span>
+          </div>
+        </div>
+        <div>
+          <div style="color:#fff;font-size:11px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:18px;">{{ t.footer.contact }}</div>
+          <div style="display:flex;flex-direction:column;gap:11px;font-size:14px;">
+            <span>Edificio Marina San Carlos, Sonora 85506, México</span>
+            <a href="tel:+526222261202" style="color:#8aa0b2;text-decoration:none;" style-hover="color:#fff;">+52 (622) 226 12 02</a>
+            <a href="tel:+526222261061" style="color:#8aa0b2;text-decoration:none;" style-hover="color:#fff;">+52 (622) 226 10 61</a>
+            <a href="mailto:info@marinasancarlos.com" style="color:#8aa0b2;text-decoration:none;word-break:break-all;" style-hover="color:#fff;">info@marinasancarlos.com</a>
+            <span style="color:#c2a978;">VHF 16</span>
+          </div>
+        </div>
+      </div>
+      <div style="max-width:1320px;margin:42px auto 0;padding:24px 36px 0;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:12px;color:#5f7384;">
+        <span>© 2026 Marina San Carlos. {{ t.footer.rights }}</span>
+        <span>{{ t.footer.builtIn }}</span>
+      </div>
+    </footer>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:900},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;es&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+const DICT = {
+  en: {
+    brand:{tag:"SONORA · MÉXICO"},
+    topbar:{open:"Mon–Sat 7:30 AM – 5 PM · Sun 8 – 5", vhf:"Monitoring VHF 16"},
+    nav:{home:"Home", services:"Services", visitor:"Visitor Info", contact:"Contact", reserve:"Reserve a Slip"},
+    hero:{
+      variantLabel:"Hero",
+      eyebrow:"The Sea of Cortez · Sonora, Mexico",
+      titleA1:"Where the desert", titleA2:"meets the sea",
+      subA:"A full-service, hurricane-protected marina at the heart of San Carlos — home port for cruisers exploring the Sea of Cortez.",
+      titleB:"Your home port on the Sea of Cortez",
+      subB:"Deep-water slips, dry storage and a full boatyard, sheltered beneath the twin peaks of Tetakawi.",
+      titleC:"A safe harbor beneath Tetakawi",
+      ctaPrimary:"Reserve a Slip", ctaSecondary:"Explore Services", ctaContact:"Contact Us"
+    },
+    intro:{
+      eyebrow:"Welcome to Marina San Carlos",
+      lead:"Established in 1976, Marina San Carlos has been the trusted home port for boaters crossing into the Sea of Cortez — for half a century.",
+      body:"Tucked beneath the iconic twin peaks of Cerro Tetakawi, our marina pairs world-class protected moorage with a complete boatyard, fuel dock and dry storage — and a team that knows what it takes to bring a foreign vessel into Mexico with ease."
+    },
+    about:{eyebrow:"About Marina San Carlos", est:"Established in 1976", missionT:"Mission", visionT:"Vision", valuesT:"Values", mission:"We are committed to create the best possible experience for our clients, no matter what nationality.", vision:"To be leaders in customer satisfaction, take care of our environment and serve with integrity.", values:["Honesty","Respect","Accountability"]},
+    servicesHome:{eyebrow:"What we offer", title:"Everything your vessel needs", all:"All services"},
+    why:{
+      eyebrow:"Why San Carlos",
+      title:"The most protected harbor on the Sea of Cortez",
+      coords:"Marina San Carlos, Sonora",
+      items:[
+        {title:"Hurricane-rated protection", desc:"Sheltered by Tetakawi and a breakwater system — a designated safe-haven for lay-up season."},
+        {title:"The gateway to the Sea of Cortez", desc:"Cousteau's “aquarium of the world” begins at our breakwater — islands, diving and sportfishing minutes away."},
+        {title:"Cross-border made simple", desc:"On-site help with Temporary Import Permits, TIPs and vessel paperwork for foreign-flagged boats."},
+        {title:"Drive-down convenience", desc:"Just four hours from the Arizona border — the closest blue-water cruising ground to the U.S. Southwest."}
+      ]
+    },
+    testimonials:{eyebrow:"Customer experiences", title:"Trusted by cruisers & captains"},
+    affiliates:{
+      eyebrow:"Our network", title:"Affiliated companies & partners",
+      body:"Marina San Carlos works hand-in-hand with a family of trusted marine businesses across the bay.",
+      visit:"Visit"
+    },
+    cta:{title:"Reserve your place at the dock", body:"Tell us about your vessel and dates. Our team will confirm availability and walk you through everything you need to bring your boat to Mexico.", button:"Start a Reservation"},
+    footer:{blurb:"A full-service marina and boatyard on the Sea of Cortez, San Carlos, Sonora, Mexico.", explore:"Explore", partners:"Partners", contact:"Contact", rights:"All rights reserved.", builtIn:"San Carlos, Sonora · México"}
+  },
+  es: {
+    brand:{tag:"SONORA · MÉXICO"},
+    topbar:{open:"Lun–Sáb 7:30 – 17:00 · Dom 8 – 17", vhf:"Monitoreo VHF 16"},
+    nav:{home:"Inicio", services:"Servicios", visitor:"Información", contact:"Contacto", reserve:"Reservar Espacio"},
+    hero:{
+      variantLabel:"Portada",
+      eyebrow:"El Mar de Cortés · Sonora, México",
+      titleA1:"Donde el desierto", titleA2:"se une al mar",
+      subA:"Una marina de servicio completo y protegida de huracanes en el corazón de San Carlos — puerto base para navegantes del Mar de Cortés.",
+      titleB:"Tu puerto base en el Mar de Cortés",
+      subB:"Espacios en agua profunda, almacenamiento en seco y un astillero completo, al amparo de los picos gemelos del Tetakawi.",
+      titleC:"Un puerto seguro bajo el Tetakawi",
+      ctaPrimary:"Reservar Espacio", ctaSecondary:"Ver Servicios", ctaContact:"Contáctanos"
+    },
+    intro:{
+      eyebrow:"Bienvenido a Marina San Carlos",
+      lead:"Fundada en 1976, Marina San Carlos ha sido por medio siglo el puerto base de confianza para quienes navegan el Mar de Cortés.",
+      body:"Al pie de los icónicos picos gemelos del Cerro Tetakawi, nuestra marina combina un fondeo protegido de clase mundial con un astillero completo, muelle de combustible y almacenamiento en seco — y un equipo que sabe lo necesario para traer una embarcación extranjera a México con facilidad."
+    },
+    about:{eyebrow:"Acerca de Marina San Carlos", est:"Fundada en 1976", missionT:"Misión", visionT:"Visión", valuesT:"Valores", mission:"Estamos comprometidos a crear la mejor experiencia posible para nuestros clientes, sin importar su nacionalidad.", vision:"Ser líderes en satisfacción del cliente, cuidar nuestro medio ambiente y servir con integridad.", values:["Honestidad","Respeto","Responsabilidad"]},
+    servicesHome:{eyebrow:"Lo que ofrecemos", title:"Todo lo que tu embarcación necesita", all:"Todos los servicios"},
+    why:{
+      eyebrow:"Por qué San Carlos",
+      title:"El puerto más protegido del Mar de Cortés",
+      coords:"Marina San Carlos, Sonora",
+      items:[
+        {title:"Protección ante huracanes", desc:"Resguardada por el Tetakawi y un sistema de rompeolas — refugio designado para la temporada de almacenaje."},
+        {title:"La puerta al Mar de Cortés", desc:"El “acuario del mundo” de Cousteau comienza en nuestro rompeolas — islas, buceo y pesca deportiva a minutos."},
+        {title:"Trámites fronterizos sencillos", desc:"Apoyo en sitio con Permisos de Importación Temporal (TIP) y documentación para embarcaciones extranjeras."},
+        {title:"Llegada por carretera", desc:"A solo cuatro horas de la frontera con Arizona — el destino de navegación más cercano al suroeste de EE. UU."}
+      ]
+    },
+    testimonials:{eyebrow:"Experiencias de clientes", title:"La confianza de navegantes y capitanes"},
+    affiliates:{
+      eyebrow:"Nuestra red", title:"Empresas afiliadas y socios",
+      body:"Marina San Carlos trabaja de la mano con una familia de negocios marinos de confianza en toda la bahía.",
+      visit:"Visitar"
+    },
+    cta:{title:"Reserva tu lugar en el muelle", body:"Cuéntanos sobre tu embarcación y fechas. Nuestro equipo confirmará disponibilidad y te guiará en todo lo necesario para traer tu barco a México.", button:"Iniciar Reservación"},
+    footer:{blurb:"Marina y astillero de servicio completo en el Mar de Cortés, San Carlos, Sonora, México.", explore:"Explorar", partners:"Socios", contact:"Contacto", rights:"Todos los derechos reservados.", builtIn:"San Carlos, Sonora · México"}
+  }
+};
+
+const SVG = {
+  slip:'<svg width="32" height="32" viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M3 24c2.5 2 4 2 6.5 0 2.5 2 4 2 6.5 0 2.5 2 4 2 6.5 0 2.5 2 4 2 6.5 0" stroke-linecap="round"/><path d="M3 29c2.5 2 4 2 6.5 0 2.5 2 4 2 6.5 0 2.5 2 4 2 6.5 0 2.5 2 4 2 6.5 0" stroke-linecap="round"/><path d="M17 4v15M17 4l9 3-9 3" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  dry:'<svg width="32" height="32" viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="4" y="7" width="26" height="20" rx="1"/><path d="M4 14h26M4 20h26M13 7v20"/></svg>',
+  yard:'<svg width="32" height="32" viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M14 4l3 3-7 7-3-3z" stroke-linejoin="round"/><path d="M11 11 4 24l3 3 9-11" stroke-linejoin="round"/><path d="M20 14l8 8-3 3-8-8" stroke-linejoin="round"/></svg>',
+  fuel:'<svg width="32" height="32" viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="6" y="5" width="14" height="24" rx="1.5"/><path d="M6 13h14M24 11l4 4v9a2 2 0 0 1-4 0v-8" stroke-linecap="round"/></svg>'
+};
+
+const SERVICES_TOP = {
+  en:[
+    {key:"slip", title:"Wet Slips & Dockage", desc:"Protected deep-water slips for vessels of every size, with power and water at the dock."},
+    {key:"dry", title:"Dry Storage", desc:"Secure on-the-hard storage and lay-up — ideal for hurricane season."},
+    {key:"yard", title:"Boatyard & Work Area", desc:"A full work yard for owner projects and contracted repairs."},
+    {key:"fuel", title:"Fuel Dock", desc:"Gasoline and diesel at a convenient, easy-access fuel dock."}
+  ],
+  es:[
+    {key:"slip", title:"Espacios en Agua", desc:"Espacios protegidos en agua profunda para embarcaciones de todo tamaño, con energía y agua en el muelle."},
+    {key:"dry", title:"Almacenamiento en Seco", desc:"Almacenaje seguro en tierra — ideal para la temporada de huracanes."},
+    {key:"yard", title:"Astillero y Área de Trabajo", desc:"Un astillero completo para proyectos del propietario y reparaciones contratadas."},
+    {key:"fuel", title:"Muelle de Combustible", desc:"Gasolina y diésel en un muelle de fácil acceso."}
+  ]
+};
+
+const CONDITIONS = {
+  en:[{label:"Air",value:"84°F"},{label:"Water",value:"79°F"},{label:"Wind",value:"8 kt NW"},{label:"VHF",value:"16"}],
+  es:[{label:"Aire",value:"29°C"},{label:"Agua",value:"26°C"},{label:"Viento",value:"8 nudos NO"},{label:"VHF",value:"16"}]
+};
+
+const TESTIMONIALS = {
+  en:[
+    {quote:"The most protected, best-run marina in the Sea of Cortez. We've kept our boat here for nine seasons.", initials:"JE", name:"John & Rita Ellis", boat:"S/V Aventura · 42'"},
+    {quote:"They handled our TIP and customs paperwork start to finish. Crossing into Mexico has never been easier.", initials:"MC", name:"Mike Carter", boat:"M/V Sea Note · 38'"},
+    {quote:"Hauled out for hurricane season and came back to a boat in perfect shape. The yard crew is exceptional.", initials:"DL", name:"Diana Lowe", boat:"S/V Halcyon · 47'"}
+  ],
+  es:[
+    {quote:"La marina mejor administrada y más protegida del Mar de Cortés. Tenemos nuestro barco aquí desde hace nueve temporadas.", initials:"JE", name:"John y Rita Ellis", boat:"V/S Aventura · 42'"},
+    {quote:"Gestionaron nuestro TIP y los trámites de aduana de principio a fin. Cruzar a México nunca fue tan fácil.", initials:"MC", name:"Mike Carter", boat:"M/V Sea Note · 38'"},
+    {quote:"Lo sacamos del agua para la temporada de huracanes y regresó en perfecto estado. El equipo del astillero es excepcional.", initials:"DL", name:"Diana Lowe", boat:"V/S Halcyon · 47'"}
+  ]
+};
+
+const AFFILIATES = {
+  en:[
+    {name:"Star Marine", desc:"Marine parts, chandlery and outboard service — the bay's trusted supply store."},
+    {name:"Loma del Mar", desc:"Waterfront real estate, condos and vacation rentals overlooking the marina."},
+    {name:"AMMT", desc:"Asociación Mexicana de Marinas Turísticas — the national marina association co-founded by Marina San Carlos."},
+    {name:"Charter Boats", desc:"Sportfishing and sailing charters out of the bay, arranged through our front desk."}
+  ],
+  es:[
+    {name:"Star Marine", desc:"Refacciones marinas, tienda náutica y servicio de motores — la tienda de confianza de la bahía."},
+    {name:"Loma del Mar", desc:"Bienes raíces frente al mar, condominios y rentas vacacionales con vista a la marina."},
+    {name:"AMMT", desc:"Asociación Mexicana de Marinas Turísticas — la asociación nacional de marinas cofundada por Marina San Carlos."},
+    {name:"Charter Boats", desc:"Charters de pesca deportiva y vela en la bahía, gestionados en nuestra recepción."}
+  ]
+};
+
+const ASVG = {
+  wifi:'<svg width="26" height="26" viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M3 9c6-5 14-5 20 0M6 13c4.5-3.5 9.5-3.5 14 0M9.5 17c2.3-1.7 4.7-1.7 7 0" stroke-linecap="round"/><circle cx="13" cy="21" r="1.3" fill="currentColor" stroke="none"/></svg>',
+  fuel:'<svg width="26" height="26" viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="4" y="3" width="11" height="20" rx="1"/><path d="M4 10h11M18 8l3 3v7a1.5 1.5 0 0 1-3 0v-6" stroke-linecap="round"/></svg>',
+  pump:'<svg width="26" height="26" viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M13 3v8M9 7l4 4 4-4" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 15c2 1.6 3.2 1.6 5.2 0 2 1.6 3.2 1.6 5.2 0 2 1.6 3.2 1.6 5.2 0M4 20c2 1.6 3.2 1.6 5.2 0 2 1.6 3.2 1.6 5.2 0 2 1.6 3.2 1.6 5.2 0" stroke-linecap="round"/></svg>',
+  rest:'<svg width="26" height="26" viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="8" cy="5" r="2"/><path d="M8 8c-1.8 0-2.6 1.2-2.6 3l-.4 5h1.5l.5 6h2l.5-6h1.5l-.4-5C10.6 9.2 9.8 8 8 8Z"/><circle cx="18" cy="5" r="2"/><path d="M18 8l-2.4 6h1.6v8h1.6v-8h1.6L18 8Z"/></svg>',
+  laundry:'<svg width="26" height="26" viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="4" y="3" width="18" height="20" rx="2"/><circle cx="13" cy="15" r="5"/><path d="M9 15a4 4 0 0 1 8 0"/><circle cx="8" cy="6.5" r="0.6" fill="currentColor" stroke="none"/></svg>',
+  security:'<svg width="26" height="26" viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M13 3 5 6v6c0 5 3.5 8.5 8 11 4.5-2.5 8-6 8-11V6l-8-3Z" stroke-linejoin="round"/><path d="M9.5 13l2.3 2.3 4.7-4.6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  cart:'<svg width="26" height="26" viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M2 4h3l2.5 12h12l2-8H7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="10" cy="21" r="1.6"/><circle cx="19" cy="21" r="1.6"/></svg>',
+  ramp:'<svg width="26" height="26" viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M3 19h20M5 19 17 6M17 6l1 4-4-.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 22c2.4 1.6 3.8 1.6 6.2 0 2.4 1.6 3.8 1.6 6.2 0" stroke-linecap="round"/></svg>',
+  power:'<svg width="26" height="26" viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M14 2 5 14h7l-1 10 9-12h-7l1-10Z" stroke-linejoin="round"/></svg>',
+  ice:'<svg width="26" height="26" viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M13 2v22M4 7l18 12M22 7 4 19M13 2l-3 3M13 2l3 3M13 24l-3-3M13 24l3-3M4 7l.3 4M4 7l4-.3M22 19l-.3-4M22 19l-4 .3M22 7l-4 .3M22 7l-.3 4M4 19l4-.3M4 19l.3-4" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  crane:'<svg width="26" height="26" viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M5 23V4h14v19M5 9h14M5 15h14M11 4v19" stroke-linejoin="round"/><path d="M9 23c0 2.5 8 2.5 8 0"/></svg>',
+  doc:'<svg width="26" height="26" viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M6 3h9l5 5v15H6V3Z" stroke-linejoin="round"/><path d="M15 3v5h5M9 13h8M9 17h8" stroke-linecap="round"/></svg>'
+};
+
+const SERVICES_ALL = {
+  en:[
+    {key:"slip", title:"Wet Slips & Dockage", desc:"Protected deep-water slips from 25′ to 100′+, each with shore power and fresh water at the dock. Monthly, seasonal and annual moorage available."},
+    {key:"dry", title:"Dry Storage", desc:"Secure on-the-hard storage in a fenced, monitored yard — the smart choice for hurricane season lay-up and long-term storage."},
+    {key:"yard", title:"Boatyard & Work Area", desc:"A dedicated DIY work yard plus contracted-labor bays for owners and trades, with hardstand for vessels of all sizes."},
+    {key:"fuel", title:"Fuel Dock", desc:"Gasoline and diesel at a clearly-marked, easy-approach fuel dock, with attendants on hand and pump-out service."},
+    {key:"crane", title:"Haul-Out & Launch", desc:"Travel-lift haul-out and launch up to 60 tons, handled by an experienced crew — scheduled around your timeline."},
+    {key:"trans", title:"Boat Transport", desc:"Coordinated over-land transport to and from the marina, including cross-border logistics for vessels arriving by road."},
+    {key:"repair", title:"Maintenance & Repair", desc:"Bottom paint, fiberglass, mechanical, rigging and detailing through our network of trusted on-site contractors."},
+    {key:"power", title:"Electrical & Water", desc:"Metered shore power and potable water at every slip, plus ice and provisioning support at the dock."},
+    {key:"security", title:"Security & Facilities", desc:"24/7 monitored grounds, gated docks, clean restrooms, showers, laundry and complimentary Wi-Fi throughout."}
+  ],
+  es:[
+    {key:"slip", title:"Espacios en Agua y Atraque", desc:"Espacios protegidos en agua profunda de 25′ a 100′+, cada uno con energía y agua dulce en el muelle. Atraque mensual, por temporada y anual."},
+    {key:"dry", title:"Almacenamiento en Seco", desc:"Almacenaje seguro en tierra, en un patio cercado y vigilado — la mejor opción para la temporada de huracanes y el almacenaje a largo plazo."},
+    {key:"yard", title:"Astillero y Área de Trabajo", desc:"Un patio de trabajo para propietarios y bahías de servicio contratado, con superficie firme para embarcaciones de todo tamaño."},
+    {key:"fuel", title:"Muelle de Combustible", desc:"Gasolina y diésel en un muelle señalizado y de fácil acceso, con personal disponible y servicio de achique."},
+    {key:"crane", title:"Botado y Sacado", desc:"Sacado y botado con travel-lift hasta 60 toneladas, a cargo de un equipo experimentado — programado a tu medida."},
+    {key:"trans", title:"Transporte de Embarcaciones", desc:"Transporte terrestre coordinado hacia y desde la marina, incluida la logística fronteriza para barcos que llegan por carretera."},
+    {key:"repair", title:"Mantenimiento y Reparación", desc:"Pintura de fondo, fibra de vidrio, mecánica, jarcia y detallado a través de nuestra red de contratistas de confianza."},
+    {key:"power", title:"Electricidad y Agua", desc:"Energía y agua potable medidas en cada espacio, además de hielo y apoyo de aprovisionamiento en el muelle."},
+    {key:"security", title:"Seguridad e Instalaciones", desc:"Instalaciones vigiladas 24/7, muelles con acceso controlado, baños limpios, regaderas, lavandería y Wi-Fi gratuito."}
+  ]
+};
+
+const AMENITIES = {
+  en:[{k:"wifi",l:"Complimentary Wi-Fi"},{k:"fuel",l:"Fuel Dock"},{k:"pump",l:"Pump-Out"},{k:"rest",l:"Restrooms & Showers"},{k:"laundry",l:"Laundry"},{k:"security",l:"24/7 Security"},{k:"cart",l:"Dock Carts"},{k:"crane",l:"Travel-Lift"},{k:"power",l:"Shore Power"},{k:"ice",l:"Ice & Provisions"}],
+  es:[{k:"wifi",l:"Wi-Fi Gratuito"},{k:"fuel",l:"Muelle de Combustible"},{k:"pump",l:"Achique"},{k:"rest",l:"Baños y Regaderas"},{k:"laundry",l:"Lavandería"},{k:"security",l:"Seguridad 24/7"},{k:"cart",l:"Carritos de Muelle"},{k:"crane",l:"Travel-Lift"},{k:"power",l:"Energía en Muelle"},{k:"ice",l:"Hielo y Provisiones"}]
+};
+
+const GETTING_HERE = {
+  en:[
+    {key:"land",t:"By Land",d:"A scenic 4-hour drive south of the Arizona border via Nogales and Hermosillo on Highway 15 — fully paved, well-traveled and the way most cruisers arrive."},
+    {key:"sea",t:"By Sea",d:"Marina San Carlos sits behind a protected breakwater on the Sea of Cortez. Hail us on VHF 16 or 72 for slip assignment and dockhand assistance on arrival."},
+    {key:"air",t:"By Air",d:"Fly into Guaymas (GYM) — 30 minutes away — or Hermosillo (HMO) for more connections, then a short ground transfer to the marina."}
+  ],
+  es:[
+    {key:"land",t:"Por Tierra",d:"Un trayecto panorámico de 4 horas al sur de la frontera con Arizona por Nogales y Hermosillo en la Carretera 15 — pavimentada y muy transitada."},
+    {key:"sea",t:"Por Mar",d:"Marina San Carlos se ubica tras un rompeolas protegido en el Mar de Cortés. Llámanos por VHF 16 o 72 para asignación de espacio y apoyo al llegar."},
+    {key:"air",t:"Por Aire",d:"Vuela a Guaymas (GYM) — a 30 minutos — o a Hermosillo (HMO) para más conexiones, y luego un breve traslado terrestre a la marina."}
+  ]
+};
+
+const ENTRY_REQS = {
+  en:[
+    {t:"Temporary Import Permit (TIP)", d:"Vessels flagged outside Mexico require a 10-year TIP from Banjercito. Our office helps you prepare and file before or on arrival."},
+    {t:"Vessel Documentation", d:"Carry your registration or documentation, proof of ownership, and a crew list. Keep both originals and copies aboard."},
+    {t:"Insurance", d:"Mexican liability insurance is required to keep a vessel in the marina. We can connect you with approved providers."},
+    {t:"Entry & Immigration", d:"Each crew member needs a valid passport and an FMM tourist permit. Customs (Aduana) clearance applies to vessels arriving by sea."}
+  ],
+  es:[
+    {t:"Permiso de Importación Temporal (TIP)", d:"Las embarcaciones con bandera extranjera requieren un TIP de 10 años de Banjercito. Nuestra oficina te ayuda a tramitarlo antes o al llegar."},
+    {t:"Documentación de la Embarcación", d:"Lleva tu registro o documentación, comprobante de propiedad y lista de tripulación. Conserva originales y copias a bordo."},
+    {t:"Seguro", d:"Se requiere seguro de responsabilidad civil mexicano para mantener una embarcación en la marina. Te conectamos con proveedores aprobados."},
+    {t:"Entrada e Inmigración", d:"Cada tripulante necesita pasaporte vigente y permiso turístico FMM. La revisión de Aduana aplica a embarcaciones que llegan por mar."}
+  ]
+};
+
+const FAQS = {
+  en:[
+    {q:"How do I get there?", a:"Most cruisers arrive overland — a scenic 4-hour drive south of the Arizona border via Nogales and Hermosillo on Highway 15, fully paved and well-traveled. You can also arrive by sea; hail us on VHF 16 for slip assignment and dockhand assistance."},
+    {q:"Are there any flights?", a:"Yes. Fly into Guaymas (GYM), about 30 minutes away, or Hermosillo (HMO) for more connections, then a short ground transfer to the marina."},
+    {q:"What documentation do I need for my boat?", a:"Carry your vessel registration or documentation, proof of ownership and a crew list, plus a Temporary Import Permit (TIP) for foreign-flagged vessels. Each crew member needs a valid passport and an FMM tourist permit."},
+    {q:"Can I acquire the Permit online?", a:"Yes. The 10-year Temporary Import Permit (TIP) can be obtained online through Banjercito, or our office can help you prepare and file it before or on arrival."},
+    {q:"Do I need insurance for my boat?", a:"Yes. Mexican liability insurance is required to keep a vessel in the marina. We can connect you with approved providers."}
+  ],
+  es:[
+    {q:"¿Cómo llego?", a:"La mayoría llega por carretera — un trayecto panorámico de 4 horas al sur de la frontera con Arizona por Nogales y Hermosillo en la Carretera 15, pavimentada y muy transitada. También puedes llegar por mar; llámanos por VHF 16 para asignación de espacio y apoyo en el muelle."},
+    {q:"¿Hay vuelos?", a:"Sí. Vuela a Guaymas (GYM), a unos 30 minutos, o a Hermosillo (HMO) para más conexiones, y luego un breve traslado terrestre a la marina."},
+    {q:"¿Qué documentación necesito para mi barco?", a:"Lleva el registro o documentación de la embarcación, comprobante de propiedad y lista de tripulación, además de un Permiso de Importación Temporal (TIP) para embarcaciones con bandera extranjera. Cada tripulante necesita pasaporte vigente y permiso turístico FMM."},
+    {q:"¿Puedo obtener el permiso en línea?", a:"Sí. El Permiso de Importación Temporal (TIP) de 10 años puede tramitarse en línea por Banjercito, o nuestra oficina puede ayudarte a prepararlo y presentarlo antes o al llegar."},
+    {q:"¿Necesito seguro para mi barco?", a:"Sí. Se requiere seguro de responsabilidad civil mexicano para mantener una embarcación en la marina. Te conectamos con proveedores aprobados."}
+  ]
+};
+
+const RESOURCES = {
+  en:[
+    {t:"Marina Rules & Regulations", d:"Dock policies, conduct and safety standards.", tag:"PDF"},
+    {t:"Hurricane Preparation Guide", d:"How to ready and secure your vessel for the season.", tag:"PDF"},
+    {t:"Lay-Up & Storage Recommendations", d:"Best practices for short and long-term storage.", tag:"PDF"},
+    {t:"Safety Procedures", d:"Fire, fuel and emergency protocols on the docks.", tag:"PDF"},
+    {t:"Port Check-In / Check-Out", d:"Arrival and departure forms for visiting vessels.", tag:"FORM"},
+    {t:"Reservation & Vessel Forms", d:"Downloadable owner and vessel information forms.", tag:"FORM"}
+  ],
+  es:[
+    {t:"Reglamento de la Marina", d:"Políticas de muelle, conducta y normas de seguridad.", tag:"PDF"},
+    {t:"Guía de Preparación para Huracanes", d:"Cómo preparar y asegurar tu embarcación para la temporada.", tag:"PDF"},
+    {t:"Recomendaciones de Almacenaje", d:"Mejores prácticas para almacenaje corto y prolongado.", tag:"PDF"},
+    {t:"Procedimientos de Seguridad", d:"Protocolos de incendio, combustible y emergencia en muelles.", tag:"PDF"},
+    {t:"Entrada / Salida de Puerto", d:"Formatos de llegada y salida para embarcaciones visitantes.", tag:"FORM"},
+    {t:"Formatos de Reservación y Embarcación", d:"Formularios descargables de propietario y embarcación.", tag:"FORM"}
+  ]
+};
+
+const RESERVE_TYPES = {
+  en:[{k:"slip",l:"Marina Slip"},{k:"dry",l:"Dry Storage"},{k:"haul",l:"Haul-Out"},{k:"tractor",l:"Tractor / Launch"}],
+  es:[{k:"slip",l:"Espacio en Agua"},{k:"dry",l:"Almacenamiento Seco"},{k:"haul",l:"Sacado"},{k:"tractor",l:"Tractor / Botado"}]
+};
+
+const OWNER_FIELDS = {
+  en:[{k:"fullName",l:"Full Name",req:true,half:true},{k:"nationality",l:"Nationality",req:true,half:true},{k:"email",l:"Email Address",req:true,half:true,type:"email"},{k:"phone",l:"Phone Number",req:true,half:true,type:"tel"},{k:"address",l:"Mailing Address",req:false,half:false}],
+  es:[{k:"fullName",l:"Nombre Completo",req:true,half:true},{k:"nationality",l:"Nacionalidad",req:true,half:true},{k:"email",l:"Correo Electrónico",req:true,half:true,type:"email"},{k:"phone",l:"Teléfono",req:true,half:true,type:"tel"},{k:"address",l:"Domicilio",req:false,half:false}]
+};
+
+const VESSEL_FIELDS = {
+  en:[{k:"vName",l:"Vessel Name",req:true,half:true},{k:"flag",l:"Flag State / Country",req:true,half:true},{k:"make",l:"Make",req:false,half:true},{k:"model",l:"Model",req:false,half:true},{k:"length",l:"Length (LOA)",req:true,half:true},{k:"beam",l:"Beam",req:false,half:true},{k:"draft",l:"Draft",req:false,half:true},{k:"reg",l:"Registration No.",req:false,half:true}],
+  es:[{k:"vName",l:"Nombre de la Embarcación",req:true,half:true},{k:"flag",l:"País / Bandera",req:true,half:true},{k:"make",l:"Marca",req:false,half:true},{k:"model",l:"Modelo",req:false,half:true},{k:"length",l:"Eslora (LOA)",req:true,half:true},{k:"beam",l:"Manga",req:false,half:true},{k:"draft",l:"Calado",req:false,half:true},{k:"reg",l:"No. de Registro",req:false,half:true}]
+};
+
+const DOC_UPLOADS = {
+  en:[{k:"ownership",l:"Proof of Vessel Ownership",req:true},{k:"tip",l:"Temporary Import Permit (TIP)",req:false,note:"Required for non-Mexican flagged vessels"},{k:"insurance",l:"Vessel Insurance Policy",req:true},{k:"id",l:"Owner ID (Passport preferred)",req:true}],
+  es:[{k:"ownership",l:"Comprobante de Propiedad",req:true},{k:"tip",l:"Permiso de Importación Temporal (TIP)",req:false,note:"Requerido para embarcaciones con bandera extranjera"},{k:"insurance",l:"Póliza de Seguro de la Embarcación",req:true},{k:"id",l:"Identificación (Pasaporte preferido)",req:true}]
+};
+
+const SERVICES_FULL = {
+  en:[
+    {title:"Marina", img:"assets/promenade.jpg", cta:"reserve", desc:"Have a great time staying or visiting San Carlos. Dock sizes available: 24′, 32′, 40′, 41′, 48′, 51′, 56′, 64′, 120 and 136 ft. Ramp, fish-cleaning station, bathrooms and showers, laundry, complimentary WiFi, free parking, 24-hr security and local amenities."},
+    {title:"Dry Storage", img:"assets/work-yard.jpg", cta:"reserve", desc:"Storage for boats on their own trailer or on stands, with covered areas for boats up to 32′ long and 14′ high, plus storage for vehicles and motorhomes. Lockers are available for your boat equipment, all with 24-hr security."},
+    {title:"Work Yard Services", img:"assets/crane-haulout.jpg", cta:"reserve", desc:"Our work yard offers power and water supplies to help with your boat work — you can even stay aboard while you finish your project. We also provide maintenance done by Star Marine Center professionals: epoxy blister repair, sanding, sand-blasting, painting and mechanical, with the right equipment and qualified mechanics. Ask for a quote!"},
+    {title:"Boat Services", img:"assets/crane-haulout.jpg", cta:"contact", desc:"Tractor services for boats on trailers, hydraulic low-boy service, crane services, demast, pressure wash and fuel dock."},
+    {title:"Fuel Dock", img:"assets/marina-building.jpg", cta:"reserve", desc:"Fuel supply for your boat — diesel and magna gasoline. Open Monday–Sunday, 7:30 am to 4:00 pm. In summer (June–October) hours extend until 6:00 pm on Friday, Saturday and Sunday."},
+    {title:"Transport", img:"assets/work-yard.jpg", cta:"reserve", desc:"Ground transportation for sail and power boats from San Carlos, Sonora or Mazatlán, Sinaloa to and from anywhere in the US or Canada. We use specialized air-ride suspension hydraulic trailers whose 6 hydraulic pads customize to fit your hull, moving boats up to 50 ft long, 30 tons or 16 ft wide. We can arrange the entire trip or just the Mexican portion — ask for a quote today!"}
+  ],
+  es:[
+    {title:"Marina", img:"assets/promenade.jpg", cta:"reserve", desc:"Disfruta tu estancia o visita en San Carlos. Tamaños de espacio disponibles: 24′, 32′, 40′, 41′, 48′, 51′, 56′, 64′, 120 y 136 ft. Rampa, estación de limpieza de pescado, baños y regaderas, lavandería, WiFi de cortesía, estacionamiento gratuito, seguridad 24 hrs y amenidades locales."},
+    {title:"Almacenamiento en Seco", img:"assets/work-yard.jpg", cta:"reserve", desc:"Almacenaje para barcos en su propio tráiler o sobre soportes, con áreas techadas para embarcaciones de hasta 32′ de largo y 14′ de alto, además de almacenaje para vehículos y motorhomes. Lockers disponibles para tu equipo, todo con seguridad 24 hrs."},
+    {title:"Servicios de Astillero", img:"assets/crane-haulout.jpg", cta:"reserve", desc:"Nuestro patio de trabajo ofrece energía y agua para tu trabajo a bordo — incluso puedes quedarte en el barco mientras terminas tu proyecto. También brindamos mantenimiento por profesionales de Star Marine Center: reparación de ampollas con epoxi, lijado, sandblast, pintura y mecánica, con el equipo correcto y mecánicos calificados. ¡Pide tu cotización!"},
+    {title:"Servicios para Barcos", img:"assets/crane-haulout.jpg", cta:"contact", desc:"Servicio de tractor para barcos en tráiler, servicio hidráulico low-boy, grúa, desarbolado, lavado a presión y muelle de combustible."},
+    {title:"Muelle de Combustible", img:"assets/marina-building.jpg", cta:"reserve", desc:"Suministro de combustible para tu barco — diésel y gasolina magna. Abierto de lunes a domingo, 7:30 am a 4:00 pm. En verano (junio–octubre) el horario se extiende hasta las 6:00 pm viernes, sábado y domingo."},
+    {title:"Transporte", img:"assets/work-yard.jpg", cta:"reserve", desc:"Transporte terrestre para barcos de vela y motor desde San Carlos, Sonora o Mazatlán, Sinaloa hacia y desde cualquier lugar de EE.UU. o Canadá. Usamos tráileres hidráulicos con suspensión air-ride cuyos 6 pads se ajustan a tu casco, moviendo barcos de hasta 50 ft de largo, 30 toneladas o 16 ft de ancho. Podemos coordinar todo el viaje o solo la porción mexicana — ¡pide tu cotización hoy!"}
+  ]
+};
+
+const PAGES = {
+  en:{
+    services:{eyebrow:"Marina Services", title:"A full-service marina & boatyard", intro:"From a protected slip for the season to a full refit on the hard, everything your vessel needs lives in one place — backed by a crew that has cared for boats on the Sea of Cortez for decades.", amenEyebrow:"On-site", amenTitle:"Featured amenities", ctaTitle:"Ready to bring your boat to San Carlos?", ctaBody:"Reserve a slip or storage, or reach out with questions about your vessel and dates.", ctaBtn:"Reserve Now"},
+    visitor:{eyebrow:"Visitor Information", title:"Everything you need to cruise to Mexico", intro:"Bringing a foreign vessel into Mexico is simpler than most cruisers expect — especially with a team that does it every day. Here's how to get here and what to have ready.", hereEyebrow:"Getting here", hereTitle:"Three ways to arrive", entryEyebrow:"Before you arrive", entryTitle:"Entry requirements for Mexico", faqEyebrow:"Good to know", faqTitle:"Frequently asked questions", resEyebrow:"Resources", resTitle:"Forms & downloads", download:"Download"},
+    reserve:{eyebrow:"Reservations", title:"Reserve your space", intro:"Tell us about your vessel and what you need. Submitting this form sends your request straight to our reservations team, who will confirm availability and next steps.", typeLabel:"What would you like to reserve?", ownerTitle:"Owner Information", vesselTitle:"Vessel Information", docsTitle:"Document Uploads", docsNote:"Upload clear photos or PDFs. You can also email documents to our team later.", submit:"Submit Reservation Request", required:"Please complete the required fields highlighted below.", successTitle:"Request received", successBody:"Thank you — your reservation request has been sent to our team.", successNote:"A confirmation has been routed to info@marinasancarlos.com. We'll be in touch within one business day.", another:"Submit another request", optional:"optional", choose:"Choose file", uploaded:"Uploaded"},
+    contact:{eyebrow:"Contact", title:"Get in touch", intro:"Questions about slips, storage, your crossing or your boat? Reach our team directly — we're on the docks every day.", formTitle:"Send us a message", name:"Full Name", email:"Email Address", phone:"Phone", subject:"Subject", message:"Message", send:"Send Message", sentTitle:"Message sent", sentBody:"Thanks for reaching out — we'll reply within one business day.", infoTitle:"Marina office", hoursTitle:"Office hours", hours:"Mon – Sat 7:30 AM – 5 PM · Sun 8 AM – 5 PM", emergencyTitle:"After-hours & emergencies", emergencyBody:"For urgent on-water assistance, hail Marina San Carlos on VHF 16.", mapLabel:"INTERACTIVE MAP · San Carlos, Sonora", directions:"Get directions"}
+  },
+  es:{
+    services:{eyebrow:"Servicios de la Marina", title:"Una marina y astillero de servicio completo", intro:"Desde un espacio protegido por temporada hasta una restauración completa en tierra, todo lo que tu embarcación necesita está en un solo lugar — con un equipo que ha cuidado barcos en el Mar de Cortés por décadas.", amenEyebrow:"En sitio", amenTitle:"Amenidades destacadas", ctaTitle:"¿Listo para traer tu barco a San Carlos?", ctaBody:"Reserva un espacio o almacenaje, o escríbenos con dudas sobre tu embarcación y fechas.", ctaBtn:"Reservar Ahora"},
+    visitor:{eyebrow:"Información para Visitantes", title:"Todo lo necesario para navegar a México", intro:"Traer una embarcación extranjera a México es más sencillo de lo que la mayoría espera — sobre todo con un equipo que lo hace a diario. Así llegas y esto es lo que debes tener listo.", hereEyebrow:"Cómo llegar", hereTitle:"Tres formas de llegar", entryEyebrow:"Antes de llegar", entryTitle:"Requisitos de entrada a México", faqEyebrow:"Bueno saber", faqTitle:"Preguntas frecuentes", resEyebrow:"Recursos", resTitle:"Formatos y descargas", download:"Descargar"},
+    reserve:{eyebrow:"Reservaciones", title:"Reserva tu espacio", intro:"Cuéntanos sobre tu embarcación y lo que necesitas. Al enviar este formulario, tu solicitud llega directo a nuestro equipo de reservaciones, que confirmará disponibilidad y siguientes pasos.", typeLabel:"¿Qué deseas reservar?", ownerTitle:"Información del Propietario", vesselTitle:"Información de la Embarcación", docsTitle:"Carga de Documentos", docsNote:"Sube fotos claras o PDFs. También puedes enviar los documentos por correo más adelante.", submit:"Enviar Solicitud de Reservación", required:"Por favor completa los campos requeridos marcados abajo.", successTitle:"Solicitud recibida", successBody:"Gracias — tu solicitud de reservación ha sido enviada a nuestro equipo.", successNote:"Se ha enviado una confirmación a info@marinasancarlos.com. Te contactaremos en un día hábil.", another:"Enviar otra solicitud", optional:"opcional", choose:"Elegir archivo", uploaded:"Cargado"},
+    contact:{eyebrow:"Contacto", title:"Ponte en contacto", intro:"¿Dudas sobre espacios, almacenaje, tu travesía o tu barco? Contacta a nuestro equipo directamente — estamos en los muelles todos los días.", formTitle:"Envíanos un mensaje", name:"Nombre Completo", email:"Correo Electrónico", phone:"Teléfono", subject:"Asunto", message:"Mensaje", send:"Enviar Mensaje", sentTitle:"Mensaje enviado", sentBody:"Gracias por escribirnos — responderemos en un día hábil.", infoTitle:"Oficina de la marina", hoursTitle:"Horario", hours:"Lun – Sáb 7:30 – 17:00 · Dom 8:00 – 17:00", emergencyTitle:"Fuera de horario y emergencias", emergencyBody:"Para asistencia urgente en el agua, llama a Marina San Carlos por VHF 16.", mapLabel:"MAPA INTERACTIVO · San Carlos, Sonora", directions:"Cómo llegar"}
+  }
+};
+
+class Component extends DCLogic {
+  state = {
+    lang: this.props.lang || "en",
+    page: "home",
+    hero: this.props.heroStyle || "a",
+    faqOpen: 0,
+    resType: "slip",
+    form: {},
+    files: {},
+    errors: {},
+    submitted: false,
+    contact: {},
+    cErrors: {},
+    contactSent: false
+  };
+
+  go = (p) => { try{ window.scrollTo({top:0,behavior:"instant"}); }catch(e){ window.scrollTo(0,0); } this.setState({page:p}); };
+  svg(markup){ return React.createElement("span",{dangerouslySetInnerHTML:{__html:markup},style:{display:"inline-flex"}}); }
+
+  setField = (k,v) => this.setState(s=>({ form:{...s.form,[k]:v}, errors:{...s.errors,[k]:false} }));
+  setContact = (k,v) => this.setState(s=>({ contact:{...s.contact,[k]:v}, cErrors:{...s.cErrors,[k]:false} }));
+  onFile = (k,e) => { const f=e.target.files&&e.target.files[0]; this.setState(s=>({ files:{...s.files,[k]: f?f.name:null}, errors:{...s.errors,[k]:false} })); };
+  toggleFaq = (i) => this.setState(s=>({ faqOpen: s.faqOpen===i ? -1 : i }));
+  setResType = (k) => this.setState({resType:k});
+
+  submitReserve = () => {
+    const lang=this.state.lang;
+    const req=["fullName","nationality","email","phone","vName","flag","length"];
+    const errors={};
+    req.forEach(k=>{ if(!this.state.form[k]||!String(this.state.form[k]).trim()) errors[k]=true; });
+    ["ownership","insurance","id"].forEach(k=>{ if(!this.state.files[k]) errors[k]=true; });
+    if(Object.keys(errors).length){ this.setState({errors}); return; }
+    try{ window.scrollTo({top:0,behavior:"instant"}); }catch(e){ window.scrollTo(0,0); }
+    this.setState({submitted:true});
+  };
+  resetReserve = () => this.setState({submitted:false, form:{}, files:{}, errors:{}});
+
+  submitContact = () => {
+    const req=["name","email","message"];
+    const cErrors={};
+    req.forEach(k=>{ if(!this.state.contact[k]||!String(this.state.contact[k]).trim()) cErrors[k]=true; });
+    if(Object.keys(cErrors).length){ this.setState({cErrors}); return; }
+    this.setState({contactSent:true});
+  };
+
+  renderVals() {
+    const lang = this.state.lang;
+    const t = DICT[lang];
+    const page = this.state.page;
+    const hero = this.state.hero;
+
+    const navDef = [
+      {key:"home", label:t.nav.home, p:"home"},
+      {key:"services", label:t.nav.services, p:"services"},
+      {key:"visitor", label:t.nav.visitor, p:"visitor"},
+      {key:"contact", label:t.nav.contact, p:"contact"}
+    ];
+    const navItems = navDef.map(n => ({ label:n.label, active: page===n.p, onClick:()=>this.go(n.p) }));
+
+    const langBtn = (active) => ({
+      background: active ? "#fff" : "transparent",
+      color: active ? "#0a1c2e" : "#cfd9e1",
+      border:"none", cursor:"pointer", fontFamily:"'Archivo',sans-serif",
+      fontSize:"11.5px", fontWeight:"600", letterSpacing:".08em",
+      padding:"8px 13px", borderRadius:"999px"
+    });
+    const heroBtn = (active) => ({
+      background: active ? "#fff" : "transparent",
+      color: active ? "#0a1c2e" : "#cfd9e1",
+      border:"none", cursor:"pointer", fontFamily:"'Archivo',sans-serif",
+      fontSize:"12px", fontWeight:"600", width:"28px", height:"26px",
+      borderRadius:"999px"
+    });
+
+    const whyItems = t.why.items.map((w,i)=>({ num:String(i+1).padStart(2,"0"), title:w.title, desc:w.desc }));
+    const servicesTop = SERVICES_TOP[lang].map(s => ({ title:s.title, desc:s.desc, icon: this.svg(SVG[s.key]) }));
+
+    const ICON = {slip:SVG.slip,dry:SVG.dry,yard:ASVG.crane,fuel:SVG.fuel,crane:ASVG.ramp,trans:ASVG.cart,repair:SVG.yard,power:ASVG.power,security:ASVG.security};
+    const tp = PAGES[lang];
+    const F = this.state.form, FE = this.state.errors, FL = this.state.files;
+    const servicesAll = SERVICES_ALL[lang].map(s=>({title:s.title,desc:s.desc,icon:this.svg(ICON[s.key]||SVG.slip)}));
+    const servicesDetail = SERVICES_FULL[lang].map((s,i)=>{ const rev=i%2===1; return {title:s.title, desc:s.desc, img:s.img, imgStyle:{width:"100%",aspectRatio:"4/3",borderRadius:"6px",backgroundImage:"url('"+s.img+"')",backgroundSize:"cover",backgroundPosition:"center",backgroundColor:"#0a1c2e",boxShadow:"0 18px 44px rgba(10,28,46,.12)"}, rowStyle:{display:"flex",flexWrap:"wrap",gap:"clamp(28px,4vw,64px)",alignItems:"center",flexDirection:rev?"row-reverse":"row"}, ctaLabel: s.cta==="contact" ? (lang==="es"?"Contáctanos":"Contact Us") : (lang==="es"?"Reservar":"Reserve"), onClick: s.cta==="contact" ? ()=>this.go("contact") : ()=>this.go("reserve") }; });
+    const amenities = AMENITIES[lang].map(a=>({label:a.l,icon:this.svg(ASVG[a.k]||ASVG.wifi)}));
+    const gettingHere = GETTING_HERE[lang];
+    const entryReqs = ENTRY_REQS[lang].map((e,i)=>({num:String(i+1).padStart(2,"0"),t:e.t,d:e.d}));
+    const faqs = FAQS[lang].map((f,i)=>({q:f.q,a:f.a,open:this.state.faqOpen===i,sign:this.state.faqOpen===i?"–":"+",onClick:()=>this.toggleFaq(i)}));
+    const resources = RESOURCES[lang];
+    const reserveTypes = RESERVE_TYPES[lang].map(rt=>{ const sel=this.state.resType===rt.k; return {label:rt.l,selected:sel,onClick:()=>this.setResType(rt.k),chipStyle:{flex:"1 1 140px",minWidth:"130px",padding:"18px 16px",borderRadius:"6px",border:"1px solid "+(sel?"#0a1c2e":"#d3dbe1"),background:sel?"#0a1c2e":"#fff",color:sel?"#fff":"#3a4b58",cursor:"pointer",fontFamily:"'Archivo',sans-serif",fontSize:"14.5px",fontWeight:sel?"600":"500",letterSpacing:".02em",textAlign:"center",transition:"all .2s"}}; });
+    const baseInput = {width:"100%",padding:"13px 15px",border:"1px solid #d3dbe1",borderRadius:"4px",fontSize:"15px",fontFamily:"'Archivo',sans-serif",color:"#11202e",background:"#fff",outline:"none",boxSizing:"border-box"};
+    const inStyle = (err)=> err ? {...baseInput,borderColor:"#c0563f",background:"#fdf5f3"} : baseInput;
+    const wrap = (half)=> half ? {} : {gridColumn:"1 / -1"};
+    const mkField = (f)=>({key:f.k,label:f.l+(f.req?" *":""),half:!!f.half,type:f.type||"text",value:F[f.k]||"",err:!!FE[f.k],inputStyle:inStyle(!!FE[f.k]),wrapStyle:wrap(!!f.half),onChange:(e)=>this.setField(f.k,e.target.value)});
+    const ownerFields = OWNER_FIELDS[lang].map(mkField);
+    const vesselFields = VESSEL_FIELDS[lang].map(mkField);
+    const docBox = (err,done)=>({display:"flex",alignItems:"center",gap:"16px",padding:"16px 18px",border:"1px solid "+(err?"#c0563f":(done?"#cdbf9a":"#d3dbe1")),borderRadius:"6px",background:done?"#faf7ef":(err?"#fdf5f3":"#fff"),cursor:"pointer",transition:"border-color .2s,background .2s"});
+    const docUploads = DOC_UPLOADS[lang].map(d=>({key:d.k,label:d.l+(d.req?" *":""),note:d.note||"",fileName:FL[d.k]||"",done:!!FL[d.k],notDone:!FL[d.k],err:!!FE[d.k],boxStyle:docBox(!!FE[d.k],!!FL[d.k]),onChange:(e)=>this.onFile(d.k,e)}));
+    const C = this.state.contact, CE = this.state.cErrors;
+    const cf=(k,l,half,req,type)=>({key:k,label:l+(req?" *":""),half:half,type:type||"text",value:C[k]||"",err:!!CE[k],inputStyle:inStyle(!!CE[k]),wrapStyle:wrap(half),onChange:(e)=>this.setContact(k,e.target.value)});
+    const contactFields = [cf("name",tp.contact.name,true,true),cf("email",tp.contact.email,true,true,"email"),cf("phone",tp.contact.phone,true,false,"tel"),cf("subject",tp.contact.subject,true,false)];
+    const showReserveError = Object.keys(FE).some(k=>FE[k]);
+    const msgStyle = this.state.cErrors.message ? {...baseInput,minHeight:"130px",resize:"vertical",borderColor:"#c0563f",background:"#fdf5f3"} : {...baseInput,minHeight:"130px",resize:"vertical"};
+
+    return {
+      rootStyle: { "--accent":"#c2a978" },
+      lang, t,
+      isHome: page==="home", isServices: page==="services",
+      isVisitor: page==="visitor", isReserve: page==="reserve", isContact: page==="contact",
+      navItems,
+      goHome:()=>this.go("home"), goServices:()=>this.go("services"),
+      goVisitor:()=>this.go("visitor"), goContact:()=>this.go("contact"),
+      goReserve:()=>this.go("reserve"),
+      setEN:()=>this.setState({lang:"en"}), setES:()=>this.setState({lang:"es"}),
+      langEnStyle: langBtn(lang==="en"), langEsStyle: langBtn(lang==="es"),
+      heroA: hero==="a", heroB: hero==="b", heroC: hero==="c",
+      setHeroA:()=>this.setState({hero:"a"}), setHeroB:()=>this.setState({hero:"b"}), setHeroC:()=>this.setState({hero:"c"}),
+      heroBtnA: heroBtn(hero==="a"), heroBtnB: heroBtn(hero==="b"), heroBtnC: heroBtn(hero==="c"),
+      conditions: CONDITIONS[lang],
+      servicesTop, whyItems,
+      testimonials: TESTIMONIALS[lang],
+      affiliates: AFFILIATES[lang],
+      tp,
+      servicesAll, servicesDetail, amenities, gettingHere, entryReqs, faqs, resources,
+      reserveTypes, ownerFields, vesselFields, docUploads, showReserveError,
+      submitReserve:this.submitReserve, resetReserve:this.resetReserve, submitted:this.state.submitted, notSubmitted:!this.state.submitted,
+      contactFields, msgValue:(this.state.contact.message||""), msgErr:!!this.state.cErrors.message, msgStyle,
+      msgOnChange:(e)=>this.setContact("message",e.target.value),
+      submitContact:this.submitContact, contactSent:this.state.contactSent, notContactSent:!this.state.contactSent
+    };
+  }
+}
+</script>
+</body>
+</html>
