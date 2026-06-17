@@ -6,8 +6,9 @@ Thumbs.db
 .vscode/
 *.swp
 
-# Uploads (user content - keep tracked in repo if needed)
-# project/uploads/
+# Screenshots & raw uploads (not needed for live site)
+project/screenshots/
+project/uploads/
 
 # Node
 node_modules/
