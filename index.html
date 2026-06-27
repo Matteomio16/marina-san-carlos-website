@@ -97,13 +97,6 @@
         </div>
       </section>
 
-      <!-- INTRO -->
-      <section style="max-width:1040px;margin:0 auto;padding:clamp(72px,10vw,130px) 36px;text-align:center;">
-        <div style="display:flex;align-items:center;gap:14px;justify-content:center;margin-bottom:28px;"><span style="width:30px;height:1px;background:#c2a978;"></span><span style="font-family:'Archivo',sans-serif;font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:#7d8b97;">{{ t.intro.eyebrow }}</span><span style="width:30px;height:1px;background:#c2a978;"></span></div>
-        <p style="font-family:'Marcellus',serif;font-size:clamp(25px,3.2vw,42px);line-height:1.32;color:#122c44;margin:0;text-wrap:balance;font-weight:400;">{{ t.intro.lead }}</p>
-        <p style="font-size:17px;line-height:1.85;color:#5a6b78;max-width:680px;margin:32px auto 0;font-weight:300;">{{ t.intro.body }}</p>
-      </section>
-
       <!-- ABOUT / MISSION VISION VALUES -->
       <section style="background:#f5f7f8;border-top:1px solid #e6eaed;border-bottom:1px solid #e6eaed;padding:clamp(64px,9vw,116px) 0;">
         <div style="max-width:1320px;margin:0 auto;padding:0 36px;">
@@ -231,6 +224,17 @@
           <h2 style="font-family:'Marcellus',serif;color:#fff;font-size:clamp(32px,4.6vw,60px);font-weight:400;margin:0;line-height:1.06;">{{ t.cta.title }}</h2>
           <p style="color:#9fb1c0;font-size:18px;line-height:1.75;margin:22px auto 0;max-width:520px;font-weight:300;">{{ t.cta.body }}</p>
           <button onClick="{{ goReserve }}" style="margin-top:38px;background:#fff;color:#0a1c2e;border:none;border-radius:999px;cursor:pointer;font-weight:600;font-size:14px;letter-spacing:.08em;text-transform:uppercase;padding:18px 40px;" style-hover="background:#dde6ec;">{{ t.cta.button }}</button>
+        </div>
+      </section>
+
+      <!-- MAP -->
+      <section style="background:#f5f7f8;padding:clamp(56px,7vw,80px) 36px;">
+        <div style="max-width:1320px;margin:0 auto;">
+          <div style="text-align:center;margin-bottom:32px;">
+            <div style="display:flex;align-items:center;gap:14px;justify-content:center;margin-bottom:18px;"><span style="width:30px;height:1px;background:#c2a978;"></span><span style="font-family:'Archivo',sans-serif;font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:#7d8b97;">{{ t.footer.contact }}</span><span style="width:30px;height:1px;background:#c2a978;"></span></div>
+            <h2 style="font-family:'Marcellus',serif;color:#122c44;font-size:clamp(28px,3.6vw,46px);font-weight:400;margin:0;">{{ t.contact.mapLabel }}</h2>
+          </div>
+          <div id="marina-map" style="width:100%;height:480px;border-radius:8px;overflow:hidden;border:1px solid #e6eaed;background:#0a1c2e;box-shadow:0 18px 44px rgba(10,28,46,.1);"></div>
         </div>
       </section>
 
@@ -461,9 +465,8 @@
       </section>
 
       <section style="max-width:1320px;margin:0 auto;padding:clamp(52px,7vw,90px) 36px;display:grid;grid-template-columns:1fr 1.05fr;gap:clamp(32px,4vw,56px);align-items:start;">
-        <!-- LEFT: map + info -->
+        <!-- LEFT: info -->
         <div style="display:flex;flex-direction:column;gap:28px;">
-          <div id="marina-map" style="width:100%;height:380px;border-radius:8px;overflow:hidden;border:1px solid #e6eaed;background:#0a1c2e;"></div>
           <div style="background:#fff;border:1px solid #e6eaed;border-radius:8px;padding:32px 30px;">
             <div style="font-family:'Marcellus',serif;font-size:22px;color:#122c44;margin-bottom:20px;">{{ tp.contact.infoTitle }}</div>
             <div style="display:flex;flex-direction:column;gap:16px;font-size:15px;color:#3a4b58;">
@@ -569,7 +572,7 @@
 
   function initMap(el) {
     if (map) { map.remove(); map = null; }
-    map = L.map(el, { zoomControl:false, attributionControl:false, scrollWheelZoom:false });
+    map = L.map(el, { zoomControl:true, attributionControl:false, scrollWheelZoom:true, dragging:true, doubleClickZoom:true, touchZoom:true }).setView([27.9595, -111.0536], 15);
     L.tileLayer(darkTiles, { attribution: credit, maxZoom:19 }).addTo(map);
     L.control.zoom({ position:'bottomright' }).addTo(map);
 
@@ -581,17 +584,17 @@
     });
 
     var locations = [
-      { lat:27.9567, lng:-111.0519, name:'Marina San Carlos', nameEs:'Marina San Carlos', offset:[0,-46] },
-      { lat:27.9623, lng:-111.0553, name:'Marina San Carlos Dry Storage', nameEs:'Marina San Carlos Almacenamiento Seco', offset:[0,-46] }
+      { lat:27.9567, lng:-111.0519, name:'Marina San Carlos', nameEs:'Marina San Carlos' },
+      { lat:27.9623, lng:-111.0553, name:'Marina San Carlos Dry Storage', nameEs:'Marina San Carlos Almacenamiento Seco' }
     ];
 
     locations.forEach(function(loc) {
-      var marker = L.marker([loc.lat, loc.lng], {icon:iconMain})
+      L.marker([loc.lat, loc.lng], {icon:iconMain})
         .addTo(map)
         .bindTooltip(loc.name, {
           permanent:true,
           direction:'top',
-          offset:loc.offset,
+          offset:[0,-46],
           className:'marina-tooltip'
         })
         .bindPopup('<div style="font-family:Archivo,sans-serif;text-align:center;padding:6px 4px;white-space:nowrap;"><strong style="font-size:14px;color:#0a1c2e;letter-spacing:.03em;">' + loc.name + '</strong></div>');
@@ -599,28 +602,29 @@
 
     var bounds = L.latLngBounds(locations.map(function(l){ return [l.lat, l.lng]; }));
     map.fitBounds(bounds.pad(0.3));
+
+    setTimeout(function(){ map.invalidateSize(); }, 200);
   }
 
   function tryInit() {
     var el = document.getElementById('marina-map');
-    if (!el) return false;
+    if (!el || el.offsetHeight === 0) return false;
     initMap(el);
     return true;
   }
 
-  var observer = new MutationObserver(function(){
-    if (tryInit()) observer.disconnect();
-  });
-
   if (!tryInit()) {
-    observer.observe(document.body, {childList:true, subtree:true});
+    var obs = new MutationObserver(function(){ if (tryInit()) obs.disconnect(); });
+    obs.observe(document.body, {childList:true, subtree:true});
   }
 
   setInterval(function(){
     var el = document.getElementById('marina-map');
-    if (el && el.offsetHeight > 0 && typeof L !== 'undefined' && !map) {
-      setTimeout(tryInit, 100);
+    if (el && el.offsetHeight > 0 && typeof L !== 'undefined') {
+      if (!map) { setTimeout(tryInit, 100); }
+      else { setTimeout(function(){ map.invalidateSize(); }, 300); }
     }
+    if (map && (!el || el.offsetHeight === 0)) { map.remove(); map = null; }
   }, 500);
 })();
 </script>
