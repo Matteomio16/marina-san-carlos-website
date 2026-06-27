@@ -21,6 +21,12 @@
   input::placeholder,textarea::placeholder{color:#9aa7b2;font-family:'Archivo',sans-serif;}
   @keyframes mscFade{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:none;}}
   @keyframes mscZoom{from{transform:scale(1.1);}to{transform:scale(1);}}
+  @keyframes mscPulse{0%{transform:scale(1);opacity:.7;}100%{transform:scale(2.5);opacity:0;}}
+  .marina-marker-wrap{position:relative;}
+  .marina-tooltip{background:rgba(10,28,46,.92)!important;color:#fff!important;border:none!important;border-radius:6px!important;font-family:'Archivo',sans-serif!important;font-size:12px!important;font-weight:600!important;letter-spacing:.04em!important;padding:8px 14px!important;box-shadow:0 4px 14px rgba(0,0,0,.35)!important;white-space:nowrap!important;}
+  .marina-tooltip::before{border-top-color:rgba(10,28,46,.92)!important;}
+  .leaflet-popup-content-wrapper{border-radius:8px!important;box-shadow:0 8px 28px rgba(0,0,0,.25)!important;}
+  .leaflet-popup-content{margin:0!important;}
 </style>
 </helmet>
 <div style="{{ rootStyle }}">
@@ -567,23 +573,28 @@
     L.tileLayer(darkTiles, { attribution: credit, maxZoom:19 }).addTo(map);
     L.control.zoom({ position:'bottomright' }).addTo(map);
 
-    var icon = L.divIcon({
+    var iconMain = L.divIcon({
       className:'',
-      iconSize:[22,32],
-      iconAnchor:[11,32],
-      popupAnchor:[0,-34],
-      html:'<div style="position:relative;width:22px;height:32px;"><svg width="22" height="32" viewBox="0 0 22 32"><path d="M11 0C5 0 0 5 0 11c0 8 11 21 11 21s11-13 11-21C22 5 17 0 11 0z" fill="#c2a978"/><circle cx="11" cy="11" r="5" fill="#0a1c2e"/></svg></div>'
+      iconSize:[30,44],
+      iconAnchor:[15,44],
+      html:'<div style="position:relative;width:30px;height:44px;"><div style="position:absolute;bottom:2px;left:50%;transform:translateX(-50%);width:18px;height:18px;border-radius:50%;background:rgba(194,169,120,.4);animation:mscPulse 2s ease-out infinite;"></div><svg width="30" height="44" viewBox="0 0 30 44" style="position:relative;z-index:1;filter:drop-shadow(0 2px 4px rgba(0,0,0,.4));"><path d="M15 0C7 0 0 7 0 16c0 12 15 28 15 28s15-16 15-28C30 7 23 0 15 0z" fill="#c2a978"/><circle cx="15" cy="16" r="7" fill="#0a1c2e" stroke="#fff" stroke-width="2"/><circle cx="15" cy="16" r="2.5" fill="#c2a978"/></svg></div>'
     });
 
     var locations = [
-      { lat:27.9567, lng:-111.0519, name:'Marina San Carlos', nameEs:'Marina San Carlos' },
-      { lat:27.9623, lng:-111.0553, name:'Marina San Carlos Dry Storage', nameEs:'Marina San Carlos Almacenamiento Seco' }
+      { lat:27.9567, lng:-111.0519, name:'Marina San Carlos', nameEs:'Marina San Carlos', offset:[0,-46] },
+      { lat:27.9623, lng:-111.0553, name:'Marina San Carlos Dry Storage', nameEs:'Marina San Carlos Almacenamiento Seco', offset:[0,-46] }
     ];
 
     locations.forEach(function(loc) {
-      L.marker([loc.lat, loc.lng], {icon:icon})
+      var marker = L.marker([loc.lat, loc.lng], {icon:iconMain})
         .addTo(map)
-        .bindPopup('<div style="font-family:Archivo,sans-serif;text-align:center;padding:4px 2px;"><strong style="font-size:14px;color:#0a1c2e;">' + loc.name + '</strong></div>');
+        .bindTooltip(loc.name, {
+          permanent:true,
+          direction:'top',
+          offset:loc.offset,
+          className:'marina-tooltip'
+        })
+        .bindPopup('<div style="font-family:Archivo,sans-serif;text-align:center;padding:6px 4px;white-space:nowrap;"><strong style="font-size:14px;color:#0a1c2e;letter-spacing:.03em;">' + loc.name + '</strong></div>');
     });
 
     var bounds = L.latLngBounds(locations.map(function(l){ return [l.lat, l.lng]; }));
@@ -606,9 +617,8 @@
   }
 
   setInterval(function(){
-    var mapEl = document.getElementById('marina-map');
-    var mapVisible = mapEl && mapEl.offsetHeight > 0;
-    if (mapVisible && !map) {
+    var el = document.getElementById('marina-map');
+    if (el && el.offsetHeight > 0 && typeof L !== 'undefined' && !map) {
       setTimeout(tryInit, 100);
     }
   }, 500);
