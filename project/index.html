@@ -11,6 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Archivo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
 <style>
   *{box-sizing:border-box;}
   body{margin:0;}
@@ -20,6 +21,7 @@
   @keyframes mscFade{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:none;}}
   @keyframes mscZoom{from{transform:scale(1.1);}to{transform:scale(1);}}
 </style>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 </helmet>
 <div style="{{ rootStyle }}">
   <div class="msc-scroll" style="font-family:'Archivo',system-ui,sans-serif;color:#11202e;background:#fff;min-height:100vh;width:100%;overflow-x:hidden;-webkit-font-smoothing:antialiased;">
@@ -223,6 +225,19 @@
           <h2 style="font-family:'Marcellus',serif;color:#fff;font-size:clamp(32px,4.6vw,60px);font-weight:400;margin:0;line-height:1.06;">{{ t.cta.title }}</h2>
           <p style="color:#9fb1c0;font-size:18px;line-height:1.75;margin:22px auto 0;max-width:520px;font-weight:300;">{{ t.cta.body }}</p>
           <button onClick="{{ goReserve }}" style="margin-top:38px;background:#fff;color:#0a1c2e;border:none;border-radius:999px;cursor:pointer;font-weight:600;font-size:14px;letter-spacing:.08em;text-transform:uppercase;padding:18px 40px;" style-hover="background:#dde6ec;">{{ t.cta.button }}</button>
+        </div>
+      </section>
+
+      <!-- ===================== HOME PAGE MAP ===================== -->
+      <section style="width:100%;border-top:1px solid rgba(255,255,255,.06);">
+        <div style="position:relative;width:100%;height:440px;overflow:hidden;">
+          <div id="home-map" style="width:100%;height:100%;"></div>
+          <div id="home-map-overlay" style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:1000;cursor:pointer;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.5);backdrop-filter:blur(2px);transition:opacity .4s;">
+            <div style="background:#fff;border:1px solid #d3dbe1;border-radius:999px;padding:12px 24px;font-family:'Archivo',sans-serif;font-size:13px;font-weight:600;letter-spacing:.04em;color:#122c44;box-shadow:0 4px 12px rgba(0,0,0,.08);">
+              {{ t.cta.button }} — {{ tp.contact.activateMap }}
+            </div>
+          </div>
+          <a href="https://www.google.com/maps/dir/?api=1&destination=27.9467,-111.0536" target="_blank" rel="noopener" style="position:absolute;bottom:24px;right:24px;z-index:500;background:#0a1c2e;color:#fff;border:1px solid rgba(255,255,255,.15);border-radius:999px;cursor:pointer;font-family:'Archivo',sans-serif;font-size:12px;font-weight:600;letter-spacing:.04em;padding:10px 20px;text-decoration:none;display:inline-flex;align-items:center;gap:6px;box-shadow:0 4px 16px rgba(0,0,0,.2);">📍 {{ tp.contact.directions }} →</a>
         </div>
       </section>
 
@@ -452,13 +467,16 @@
       <section style="max-width:1320px;margin:0 auto;padding:clamp(52px,7vw,90px) 36px;display:grid;grid-template-columns:1fr 1.05fr;gap:clamp(32px,4vw,56px);align-items:start;">
         <!-- LEFT: map + info -->
         <div style="display:flex;flex-direction:column;gap:28px;">
-          <div style="position:relative;height:300px;border-radius:8px;overflow:hidden;border:1px solid #e6eaed;background:#e8edf0;background-image:repeating-linear-gradient(0deg,#dde4e9,#dde4e9 1px,transparent 1px,transparent 40px),repeating-linear-gradient(90deg,#dde4e9,#dde4e9 1px,transparent 1px,transparent 40px);">
-            <div style="position:absolute;top:14px;left:16px;font-family:monospace;font-size:10.5px;letter-spacing:.1em;color:#8597a4;">{{ tp.contact.mapLabel }}</div>
-            <div style="position:absolute;left:50%;top:48%;transform:translate(-50%,-100%);display:flex;flex-direction:column;align-items:center;">
-              <span style="width:30px;height:30px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:#0a1c2e;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(10,28,46,.3);"><span style="width:9px;height:9px;border-radius:50%;background:#fff;transform:rotate(45deg);"></span></span>
+          <div style="position:relative;height:300px;border-radius:8px;overflow:hidden;border:1px solid #e6eaed;background:#e8edf0;">
+            <div id="contact-map" style="width:100%;height:100%;"></div>
+            <!-- Scroll overlay: intercept scroll until user activates -->
+            <div id="map-overlay" style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:1000;cursor:pointer;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.5);backdrop-filter:blur(2px);transition:opacity .4s;">
+              <div style="background:#fff;border:1px solid #d3dbe1;border-radius:999px;padding:12px 24px;font-family:'Archivo',sans-serif;font-size:13px;font-weight:600;letter-spacing:.04em;color:#122c44;box-shadow:0 4px 12px rgba(0,0,0,.08);">
+                {{ tp.contact.activateMap }}
+              </div>
             </div>
-            <button style="position:absolute;bottom:16px;right:16px;background:#fff;border:1px solid #d3dbe1;border-radius:999px;cursor:pointer;font-family:'Archivo',sans-serif;font-size:12px;font-weight:600;letter-spacing:.04em;color:#122c44;padding:10px 18px;" style-hover="background:#f5f7f8;">{{ tp.contact.directions }} →</button>
-          </div>
+            <div style="position:absolute;top:14px;left:16px;font-family:monospace;font-size:10.5px;letter-spacing:.1em;color:#8597a4;z-index:500;pointer-events:none;text-shadow:0 1px 2px rgba(255,255,255,.7);">{{ tp.contact.mapLabel }}</div>
+            <a id="map-directions" href="https://www.google.com/maps/dir/?api=1&destination=27.9467,-111.0536" target="_blank" rel="noopener" style="position:absolute;bottom:16px;right:16px;z-index:500;background:#fff;border:1px solid #d3dbe1;border-radius:999px;cursor:pointer;font-family:'Archivo',sans-serif;font-size:12px;font-weight:600;letter-spacing:.04em;color:#122c44;padding:10px 18px;text-decoration:none;display:inline-flex;align-items:center;gap:6px;">{{ tp.contact.directions }} →</a>
           <div style="background:#fff;border:1px solid #e6eaed;border-radius:8px;padding:32px 30px;">
             <div style="font-family:'Marcellus',serif;font-size:22px;color:#122c44;margin-bottom:20px;">{{ tp.contact.infoTitle }}</div>
             <div style="display:flex;flex-direction:column;gap:16px;font-size:15px;color:#3a4b58;">
@@ -850,13 +868,13 @@ const PAGES = {
     services:{eyebrow:"Marina Services", title:"A full-service marina & boatyard", intro:"From a protected slip for the season to a full refit on the hard, everything your vessel needs lives in one place - backed by a crew that has cared for boats on the Sea of Cortez for decades.", amenEyebrow:"On-site", amenTitle:"Featured amenities", ctaTitle:"Ready to bring your boat to San Carlos?", ctaBody:"Reserve a slip or storage, or reach out with questions about your vessel and dates.", ctaBtn:"Reserve Now"},
     visitor:{eyebrow:"Visitor Information", title:"Everything you need to cruise to Mexico", intro:"Bringing a foreign vessel into Mexico is simpler than most cruisers expect - especially with a team that does it every day. Here's how to get here and what to have ready.", hereEyebrow:"Getting here", hereTitle:"Three ways to arrive", entryEyebrow:"Before you arrive", entryTitle:"Entry requirements for Mexico", faqEyebrow:"Good to know", faqTitle:"Frequently asked questions", resEyebrow:"Resources", resTitle:"Forms & downloads", download:"Download"},
     reserve:{eyebrow:"Reservations", title:"Reserve your space", intro:"Tell us about your vessel and what you need. Submitting this form sends your request straight to our reservations team, who will confirm availability and next steps.", typeLabel:"What would you like to reserve?", ownerTitle:"Owner Information", vesselTitle:"Vessel Information", docsTitle:"Document Uploads", docsNote:"Upload clear photos or PDFs. You can also email documents to our team later.", submit:"Submit Reservation Request", required:"Please complete the required fields highlighted below.", successTitle:"Request received", successBody:"Thank you - your reservation request has been sent to our team.", successNote:"A confirmation has been routed to info@marinasancarlos.com. We'll be in touch within one business day.", another:"Submit another request", optional:"optional", choose:"Choose file", uploaded:"Uploaded"},
-    contact:{eyebrow:"Contact", title:"Get in touch", intro:"Questions about slips, storage, your crossing or your boat? Reach our team directly - we're on the docks every day.", formTitle:"Send us a message", name:"Full Name", email:"Email Address", phone:"Phone", subject:"Subject", message:"Message", send:"Send Message", sentTitle:"Message sent", sentBody:"Thanks for reaching out - we'll reply within one business day.", infoTitle:"Marina office", hoursTitle:"Office hours", hours:"Mon - Sat 7:30 AM - 5 PM · Sun 8 AM - 5 PM", emergencyTitle:"After-hours & emergencies", emergencyBody:"For urgent on-water assistance, hail Marina San Carlos on VHF 16.", mapLabel:"INTERACTIVE MAP · San Carlos, Sonora", directions:"Get directions"}
+    contact:{eyebrow:"Contact", title:"Get in touch", intro:"Questions about slips, storage, your crossing or your boat? Reach our team directly - we're on the docks every day.", formTitle:"Send us a message", name:"Full Name", email:"Email Address", phone:"Phone", subject:"Subject", message:"Message", send:"Send Message", sentTitle:"Message sent", sentBody:"Thanks for reaching out - we'll reply within one business day.", infoTitle:"Marina office", hoursTitle:"Office hours", hours:"Mon - Sat 7:30 AM - 5 PM · Sun 8 AM - 5 PM", emergencyTitle:"After-hours & emergencies", emergencyBody:"For urgent on-water assistance, hail Marina San Carlos on VHF 16.", mapLabel:"INTERACTIVE MAP · San Carlos, Sonora", directions:"Get directions", activateMap:"Click to interact with map"}
   },
   es:{
     services:{eyebrow:"Servicios de la Marina", title:"Una marina y astillero de servicio completo", intro:"Desde un espacio protegido por temporada hasta una restauración completa en tierra, todo lo que tu embarcación necesita está en un solo lugar - con un equipo que ha cuidado barcos en el Mar de Cortés por décadas.", amenEyebrow:"En sitio", amenTitle:"Amenidades destacadas", ctaTitle:"¿Listo para traer tu barco a San Carlos?", ctaBody:"Reserva un espacio o almacenaje, o escríbenos con dudas sobre tu embarcación y fechas.", ctaBtn:"Reservar Ahora"},
     visitor:{eyebrow:"Información para Visitantes", title:"Todo lo necesario para navegar a México", intro:"Traer una embarcación extranjera a México es más sencillo de lo que la mayoría espera - sobre todo con un equipo que lo hace a diario. Así llegas y esto es lo que debes tener listo.", hereEyebrow:"Cómo llegar", hereTitle:"Tres formas de llegar", entryEyebrow:"Antes de llegar", entryTitle:"Requisitos de entrada a México", faqEyebrow:"Bueno saber", faqTitle:"Preguntas frecuentes", resEyebrow:"Recursos", resTitle:"Formatos y descargas", download:"Descargar"},
     reserve:{eyebrow:"Reservaciones", title:"Reserva tu espacio", intro:"Cuéntanos sobre tu embarcación y lo que necesitas. Al enviar este formulario, tu solicitud llega directo a nuestro equipo de reservaciones, que confirmará disponibilidad y siguientes pasos.", typeLabel:"¿Qué deseas reservar?", ownerTitle:"Información del Propietario", vesselTitle:"Información de la Embarcación", docsTitle:"Carga de Documentos", docsNote:"Sube fotos claras o PDFs. También puedes enviar los documentos por correo más adelante.", submit:"Enviar Solicitud de Reservación", required:"Por favor completa los campos requeridos marcados abajo.", successTitle:"Solicitud recibida", successBody:"Gracias - tu solicitud de reservación ha sido enviada a nuestro equipo.", successNote:"Se ha enviado una confirmación a info@marinasancarlos.com. Te contactaremos en un día hábil.", another:"Enviar otra solicitud", optional:"opcional", choose:"Elegir archivo", uploaded:"Cargado"},
-    contact:{eyebrow:"Contacto", title:"Ponte en contacto", intro:"¿Dudas sobre espacios, almacenaje, tu travesía o tu barco? Contacta a nuestro equipo directamente - estamos en los muelles todos los días.", formTitle:"Envíanos un mensaje", name:"Nombre Completo", email:"Correo Electrónico", phone:"Teléfono", subject:"Asunto", message:"Mensaje", send:"Enviar Mensaje", sentTitle:"Mensaje enviado", sentBody:"Gracias por escribirnos - responderemos en un día hábil.", infoTitle:"Oficina de la marina", hoursTitle:"Horario", hours:"Lun - Sáb 7:30 - 17:00 · Dom 8:00 - 17:00", emergencyTitle:"Fuera de horario y emergencias", emergencyBody:"Para asistencia urgente en el agua, llama a Marina San Carlos por VHF 16.", mapLabel:"MAPA INTERACTIVO · San Carlos, Sonora", directions:"Cómo llegar"}
+    contact:{eyebrow:"Contacto", title:"Ponte en contacto", intro:"¿Dudas sobre espacios, almacenaje, tu travesía o tu barco? Contacta a nuestro equipo directamente - estamos en los muelles todos los días.", formTitle:"Envíanos un mensaje", name:"Nombre Completo", email:"Correo Electrónico", phone:"Teléfono", subject:"Asunto", message:"Mensaje", send:"Enviar Mensaje", sentTitle:"Mensaje enviado", sentBody:"Gracias por escribirnos - responderemos en un día hábil.", infoTitle:"Oficina de la marina", hoursTitle:"Horario", hours:"Lun - Sáb 7:30 - 17:00 · Dom 8:00 - 17:00", emergencyTitle:"Fuera de horario y emergencias", emergencyBody:"Para asistencia urgente en el agua, llama a Marina San Carlos por VHF 16.", mapLabel:"MAPA INTERACTIVO · San Carlos, Sonora", directions:"Cómo llegar", activateMap:"Haz clic para interactuar con el mapa"}
   }
 };
 
@@ -873,7 +891,8 @@ class Component extends DCLogic {
     submitted: false,
     contact: {},
     cErrors: {},
-    contactSent: false
+    contactSent: false,
+    mapInited: false
   };
 
   go = (p) => { try{ window.scrollTo({top:0,behavior:"instant"}); }catch(e){ window.scrollTo(0,0); } this.setState({page:p}); };
@@ -904,6 +923,87 @@ class Component extends DCLogic {
     if(Object.keys(cErrors).length){ this.setState({cErrors}); return; }
     this.setState({contactSent:true});
   };
+
+  componentDidMount() {
+    this._initMap = this._initMap.bind(this);
+    // Home page is the default — init home map immediately
+    const initPage = this.state.page;
+    const initMapId = initPage === "contact" ? "contact-map" : "home-map";
+    this._initMap(initMapId);
+  }
+  }
+
+  componentDidUpdate() {
+    const page = this.state.page;
+    const mapId = page === "contact" ? "contact-map" : page === "home" ? "home-map" : null;
+    if (mapId && !this.state[`mapInited_${mapId}`]) {
+      this._initMap(mapId);
+    }
+  }
+
+  _initMap(mapId) {
+    const el = document.getElementById(mapId);
+    if (!el || el._leaflet_map) return;
+    this.setState({ [`mapInited_${mapId}`]: true });
+
+    const overlayId = mapId === "contact-map" ? "map-overlay" : "home-map-overlay";
+
+    const map = L.map(el, {
+      center: [27.9462, -111.0533],
+      zoom: 13,
+      zoomControl: false,
+      scrollWheelZoom: false,
+      attributionControl: false,
+    });
+    el._leaflet_map = map;
+
+    L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
+      maxZoom: 19,
+    }).addTo(map);
+
+    // Teardrop pin SVG
+    const pinIcon = L.divIcon({
+      className: "",
+      html: '<svg width="36" height="48" viewBox="0 0 36 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18 0C8.1 0 0 8.1 0 18c0 13.5 18 30 18 30s18-16.5 18-30C36 8.1 27.9 0 18 0Z" fill="#d32f2f"/><circle cx="18" cy="17" r="7" fill="#fff"/></svg>',
+      iconSize: [36, 48],
+      iconAnchor: [18, 48],
+      popupAnchor: [0, -48],
+    });
+
+    const MARINA_PINS = [
+      { lat: 27.9467, lng: -111.0536, name: "Marina San Carlos", phone: "+52 (622) 226 12 02" },
+      { lat: 27.9456, lng: -111.0530, name: "Marina Seca", phone: "+52 (622) 226 10 61" },
+      { lat: 27.9426, lng: -111.0493, name: "Fuel Dock", phone: "7:30 am - 4:00 pm" },
+      { lat: 27.9404, lng: -111.0490, name: "Boat Ramp", phone: "24 hrs" },
+      { lat: 27.9446, lng: -111.0564, name: "Main Entrance", phone: "Gate Security" },
+      { lat: 27.9595, lng: -111.0675, name: "San Carlos Country Club", phone: "Golf · Marina views" },
+      { lat: 27.9506, lng: -111.0378, name: "San Carlos Bay", phone: "Protected anchorage" },
+    ];
+
+    MARINA_PINS.forEach(p => {
+      L.marker([p.lat, p.lng], { icon: pinIcon })
+        .addTo(map)
+        .bindPopup(
+          '<div style="font-family:Archivo,sans-serif;font-size:14px;font-weight:600;color:#122c44;">' + p.name + '</div>' +
+          '<div style="font-family:Archivo,sans-serif;font-size:12px;color:#3a4b58;">' + p.phone + '</div>'
+        );
+    });
+
+    // Overlay click handler
+    const overlay = document.getElementById(overlayId);
+    if (overlay) {
+      overlay.addEventListener("click", () => {
+        overlay.style.opacity = "0";
+        overlay.style.pointerEvents = "none";
+        setTimeout(() => { overlay.style.display = "none"; }, 400);
+        map.scrollWheelZoom.enable();
+        map.invalidateSize();
+      });
+    }
+
+    // Invalidate after transition so map renders at correct size
+    setTimeout(() => map.invalidateSize(), 100);
+  }
 
   renderVals() {
     const lang = this.state.lang;
