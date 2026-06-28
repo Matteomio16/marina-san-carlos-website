@@ -11,8 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Archivo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDemo__REPLACE_WITH_YOUR_KEY__&callback=initMarinaMap"></script>
 <style>
   *{box-sizing:border-box;}
   body{margin:0;}
@@ -21,12 +20,8 @@
   input::placeholder,textarea::placeholder{color:#9aa7b2;font-family:'Archivo',sans-serif;}
   @keyframes mscFade{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:none;}}
   @keyframes mscZoom{from{transform:scale(1.1);}to{transform:scale(1);}}
-  @keyframes mscPulse{0%{transform:scale(1);opacity:.7;}100%{transform:scale(2.5);opacity:0;}}
-  .marina-marker-wrap{position:relative;}
-  .marina-tooltip{background:rgba(10,28,46,.92)!important;color:#fff!important;border:none!important;border-radius:6px!important;font-family:'Archivo',sans-serif!important;font-size:12px!important;font-weight:600!important;letter-spacing:.04em!important;padding:8px 14px!important;box-shadow:0 4px 14px rgba(0,0,0,.35)!important;white-space:nowrap!important;}
-  .marina-tooltip::before{border-top-color:rgba(10,28,46,.92)!important;}
-  .leaflet-popup-content-wrapper{border-radius:8px!important;box-shadow:0 8px 28px rgba(0,0,0,.25)!important;}
-  .leaflet-popup-content{margin:0!important;}
+  .marina-pin{position:relative;display:flex;flex-direction:column;align-items:center;}
+  .marina-pin-label{background:#fff;color:#122c44;font-family:'Archivo',sans-serif;font-size:11px;font-weight:600;letter-spacing:.04em;padding:5px 10px;border-radius:4px;box-shadow:0 2px 8px rgba(0,0,0,.2);white-space:nowrap;margin-bottom:4px;border:1px solid #e6eaed;}
 </style>
 </helmet>
 <div style="{{ rootStyle }}">
@@ -565,68 +560,96 @@
 </div>
 </x-dc>
 <script>
-(function(){
-  var map = null;
-  var darkTiles = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
-  var credit = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>';
+var gmap = null;
+var gmarkers = [];
 
-  function initMap(el) {
-    if (map) { map.remove(); map = null; }
-    map = L.map(el, { zoomControl:true, attributionControl:false, scrollWheelZoom:true, dragging:true, doubleClickZoom:true, touchZoom:true }).setView([27.9595, -111.0536], 15);
-    L.tileLayer(darkTiles, { attribution: credit, maxZoom:19 }).addTo(map);
-    L.control.zoom({ position:'bottomright' }).addTo(map);
+var MAP_STYLE = [
+  {featureType:"all", elementType:"labels", stylers:[{visibility:"simplified"}]},
+  {featureType:"water", elementType:"geometry", stylers:[{color:"#d9e2e8"}]},
+  {featureType:"landscape", elementType:"geometry", stylers:[{color:"#f5f0e8"}]},
+  {featureType:"road.highway", elementType:"geometry", stylers:[{color:"#ffffff"}]},
+  {featureType:"road.arterial", elementType:"geometry", stylers:[{color:"#ebe5d6"}]},
+  {featureType:"road.local", elementType:"geometry", stylers:[{color:"#f0ece3"}]},
+  {featureType:"poi", elementType:"labels", stylers:[{visibility:"off"}]},
+  {featureType:"transit", elementType:"all", stylers:[{visibility:"off"}]},
+  {featureType:"road", elementType:"labels", stylers:[{visibility:"simplified"}]},
+  {featureType:"landscape", elementType:"labels", stylers:[{visibility:"off"}]},
+  {featureType:"administrative", elementType:"labels", stylers:[{color:"#8a8070"},{visibility:"simplified"}]}
+];
 
-    var iconMain = L.divIcon({
-      className:'',
-      iconSize:[30,44],
-      iconAnchor:[15,44],
-      html:'<div style="position:relative;width:30px;height:44px;"><div style="position:absolute;bottom:2px;left:50%;transform:translateX(-50%);width:18px;height:18px;border-radius:50%;background:rgba(194,169,120,.4);animation:mscPulse 2s ease-out infinite;"></div><svg width="30" height="44" viewBox="0 0 30 44" style="position:relative;z-index:1;filter:drop-shadow(0 2px 4px rgba(0,0,0,.4));"><path d="M15 0C7 0 0 7 0 16c0 12 15 28 15 28s15-16 15-28C30 7 23 0 15 0z" fill="#c2a978"/><circle cx="15" cy="16" r="7" fill="#0a1c2e" stroke="#fff" stroke-width="2"/><circle cx="15" cy="16" r="2.5" fill="#c2a978"/></svg></div>'
+function initMarinaMap() {
+  var el = document.getElementById('marina-map');
+  if (!el) return;
+  if (gmap) { gmap = null; gmarkers = []; }
+
+  gmap = new google.maps.Map(el, {
+    center: {lat:27.9595, lng:-111.0536},
+    zoom: 15,
+    disableDefaultUI: false,
+    zoomControl: true,
+    mapTypeControl: false,
+    streetViewControl: false,
+    fullscreenControl: false,
+    gestureHandling: 'greedy',
+    styles: MAP_STYLE,
+    mapId: 'marina-map'
+  });
+
+  var locations = [
+    {lat:27.9567, lng:-111.0519, name:'Marina San Carlos'},
+    {lat:27.9623, lng:-111.0553, name:'Marina San Carlos Dry Storage'}
+  ];
+
+  var bounds = new google.maps.LatLngBounds();
+
+  locations.forEach(function(loc) {
+    var marker = new google.maps.marker.AdvancedMarkerElement({
+      position: {lat:loc.lat, lng:loc.lng},
+      map: gmap,
+      content: createMarkerEl(loc.name),
+      title: loc.name
     });
 
-    var locations = [
-      { lat:27.9567, lng:-111.0519, name:'Marina San Carlos', nameEs:'Marina San Carlos' },
-      { lat:27.9623, lng:-111.0553, name:'Marina San Carlos Dry Storage', nameEs:'Marina San Carlos Almacenamiento Seco' }
-    ];
-
-    locations.forEach(function(loc) {
-      L.marker([loc.lat, loc.lng], {icon:iconMain})
-        .addTo(map)
-        .bindTooltip(loc.name, {
-          permanent:true,
-          direction:'top',
-          offset:[0,-46],
-          className:'marina-tooltip'
-        })
-        .bindPopup('<div style="font-family:Archivo,sans-serif;text-align:center;padding:6px 4px;white-space:nowrap;"><strong style="font-size:14px;color:#0a1c2e;letter-spacing:.03em;">' + loc.name + '</strong></div>');
+    var infoWindow = new google.maps.InfoWindow({
+      content: '<div style="font-family:Archivo,sans-serif;padding:6px 4px;white-space:nowrap;"><strong style="font-size:14px;color:#122c44;">'+loc.name+'</strong><div style="font-size:12px;color:#7d8b97;margin-top:2px;">San Carlos, Sonora, Mexico</div></div>'
     });
 
-    var bounds = L.latLngBounds(locations.map(function(l){ return [l.lat, l.lng]; }));
-    map.fitBounds(bounds.pad(0.3));
+    marker.addListener('click', function(){ infoWindow.open({anchor:marker, map:gmap}); });
+    gmarkers.push(marker);
+    bounds.extend(marker.position);
+  });
 
-    setTimeout(function(){ map.invalidateSize(); }, 200);
+  gmap.fitBounds(bounds, 80);
+  setTimeout(function(){ google.maps.event.trigger(gmap, 'resize'); }, 300);
+}
+
+function createMarkerEl(label) {
+  var div = document.createElement('div');
+  div.className = 'marina-pin';
+  div.innerHTML = '<div class="marina-pin-label">'+label+'</div><svg width="24" height="36" viewBox="0 0 24 36"><path d="M12 0C5.4 0 0 5.4 0 12c0 9 12 24 12 24s12-15 12-24C24 5.4 18.6 0 12 0z" fill="#d32f2f"/><circle cx="12" cy="12" r="5" fill="#fff"/></svg>';
+  return div;
+}
+
+function tryInitMap() {
+  var el = document.getElementById('marina-map');
+  if (!el || el.offsetHeight === 0 || typeof google === 'undefined' || typeof google.maps === 'undefined') return false;
+  initMarinaMap();
+  return true;
+}
+
+if (!tryInitMap()) {
+  var obs = new MutationObserver(function(){ if (tryInitMap()) obs.disconnect(); });
+  obs.observe(document.body, {childList:true, subtree:true});
+}
+
+setInterval(function(){
+  var el = document.getElementById('marina-map');
+  if (el && el.offsetHeight > 0 && typeof google !== 'undefined' && typeof google.maps !== 'undefined') {
+    if (!gmap) { setTimeout(tryInitMap, 100); }
+    else { setTimeout(function(){ google.maps.event.trigger(gmap, 'resize'); }, 300); }
   }
-
-  function tryInit() {
-    var el = document.getElementById('marina-map');
-    if (!el || el.offsetHeight === 0) return false;
-    initMap(el);
-    return true;
-  }
-
-  if (!tryInit()) {
-    var obs = new MutationObserver(function(){ if (tryInit()) obs.disconnect(); });
-    obs.observe(document.body, {childList:true, subtree:true});
-  }
-
-  setInterval(function(){
-    var el = document.getElementById('marina-map');
-    if (el && el.offsetHeight > 0 && typeof L !== 'undefined') {
-      if (!map) { setTimeout(tryInit, 100); }
-      else { setTimeout(function(){ map.invalidateSize(); }, 300); }
-    }
-    if (map && (!el || el.offsetHeight === 0)) { map.remove(); map = null; }
-  }, 500);
-})();
+  if (gmap && (!el || el.offsetHeight === 0)) { gmap = null; gmarkers = []; }
+}, 500);
 </script>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:900},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;es&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
 const DICT = {
