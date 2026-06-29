@@ -1012,8 +1012,8 @@ class Component extends DCLogic {
     const overlayId = mapId === "contact-map" ? "map-overlay" : "home-map-overlay";
 
     const map = L.map(el, {
-      center: [27.9462, -111.0533],
-      zoom: 13,
+      center: [27.9524, -111.0530],
+      zoom: 14,
       zoomControl: false,
       scrollWheelZoom: false,
       attributionControl: false,
@@ -1034,13 +1034,8 @@ class Component extends DCLogic {
     });
 
     const MARINA_PINS = [
-      { lat: 27.9467, lng: -111.0536, name: "Marina San Carlos", phone: "+52 (622) 226 12 02" },
-      { lat: 27.9456, lng: -111.0530, name: "Marina Seca", phone: "+52 (622) 226 10 61" },
-      { lat: 27.9426, lng: -111.0493, name: "Fuel Dock", phone: "7:30 am - 4:00 pm" },
-      { lat: 27.9404, lng: -111.0490, name: "Boat Ramp", phone: "24 hrs" },
-      { lat: 27.9446, lng: -111.0564, name: "Main Entrance", phone: "Gate Security" },
-      { lat: 27.9595, lng: -111.0675, name: "San Carlos Country Club", phone: "Golf · Marina views" },
-      { lat: 27.9506, lng: -111.0378, name: "San Carlos Bay", phone: "Protected anchorage" },
+      { lat: 27.948278, lng: -111.054639, name: "Marina San Carlos · Edificio Marina", desc: "Sector La Herradura, San Carlos" },
+      { lat: 27.956509, lng: -111.051465, name: "Marina San Carlos · Dry Storage", desc: "Carretera Km 11.5, Sector Bahia" }
     ];
 
     MARINA_PINS.forEach(p => {
@@ -1048,9 +1043,12 @@ class Component extends DCLogic {
         .addTo(map)
         .bindPopup(
           '<div style="font-family:Archivo,sans-serif;font-size:14px;font-weight:600;color:#122c44;">' + p.name + '</div>' +
-          '<div style="font-family:Archivo,sans-serif;font-size:12px;color:#3a4b58;">' + p.phone + '</div>'
+          '<div style="font-family:Archivo,sans-serif;font-size:12px;color:#3a4b58;">' + p.desc + '</div>'
         );
     });
+
+    const bounds = L.latLngBounds(MARINA_PINS.map(p => [p.lat, p.lng]));
+    map.fitBounds(bounds, { padding: [24, 24] });
 
     // Overlay click handler
     const overlay = document.getElementById(overlayId);
