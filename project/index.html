@@ -308,6 +308,16 @@
         </div>
       </section>
 
+      <!-- Hohonu Live Water Level Widget -->
+      <section style="max-width:1320px;margin:0 auto;padding:0 36px clamp(56px,7vw,96px);">
+        <div style="background:#fff;border:1px solid #e6eaed;border-radius:8px;padding:36px 32px;">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;"><span style="width:30px;height:1px;background:#c2a978;"></span><span style="font-family:'Archivo',sans-serif;font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:#7d8b97;">Live Conditions</span></div>
+          <h3 style="font-family:'Marcellus',serif;color:#122c44;font-size:24px;font-weight:400;margin:0 0 6px;">{{ tp.visitor.waterLevel }}</h3>
+          <p style="font-size:14px;color:#7d8b97;margin:0 0 18px;font-weight:300;">Powered by <a href="https://hohonu.io" target="_blank" rel="noopener" style="color:#7d8b97;text-decoration:underline;">Hohonu</a></p>
+          <iframe src="https://dashboard.hohonu.io/chart/hohonu-000" style="width:100%;height:750px;border:none;border-radius:6px;" frameborder="0"></iframe>
+        </div>
+      </section>
+
       <section style="background:#f5f7f8;border-top:1px solid #e6eaed;border-bottom:1px solid #e6eaed;padding:clamp(60px,8vw,100px) 0;">
         <div style="max-width:1320px;margin:0 auto;padding:0 36px;">
           <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;"><span style="width:30px;height:1px;background:#c2a978;"></span><span style="font-family:'Archivo',sans-serif;font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:#7d8b97;">{{ tp.visitor.entryEyebrow }}</span></div>
@@ -415,10 +425,44 @@
               <sc-for list="{{ vesselFields }}" as="f" hint-placeholder-count="8">
                 <div style="{{ f.wrapStyle }}">
                   <label style="display:block;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#5a6b78;font-weight:600;margin-bottom:8px;">{{ f.label }}</label>
-                  <input type="{{ f.type }}" value="{{ f.value }}" onChange="{{ f.onChange }}" style="{{ f.inputStyle }}" style-focus="border-color:#0a1c2e;box-shadow:0 0 0 3px rgba(10,28,46,.07);">
+                  <sc-if value="{{ f.isSelect }}" hint-placeholder-val="{{ false }}">
+                    <select onChange="{{ f.onChange }}" value="{{ f.value }}" style="{{ f.inputStyle }}" style-focus="border-color:#0a1c2e;box-shadow:0 0 0 3px rgba(10,28,46,.07);">
+                      <option value="">{{ f.placeholder }}</option>
+                      <sc-for list="{{ f.options }}" as="opt">
+                        <option value="{{ opt }}" selected="{{ f.value === opt }}">{{ opt }}</option>
+                      </sc-for>
+                    </select>
+                  </sc-if>
+                  <sc-if value="{{ f.notSelect }}" hint-placeholder-val="{{ true }}">
+                    <input type="{{ f.type }}" value="{{ f.value }}" onChange="{{ f.onChange }}" style="{{ f.inputStyle }}" style-focus="border-color:#0a1c2e;box-shadow:0 0 0 3px rgba(10,28,46,.07);">
+                  </sc-if>
                 </div>
               </sc-for>
             </div>
+
+            <sc-if value="{{ showReservationDates }}" hint-placeholder-val="{{ false }}">
+              <h2 style="font-family:'Marcellus',serif;color:#122c44;font-size:24px;font-weight:400;margin:0 0 6px;">{{ tp.reserve.datesTitle }}</h2>
+              <div style="width:100%;height:1px;background:#e6eaed;margin:0 0 24px;"></div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px 20px;margin-bottom:42px;">
+                <div>
+                  <label style="display:block;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#5a6b78;font-weight:600;margin-bottom:8px;">{{ tp.reserve.startDate }} *</label>
+                  <input type="date" value="{{ reservationStartDate }}" onChange="{{ onStartDateChange }}" style="{{ dateInputStyle }}" style-focus="border-color:#0a1c2e;box-shadow:0 0 0 3px rgba(10,28,46,.07);">
+                </div>
+                <div>
+                  <label style="display:block;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#5a6b78;font-weight:600;margin-bottom:8px;">{{ tp.reserve.endDate }} *</label>
+                  <input type="date" value="{{ reservationEndDate }}" onChange="{{ onEndDateChange }}" style="{{ dateInputStyle }}" style-focus="border-color:#0a1c2e;box-shadow:0 0 0 3px rgba(10,28,46,.07);">
+                </div>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ showTractorDate }}" hint-placeholder-val="{{ false }}">
+              <h2 style="font-family:'Marcellus',serif;color:#122c44;font-size:24px;font-weight:400;margin:0 0 6px;">{{ tp.reserve.launchTitle }}</h2>
+              <div style="width:100%;height:1px;background:#e6eaed;margin:0 0 24px;"></div>
+              <div style="max-width:380px;margin-bottom:42px;">
+                <label style="display:block;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#5a6b78;font-weight:600;margin-bottom:8px;">{{ tp.reserve.launchDate }} *</label>
+                <input type="date" value="{{ reservationLaunchDate }}" onChange="{{ onLaunchDateChange }}" style="{{ dateInputStyle }}" style-focus="border-color:#0a1c2e;box-shadow:0 0 0 3px rgba(10,28,46,.07);">
+              </div>
+            </sc-if>
 
             <h2 style="font-family:'Marcellus',serif;color:#122c44;font-size:24px;font-weight:400;margin:0 0 6px;">{{ tp.reserve.docsTitle }}</h2>
             <div style="width:100%;height:1px;background:#e6eaed;margin:0 0 12px;"></div>
@@ -543,10 +587,10 @@
         <div>
           <div style="color:#fff;font-size:11px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:18px;">{{ t.footer.partners }}</div>
           <div style="display:flex;flex-direction:column;gap:11px;font-size:14px;">
-            <span style="cursor:pointer;" style-hover="color:#fff;">Star Marine</span>
-            <span style="cursor:pointer;" style-hover="color:#fff;">Loma del Mar</span>
-            <span style="cursor:pointer;" style-hover="color:#fff;">AMMT</span>
-            <span style="cursor:pointer;" style-hover="color:#fff;">Charter Boats</span>
+            <a href="#" style="color:#8aa0b2;text-decoration:none;cursor:pointer;" style-hover="color:#fff;">Star Marine</a>
+            <a href="#" style="color:#8aa0b2;text-decoration:none;cursor:pointer;" style-hover="color:#fff;">Loma del Mar</a>
+            <a href="#" style="color:#8aa0b2;text-decoration:none;cursor:pointer;" style-hover="color:#fff;">AMMT</a>
+            <a href="#" style="color:#8aa0b2;text-decoration:none;cursor:pointer;" style-hover="color:#fff;">Charter Boats</a>
           </div>
         </div>
         <div>
@@ -579,7 +623,7 @@ const DICT = {
       variantLabel:"Hero",
       eyebrow:"The Sea of Cortez · Sonora, Mexico",
       titleA1:"Where the desert", titleA2:"meets the sea",
-      subA:"A full-service, hurricane-protected marina at the heart of San Carlos - home port for cruisers exploring the Sea of Cortez.",
+      subA:"A full-service, hurricane-protected marina in the heart of San Carlos - home port for cruisers exploring the Sea of Cortez.",
       titleB:"Your home port on the Sea of Cortez",
       subB:"Deep-water slips, dry storage and a full boatyard, sheltered beneath the twin peaks of Tetakawi.",
       titleC:"A safe harbor beneath Tetakawi",
@@ -597,10 +641,10 @@ const DICT = {
       title:"The most protected harbor on the Sea of Cortez",
       coords:"Marina San Carlos, Sonora",
       items:[
-        {title:"Hurricane-rated protection", desc:"Sheltered by Tetakawi and a breakwater system - a designated safe-haven for lay-up season."},
-        {title:"The gateway to the Sea of Cortez", desc:"Cousteau's “aquarium of the world” begins at our breakwater - islands, diving and sportfishing minutes away."},
+        {title:"Hurricane-rated protection", desc:"Naturally protected in a deep-water bay - a designated safe-haven for lay-up season."},
+        {title:"The gateway to the Sea of Cortez", desc:"Cousteau's “aquarium of the world” begins right here - islands, diving and sportfishing minutes away."},
         {title:"Cross-border made simple", desc:"On-site help with Temporary Import Permits, TIPs and vessel paperwork for foreign-flagged boats."},
-        {title:"Drive-down convenience", desc:"Just four hours from the Arizona border - the closest blue-water cruising ground to the U.S. Southwest."}
+        {title:"Drive-down convenience", desc:"Just five hours from the Arizona border - the closest blue-water cruising ground to the U.S. Southwest."}
       ]
     },
     testimonials:{eyebrow:"Customer experiences", title:"Trusted by cruisers & captains"},
@@ -638,10 +682,10 @@ const DICT = {
       title:"El puerto más protegido del Mar de Cortés",
       coords:"Marina San Carlos, Sonora",
       items:[
-        {title:"Protección ante huracanes", desc:"Resguardada por el Tetakawi y un sistema de rompeolas - refugio designado para la temporada de almacenaje."},
-        {title:"La puerta al Mar de Cortés", desc:"El “acuario del mundo” de Cousteau comienza en nuestro rompeolas - islas, buceo y pesca deportiva a minutos."},
+        {title:"Protección ante huracanes", desc:"Protección natural en una bahía de agua profunda - refugio designado para la temporada de almacenaje."},
+        {title:"La puerta al Mar de Cortés", desc:"El “acuario del mundo” de Cousteau comienza aquí mismo - islas, buceo y pesca deportiva a minutos."},
         {title:"Trámites fronterizos sencillos", desc:"Apoyo en sitio con Permisos de Importación Temporal (TIP) y documentación para embarcaciones extranjeras."},
-        {title:"Llegada por carretera", desc:"A solo cuatro horas de la frontera con Arizona - el destino de navegación más cercano al suroeste de EE. UU."}
+        {title:"Llegada por carretera", desc:"A solo cinco horas de la frontera con Arizona - el destino de navegación más cercano al suroeste de EE. UU."}
       ]
     },
     testimonials:{eyebrow:"Experiencias de clientes", title:"La confianza de navegantes y capitanes"},
@@ -751,20 +795,20 @@ const SERVICES_ALL = {
 };
 
 const AMENITIES = {
-  en:[{k:"wifi",l:"Complimentary Wi-Fi"},{k:"fuel",l:"Fuel Dock"},{k:"pump",l:"Pump-Out"},{k:"rest",l:"Restrooms & Showers"},{k:"laundry",l:"Laundry"},{k:"security",l:"24/7 Security"},{k:"cart",l:"Dock Carts"},{k:"crane",l:"Travel-Lift"},{k:"power",l:"Shore Power"},{k:"ice",l:"Ice & Provisions"}],
-  es:[{k:"wifi",l:"Wi-Fi Gratuito"},{k:"fuel",l:"Muelle de Combustible"},{k:"pump",l:"Achique"},{k:"rest",l:"Baños y Regaderas"},{k:"laundry",l:"Lavandería"},{k:"security",l:"Seguridad 24/7"},{k:"cart",l:"Carritos de Muelle"},{k:"crane",l:"Travel-Lift"},{k:"power",l:"Energía en Muelle"},{k:"ice",l:"Hielo y Provisiones"}]
+  en:[{k:"wifi",l:"Complimentary Wi-Fi"},{k:"fuel",l:"Fuel Dock"},{k:"rest",l:"Restrooms & Showers"},{k:"laundry",l:"Laundry"},{k:"security",l:"24/7 Security"},{k:"crane",l:"Hydraulic Low Boy"},{k:"power",l:"Shore Power"},{k:"ice",l:"Ice & Provisions"}],
+  es:[{k:"wifi",l:"Wi-Fi Gratuito"},{k:"fuel",l:"Muelle de Combustible"},{k:"rest",l:"Baños y Regaderas"},{k:"laundry",l:"Lavandería"},{k:"security",l:"Seguridad 24/7"},{k:"crane",l:"Low Boy Hidráulico"},{k:"power",l:"Energía en Muelle"},{k:"ice",l:"Hielo y Provisiones"}]
 };
 
 const GETTING_HERE = {
   en:[
-    {key:"land",t:"By Land",d:"A scenic 4-hour drive south of the Arizona border via Nogales and Hermosillo on Highway 15 - fully paved, well-traveled and the way most cruisers arrive."},
-    {key:"sea",t:"By Sea",d:"Marina San Carlos sits behind a protected breakwater on the Sea of Cortez. Hail us on VHF 16 or 72 for slip assignment and dockhand assistance on arrival."},
+    {key:"land",t:"By Land",d:"A scenic 5-hour drive south of the Arizona border via Nogales and Hermosillo on Highway 15 - fully paved, well-traveled and the way most cruisers arrive."},
+    {key:"sea",t:"By Sea",d:"Marina San Carlos is located in a naturally protected bay on the Sea of Cortez. Hail us on VHF 16 or 72 for slip assignment and dockhand assistance on arrival."},
     {key:"air",t:"By Air",d:"Fly into Guaymas (GYM) - 30 minutes away - or Hermosillo (HMO) for more connections, then a short ground transfer to the marina."}
   ],
   es:[
-    {key:"land",t:"Por Tierra",d:"Un trayecto panorámico de 4 horas al sur de la frontera con Arizona por Nogales y Hermosillo en la Carretera 15 - pavimentada y muy transitada."},
-    {key:"sea",t:"Por Mar",d:"Marina San Carlos se ubica tras un rompeolas protegido en el Mar de Cortés. Llámanos por VHF 16 o 72 para asignación de espacio y apoyo al llegar."},
-    {key:"air",t:"Por Aire",d:"Vuela a Guaymas (GYM) - a 30 minutos - o a Hermosillo (HMO) para más conexiones, y luego un breve traslado terrestre a la marina."}
+    {key:"land",t:"Por Tierra",d:"Un trayecto panorámico de 5 horas al sur de la frontera con Arizona por Nogales y Hermosillo en la Carretera 15 - pavimentada y muy transitada."},
+    {key:"sea",t:"Por Mar",d:"Marina San Carlos está ubicada en una bahía con protección natural en el Mar de Cortés. Llámanos por VHF 16 o 72 para asignación de espacio y apoyo al llegar."},
+    {key:"air",t:"Por Aire",d:"Vuela a Guaymas (GYM) - a 30 minutos - o a Hermosillo (HMO) para más conexiones, y luego un breve traslado terrestre a la marina."}}
   ]
 };
 
@@ -785,14 +829,14 @@ const ENTRY_REQS = {
 
 const FAQS = {
   en:[
-    {q:"How do I get there?", a:"Most cruisers arrive overland - a scenic 4-hour drive south of the Arizona border via Nogales and Hermosillo on Highway 15, fully paved and well-traveled. You can also arrive by sea; hail us on VHF 16 for slip assignment and dockhand assistance."},
+    {q:"How do I get there?", a:"Most cruisers arrive overland - a scenic 5-hour drive south of the Arizona border via Nogales and Hermosillo on Highway 15, fully paved and well-traveled. You can also arrive by sea; hail us on VHF 16 for slip assignment and dockhand assistance."}},
     {q:"Are there any flights?", a:"Yes. Fly into Guaymas (GYM), about 30 minutes away, or Hermosillo (HMO) for more connections, then a short ground transfer to the marina."},
     {q:"What documentation do I need for my boat?", a:"Carry your vessel registration or documentation, proof of ownership and a crew list, plus a Temporary Import Permit (TIP) for foreign-flagged vessels. Each crew member needs a valid passport and an FMM tourist permit."},
     {q:"Can I acquire the Permit online?", a:"Yes. The 10-year Temporary Import Permit (TIP) can be obtained online through Banjercito, or our office can help you prepare and file it before or on arrival."},
     {q:"Do I need insurance for my boat?", a:"Yes. Mexican liability insurance is required to keep a vessel in the marina. We can connect you with approved providers."}
   ],
   es:[
-    {q:"¿Cómo llego?", a:"La mayoría llega por carretera - un trayecto panorámico de 4 horas al sur de la frontera con Arizona por Nogales y Hermosillo en la Carretera 15, pavimentada y muy transitada. También puedes llegar por mar; llámanos por VHF 16 para asignación de espacio y apoyo en el muelle."},
+    {q:"¿Cómo llego?", a:"La mayoría llega por carretera - un trayecto panorámico de 5 horas al sur de la frontera con Arizona por Nogales y Hermosillo en la Carretera 15, pavimentada y muy transitada. También puedes llegar por mar; llámanos por VHF 16 para asignación de espacio y apoyo en el muelle."}},
     {q:"¿Hay vuelos?", a:"Sí. Vuela a Guaymas (GYM), a unos 30 minutos, o a Hermosillo (HMO) para más conexiones, y luego un breve traslado terrestre a la marina."},
     {q:"¿Qué documentación necesito para mi barco?", a:"Lleva el registro o documentación de la embarcación, comprobante de propiedad y lista de tripulación, además de un Permiso de Importación Temporal (TIP) para embarcaciones con bandera extranjera. Cada tripulante necesita pasaporte vigente y permiso turístico FMM."},
     {q:"¿Puedo obtener el permiso en línea?", a:"Sí. El Permiso de Importación Temporal (TIP) de 10 años puede tramitarse en línea por Banjercito, o nuestra oficina puede ayudarte a prepararlo y presentarlo antes o al llegar."},
@@ -830,8 +874,8 @@ const OWNER_FIELDS = {
 };
 
 const VESSEL_FIELDS = {
-  en:[{k:"vName",l:"Vessel Name",req:true,half:true},{k:"flag",l:"Flag State / Country",req:true,half:true},{k:"make",l:"Make",req:false,half:true},{k:"model",l:"Model",req:false,half:true},{k:"length",l:"Length (LOA)",req:true,half:true},{k:"beam",l:"Beam",req:false,half:true},{k:"draft",l:"Draft",req:false,half:true},{k:"reg",l:"Registration No.",req:false,half:true}],
-  es:[{k:"vName",l:"Nombre de la Embarcación",req:true,half:true},{k:"flag",l:"País / Bandera",req:true,half:true},{k:"make",l:"Marca",req:false,half:true},{k:"model",l:"Modelo",req:false,half:true},{k:"length",l:"Eslora (LOA)",req:true,half:true},{k:"beam",l:"Manga",req:false,half:true},{k:"draft",l:"Calado",req:false,half:true},{k:"reg",l:"No. de Registro",req:false,half:true}]
+  en:[{k:"vName",l:"Vessel Name",req:true,half:true},{k:"flag",l:"Flag State / Country",req:true,half:true,type:"select"},{k:"make",l:"Make",req:false,half:true},{k:"model",l:"Model",req:false,half:true},{k:"length",l:"Length (LOA)",req:true,half:true},{k:"beam",l:"Beam",req:false,half:true},{k:"draft",l:"Draft",req:false,half:true},{k:"reg",l:"Hull Number",req:false,half:true}],
+  es:[{k:"vName",l:"Nombre de la Embarcación",req:true,half:true},{k:"flag",l:"País / Bandera",req:true,half:true,type:"select"},{k:"make",l:"Marca",req:false,half:true},{k:"model",l:"Modelo",req:false,half:true},{k:"length",l:"Eslora (LOA)",req:true,half:true},{k:"beam",l:"Manga",req:false,half:true},{k:"draft",l:"Calado",req:false,half:true},{k:"reg",l:"No. de Casco",req:false,half:true}]
 };
 
 const DOC_UPLOADS = {
@@ -839,20 +883,22 @@ const DOC_UPLOADS = {
   es:[{k:"ownership",l:"Comprobante de Propiedad",req:true},{k:"tip",l:"Permiso de Importación Temporal (TIP)",req:false,note:"Requerido para embarcaciones con bandera extranjera"},{k:"insurance",l:"Póliza de Seguro de la Embarcación",req:true},{k:"id",l:"Identificación (Pasaporte preferido)",req:true}]
 };
 
+const COUNTRIES = ["Afghanistan","Albania","Algeria","American Samoa","Andorra","Angola","Antigua and Barbuda","Argentina","Armenia","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bermuda","Bhutan","Bolivia","Bosnia and Herzegovina","Botswana","Brazil","Brunei","Bulgaria","Burkina Faso","Burundi","Cambodia","Cameroon","Canada","Cape Verde","Cayman Islands","Central African Republic","Chad","Chile","China","Colombia","Comoros","Congo","Costa Rica","Croatia","Cuba","Cyprus","Czech Republic","Denmark","Djibouti","Dominica","Dominican Republic","Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Ethiopia","Fiji","Finland","France","Gabon","Gambia","Georgia","Germany","Ghana","Greece","Grenada","Guatemala","Guinea","Guinea-Bissau","Guyana","Haiti","Honduras","Hong Kong","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel","Italy","Jamaica","Japan","Jordan","Kazakhstan","Kenya","Kiribati","Kosovo","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands","Mauritania","Mauritius","Mexico","Micronesia","Moldova","Monaco","Mongolia","Montenegro","Morocco","Mozambique","Myanmar","Namibia","Nauru","Nepal","Netherlands","New Zealand","Nicaragua","Niger","Nigeria","North Korea","North Macedonia","Norway","Oman","Pakistan","Palau","Palestine","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Qatar","Romania","Russia","Rwanda","Saint Kitts and Nevis","Saint Lucia","Saint Vincent and the Grenadines","Samoa","San Marino","Sao Tome and Principe","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","South Korea","South Sudan","Spain","Sri Lanka","Sudan","Suriname","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","The Gambia","Timor-Leste","Togo","Tonga","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan","Tuvalu","Uganda","Ukraine","United Arab Emirates","United Kingdom","United States","Uruguay","Uzbekistan","Vanuatu","Vatican City","Venezuela","Vietnam","Yemen","Zambia","Zimbabwe"];
+
 const SERVICES_FULL = {
   en:[
-    {title:"Marina", img:"assets/promenade.jpg", cta:"reserve", desc:"Have a great time staying or visiting San Carlos. Dock sizes available: 24′, 32′, 40′, 41′, 48′, 51′, 56′, 64′, 120 and 136 ft. Ramp, fish-cleaning station, bathrooms and showers, laundry, complimentary WiFi, free parking, 24-hr security and local amenities."},
+    {title:"Marina", img:"assets/promenade.jpg", cta:"reserve", desc:"Have a great time staying or visiting San Carlos. Dock sizes available: 24′, 32′, 40′, 48′, 56′, 64′, 72′, 88′, 100′, 120′ and 128 ft. Ramp, fish-cleaning station, bathrooms and showers, laundry, complimentary WiFi, free parking, 24-hr security and local amenities.", gallery:["assets/promenade.jpg","assets/marina-building.jpg"]},
     {title:"Dry Storage", img:"assets/work-yard.jpg", cta:"reserve", desc:"Storage for boats on their own trailer or on stands, with covered areas for boats up to 32′ long and 14′ high, plus storage for vehicles and motorhomes. Lockers are available for your boat equipment, all with 24-hr security."},
-    {title:"Work Yard Services", img:"assets/crane-haulout.jpg", cta:"reserve", desc:"Our work yard offers power and water supplies to help with your boat work - you can even stay aboard while you finish your project. We also provide maintenance done by Star Marine Center professionals: epoxy blister repair, sanding, sand-blasting, painting and mechanical, with the right equipment and qualified mechanics. Ask for a quote!"},
-    {title:"Boat Services", img:"assets/crane-haulout.jpg", cta:"contact", desc:"Tractor services for boats on trailers, hydraulic low-boy service, crane services, demast, pressure wash and fuel dock."},
+    {title:"Boat Services", img:"assets/crane-haulout.jpg", cta:"contact", desc:"Tractor services for boats on trailers, hydraulic low-boy service, crane services, demast, pressure wash and fuel dock.", gallery:["uploads/Crane-1.jpg","assets/crane-haulout.jpg"]},
+    {title:"Work Yard", img:"assets/work-yard.jpg", cta:"reserve", desc:"Our work yard offers power and water supplies to help with your mechanical projects - you can even stay aboard while you work. Mechanical services include engine repair, rigging, electrical and system diagnostics, with qualified mechanics and the right equipment. Ask for a quote!"},
     {title:"Fuel Dock", img:"assets/marina-building.jpg", cta:"reserve", desc:"Fuel supply for your boat - diesel and magna gasoline. Open Monday-Sunday, 7:30 am to 4:00 pm. In summer (June-October) hours extend until 6:00 pm on Friday, Saturday and Sunday."},
     {title:"Transport", img:"assets/work-yard.jpg", cta:"reserve", desc:"Ground transportation for sail and power boats from San Carlos, Sonora or Mazatlán, Sinaloa to and from anywhere in the US or Canada. We use specialized air-ride suspension hydraulic trailers whose 6 hydraulic pads customize to fit your hull, moving boats up to 50 ft long, 30 tons or 16 ft wide. We can arrange the entire trip or just the Mexican portion - ask for a quote today!"}
   ],
   es:[
-    {title:"Marina", img:"assets/promenade.jpg", cta:"reserve", desc:"Disfruta tu estancia o visita en San Carlos. Tamaños de espacio disponibles: 24′, 32′, 40′, 41′, 48′, 51′, 56′, 64′, 120 y 136 ft. Rampa, estación de limpieza de pescado, baños y regaderas, lavandería, WiFi de cortesía, estacionamiento gratuito, seguridad 24 hrs y amenidades locales."},
+    {title:"Marina", img:"assets/promenade.jpg", cta:"reserve", desc:"Disfruta tu estancia o visita en San Carlos. Tamaños de espacio disponibles: 24′, 32′, 40′, 48′, 56′, 64′, 72′, 88′, 100′, 120′ y 128 ft. Rampa, estación de limpieza de pescado, baños y regaderas, lavandería, WiFi de cortesía, estacionamiento gratuito, seguridad 24 hrs y amenidades locales.", gallery:["assets/promenade.jpg","assets/marina-building.jpg"]},
     {title:"Almacenamiento en Seco", img:"assets/work-yard.jpg", cta:"reserve", desc:"Almacenaje para barcos en su propio tráiler o sobre soportes, con áreas techadas para embarcaciones de hasta 32′ de largo y 14′ de alto, además de almacenaje para vehículos y motorhomes. Lockers disponibles para tu equipo, todo con seguridad 24 hrs."},
-    {title:"Servicios de Astillero", img:"assets/crane-haulout.jpg", cta:"reserve", desc:"Nuestro patio de trabajo ofrece energía y agua para tu trabajo a bordo - incluso puedes quedarte en el barco mientras terminas tu proyecto. También brindamos mantenimiento por profesionales de Star Marine Center: reparación de ampollas con epoxi, lijado, sandblast, pintura y mecánica, con el equipo correcto y mecánicos calificados. ¡Pide tu cotización!"},
-    {title:"Servicios para Barcos", img:"assets/crane-haulout.jpg", cta:"contact", desc:"Servicio de tractor para barcos en tráiler, servicio hidráulico low-boy, grúa, desarbolado, lavado a presión y muelle de combustible."},
+    {title:"Servicios para Barcos", img:"assets/crane-haulout.jpg", cta:"contact", desc:"Servicio de tractor para barcos en tráiler, servicio hidráulico low-boy, grúa, desarbolado, lavado a presión y muelle de combustible.", gallery:["uploads/Crane-1.jpg","assets/crane-haulout.jpg"]},
+    {title:"Astillero", img:"assets/work-yard.jpg", cta:"reserve", desc:"Nuestro patio de trabajo ofrece energía y agua para tus proyectos mecánicos - incluso puedes quedarte en el barco mientras trabajas. Los servicios mecánicos incluyen reparación de motores, jarcia, eléctricos y diagnóstico de sistemas, con mecánicos calificados y el equipo correcto. ¡Pide tu cotización!"},
     {title:"Muelle de Combustible", img:"assets/marina-building.jpg", cta:"reserve", desc:"Suministro de combustible para tu barco - diésel y gasolina magna. Abierto de lunes a domingo, 7:30 am a 4:00 pm. En verano (junio-octubre) el horario se extiende hasta las 6:00 pm viernes, sábado y domingo."},
     {title:"Transporte", img:"assets/work-yard.jpg", cta:"reserve", desc:"Transporte terrestre para barcos de vela y motor desde San Carlos, Sonora o Mazatlán, Sinaloa hacia y desde cualquier lugar de EE.UU. o Canadá. Usamos tráileres hidráulicos con suspensión air-ride cuyos 6 pads se ajustan a tu casco, moviendo barcos de hasta 50 ft de largo, 30 toneladas o 16 ft de ancho. Podemos coordinar todo el viaje o solo la porción mexicana - ¡pide tu cotización hoy!"}
   ]
@@ -861,14 +907,14 @@ const SERVICES_FULL = {
 const PAGES = {
   en:{
     services:{eyebrow:"Marina Services", title:"A full-service marina & boatyard", intro:"From a protected slip for the season to a full refit on the hard, everything your vessel needs lives in one place - backed by a crew that has cared for boats on the Sea of Cortez for decades.", amenEyebrow:"On-site", amenTitle:"Featured amenities", ctaTitle:"Ready to bring your boat to San Carlos?", ctaBody:"Reserve a slip or storage, or reach out with questions about your vessel and dates.", ctaBtn:"Reserve Now"},
-    visitor:{eyebrow:"Visitor Information", title:"Everything you need to cruise to Mexico", intro:"Bringing a foreign vessel into Mexico is simpler than most cruisers expect - especially with a team that does it every day. Here's how to get here and what to have ready.", hereEyebrow:"Getting here", hereTitle:"Three ways to arrive", entryEyebrow:"Before you arrive", entryTitle:"Entry requirements for Mexico", faqEyebrow:"Good to know", faqTitle:"Frequently asked questions", resEyebrow:"Resources", resTitle:"Forms & downloads", download:"Download"},
-    reserve:{eyebrow:"Reservations", title:"Reserve your space", intro:"Tell us about your vessel and what you need. Submitting this form sends your request straight to our reservations team, who will confirm availability and next steps.", typeLabel:"What would you like to reserve?", ownerTitle:"Owner Information", vesselTitle:"Vessel Information", docsTitle:"Document Uploads", docsNote:"Upload clear photos or PDFs. You can also email documents to our team later.", submit:"Submit Reservation Request", required:"Please complete the required fields highlighted below.", successTitle:"Request received", successBody:"Thank you - your reservation request has been sent to our team.", successNote:"A confirmation has been routed to info@marinasancarlos.com. We'll be in touch within one business day.", another:"Submit another request", optional:"optional", choose:"Choose file", uploaded:"Uploaded"},
+    visitor:{eyebrow:"Visitor Information", title:"Everything you need to cruise to Mexico", intro:"Bringing a foreign vessel into Mexico is simpler than most cruisers expect - especially with a team that does it every day. Here's how to get here and what to have ready.", hereEyebrow:"Getting here", hereTitle:"Three ways to arrive", waterLevel:"Live Water Level at Marina San Carlos", entryEyebrow:"Before you arrive", entryTitle:"Entry requirements for Mexico", faqEyebrow:"Good to know", faqTitle:"Frequently asked questions", resEyebrow:"Resources", resTitle:"Forms & downloads", download:"Download"},
+    reserve:{eyebrow:"Reservations", title:"Reserve your space", intro:"Tell us about your vessel and what you need. Submitting this form sends your request straight to our reservations team, who will confirm availability and next steps.", typeLabel:"What would you like to reserve?", ownerTitle:"Owner Information", vesselTitle:"Vessel Information", datesTitle:"Reservation Dates", startDate:"Start Date", endDate:"End Date", launchTitle:"Tractor Launch", launchDate:"Launch Date", docsTitle:"Document Uploads", docsNote:"Upload clear photos or PDFs. You can also email documents to our team later.", submit:"Submit Reservation Request", required:"Please complete the required fields highlighted below.", successTitle:"Request received", successBody:"Thank you - your reservation request has been sent to our team.", successNote:"A confirmation has been routed to info@marinasancarlos.com. We'll be in touch within one business day.", another:"Submit another request", optional:"optional", choose:"Choose file", uploaded:"Uploaded"},
     contact:{eyebrow:"Contact", title:"Get in touch", intro:"Questions about slips, storage, your crossing or your boat? Reach our team directly - we're on the docks every day.", formTitle:"Send us a message", name:"Full Name", email:"Email Address", phone:"Phone", subject:"Subject", message:"Message", send:"Send Message", sentTitle:"Message sent", sentBody:"Thanks for reaching out - we'll reply within one business day.", infoTitle:"Marina office", hoursTitle:"Office hours", hours:"Mon - Sat 7:30 AM - 5 PM · Sun 8 AM - 5 PM", emergencyTitle:"After-hours & emergencies", emergencyBody:"For urgent on-water assistance, hail Marina San Carlos on VHF 16.", mapLabel:"INTERACTIVE MAP · San Carlos, Sonora", directions:"Get directions", activateMap:"Click to interact with map"}
   },
   es:{
     services:{eyebrow:"Servicios de la Marina", title:"Una marina y astillero de servicio completo", intro:"Desde un espacio protegido por temporada hasta una restauración completa en tierra, todo lo que tu embarcación necesita está en un solo lugar - con un equipo que ha cuidado barcos en el Mar de Cortés por décadas.", amenEyebrow:"En sitio", amenTitle:"Amenidades destacadas", ctaTitle:"¿Listo para traer tu barco a San Carlos?", ctaBody:"Reserva un espacio o almacenaje, o escríbenos con dudas sobre tu embarcación y fechas.", ctaBtn:"Reservar Ahora"},
-    visitor:{eyebrow:"Información para Visitantes", title:"Todo lo necesario para navegar a México", intro:"Traer una embarcación extranjera a México es más sencillo de lo que la mayoría espera - sobre todo con un equipo que lo hace a diario. Así llegas y esto es lo que debes tener listo.", hereEyebrow:"Cómo llegar", hereTitle:"Tres formas de llegar", entryEyebrow:"Antes de llegar", entryTitle:"Requisitos de entrada a México", faqEyebrow:"Bueno saber", faqTitle:"Preguntas frecuentes", resEyebrow:"Recursos", resTitle:"Formatos y descargas", download:"Descargar"},
-    reserve:{eyebrow:"Reservaciones", title:"Reserva tu espacio", intro:"Cuéntanos sobre tu embarcación y lo que necesitas. Al enviar este formulario, tu solicitud llega directo a nuestro equipo de reservaciones, que confirmará disponibilidad y siguientes pasos.", typeLabel:"¿Qué deseas reservar?", ownerTitle:"Información del Propietario", vesselTitle:"Información de la Embarcación", docsTitle:"Carga de Documentos", docsNote:"Sube fotos claras o PDFs. También puedes enviar los documentos por correo más adelante.", submit:"Enviar Solicitud de Reservación", required:"Por favor completa los campos requeridos marcados abajo.", successTitle:"Solicitud recibida", successBody:"Gracias - tu solicitud de reservación ha sido enviada a nuestro equipo.", successNote:"Se ha enviado una confirmación a info@marinasancarlos.com. Te contactaremos en un día hábil.", another:"Enviar otra solicitud", optional:"opcional", choose:"Elegir archivo", uploaded:"Cargado"},
+    visitor:{eyebrow:"Información para Visitantes", title:"Todo lo necesario para navegar a México", intro:"Traer una embarcación extranjera a México es más sencillo de lo que la mayoría espera - sobre todo con un equipo que lo hace a diario. Así llegas y esto es lo que debes tener listo.", hereEyebrow:"Cómo llegar", hereTitle:"Tres formas de llegar", waterLevel:"Nivel del Agua en Tiempo Real en Marina San Carlos", entryEyebrow:"Antes de llegar", entryTitle:"Requisitos de entrada a México", faqEyebrow:"Bueno saber", faqTitle:"Preguntas frecuentes", resEyebrow:"Recursos", resTitle:"Formatos y descargas", download:"Descargar"},
+    reserve:{eyebrow:"Reservaciones", title:"Reserva tu espacio", intro:"Cuéntanos sobre tu embarcación y lo que necesitas. Al enviar este formulario, tu solicitud llega directo a nuestro equipo de reservaciones, que confirmará disponibilidad y siguientes pasos.", typeLabel:"¿Qué deseas reservar?", ownerTitle:"Información del Propietario", vesselTitle:"Información de la Embarcación", datesTitle:"Fechas de Reservación", startDate:"Fecha de Inicio", endDate:"Fecha de Fin", launchTitle:"Lanzamiento con Tractor", launchDate:"Fecha de Lanzamiento", docsTitle:"Carga de Documentos", docsNote:"Sube fotos claras o PDFs. También puedes enviar los documentos por correo más adelante.", submit:"Enviar Solicitud de Reservación", required:"Por favor completa los campos requeridos marcados abajo.", successTitle:"Solicitud recibida", successBody:"Gracias - tu solicitud de reservación ha sido enviada a nuestro equipo.", successNote:"Se ha enviado una confirmación a info@marinasancarlos.com. Te contactaremos en un día hábil.", another:"Enviar otra solicitud", optional:"opcional", choose:"Elegir archivo", uploaded:"Cargado"},
     contact:{eyebrow:"Contacto", title:"Ponte en contacto", intro:"¿Dudas sobre espacios, almacenaje, tu travesía o tu barco? Contacta a nuestro equipo directamente - estamos en los muelles todos los días.", formTitle:"Envíanos un mensaje", name:"Nombre Completo", email:"Correo Electrónico", phone:"Teléfono", subject:"Asunto", message:"Mensaje", send:"Enviar Mensaje", sentTitle:"Mensaje enviado", sentBody:"Gracias por escribirnos - responderemos en un día hábil.", infoTitle:"Oficina de la marina", hoursTitle:"Horario", hours:"Lun - Sáb 7:30 - 17:00 · Dom 8:00 - 17:00", emergencyTitle:"Fuera de horario y emergencias", emergencyBody:"Para asistencia urgente en el agua, llama a Marina San Carlos por VHF 16.", mapLabel:"MAPA INTERACTIVO · San Carlos, Sonora", directions:"Cómo llegar", activateMap:"Haz clic para interactuar con el mapa"}
   }
 };
@@ -881,12 +927,15 @@ class Component extends DCLogic {
     faqOpen: 0,
     resType: "slip",
     form: {},
-    files: {},
     errors: {},
     submitted: false,
+    resStartDate: "",
+    resEndDate: "",
+    resLaunchDate: "",
     contact: {},
     cErrors: {},
     contactSent: false,
+    serviceGalleries: {},
     mapInited: false
   };
 
@@ -898,6 +947,10 @@ class Component extends DCLogic {
   onFile = (k,e) => { const f=e.target.files&&e.target.files[0]; this.setState(s=>({ files:{...s.files,[k]: f?f.name:null}, errors:{...s.errors,[k]:false} })); };
   toggleFaq = (i) => this.setState(s=>({ faqOpen: s.faqOpen===i ? -1 : i }));
   setResType = (k) => this.setState({resType:k});
+  onStartDateChange = (e) => this.setState({resStartDate:e.target.value});
+  onEndDateChange = (e) => this.setState({resEndDate:e.target.value});
+  onLaunchDateChange = (e) => this.setState({resLaunchDate:e.target.value});
+  toggleServiceGallery = (i) => this.setState(s=>({serviceGalleries:{...s.serviceGalleries,[i]:!s.serviceGalleries[i]}}));
 
   submitReserve = () => {
     const lang=this.state.lang;
@@ -1041,7 +1094,7 @@ class Component extends DCLogic {
     const tp = PAGES[lang];
     const F = this.state.form, FE = this.state.errors, FL = this.state.files;
     const servicesAll = SERVICES_ALL[lang].map(s=>({title:s.title,desc:s.desc,icon:this.svg(ICON[s.key]||SVG.slip)}));
-    const servicesDetail = SERVICES_FULL[lang].map((s,i)=>{ const rev=i%2===1; return {title:s.title, desc:s.desc, img:s.img, imgStyle:{width:"100%",aspectRatio:"4/3",borderRadius:"6px",backgroundImage:"url('"+s.img+"')",backgroundSize:"cover",backgroundPosition:"center",backgroundColor:"#0a1c2e",boxShadow:"0 18px 44px rgba(10,28,46,.12)"}, rowStyle:{display:"flex",flexWrap:"wrap",gap:"clamp(28px,4vw,64px)",alignItems:"center",flexDirection:rev?"row-reverse":"row"}, ctaLabel: s.cta==="contact" ? (lang==="es"?"Contáctanos":"Contact Us") : (lang==="es"?"Reservar":"Reserve"), onClick: s.cta==="contact" ? ()=>this.go("contact") : ()=>this.go("reserve") }; });
+    const servicesDetail = SERVICES_FULL[lang].map((s,i)=>{ const rev=i%2===1; const hasGallery=!!(s.gallery&&s.gallery.length); const gOpen=!!this.state.serviceGalleries[i]; const gLabel=lang==="es"?(gOpen?"Ocultar Fotos":"Ver Fotos"):(gOpen?"Hide Photos":"View Photos"); return {title:s.title, desc:s.desc, img:s.img, hasGallery, galleryOpen:gOpen, galleryImages:s.gallery||[], galleryLabel:gLabel, onGalleryClick:hasGallery?()=>this.toggleServiceGallery(i):null, imgStyle:{width:"100%",aspectRatio:"4/3",borderRadius:"6px",backgroundImage:"url('"+s.img+"')",backgroundSize:"cover",backgroundPosition:"center",backgroundColor:"#0a1c2e",boxShadow:"0 18px 44px rgba(10,28,46,.12)"}, rowStyle:{display:"flex",flexWrap:"wrap",gap:"clamp(28px,4vw,64px)",alignItems:"center",flexDirection:rev?"row-reverse":"row"}, ctaLabel: s.cta==="contact" ? (lang==="es"?"Contáctanos":"Contact Us") : (lang==="es"?"Reservar":"Reserve"), onClick: s.cta==="contact" ? ()=>this.go("contact") : ()=>this.go("reserve") }; });
     const amenities = AMENITIES[lang].map(a=>({label:a.l,icon:this.svg(ASVG[a.k]||ASVG.wifi)}));
     const gettingHere = GETTING_HERE[lang];
     const entryReqs = ENTRY_REQS[lang].map((e,i)=>({num:String(i+1).padStart(2,"0"),t:e.t,d:e.d}));
@@ -1051,7 +1104,7 @@ class Component extends DCLogic {
     const baseInput = {width:"100%",padding:"13px 15px",border:"1px solid #d3dbe1",borderRadius:"4px",fontSize:"15px",fontFamily:"'Archivo',sans-serif",color:"#11202e",background:"#fff",outline:"none",boxSizing:"border-box"};
     const inStyle = (err)=> err ? {...baseInput,borderColor:"#c0563f",background:"#fdf5f3"} : baseInput;
     const wrap = (half)=> half ? {} : {gridColumn:"1 / -1"};
-    const mkField = (f)=>({key:f.k,label:f.l+(f.req?" *":""),half:!!f.half,type:f.type||"text",value:F[f.k]||"",err:!!FE[f.k],inputStyle:inStyle(!!FE[f.k]),wrapStyle:wrap(!!f.half),onChange:(e)=>this.setField(f.k,e.target.value)});
+    const mkField = (f)=>{ const isSelect=f.type==="select"; const opts=isSelect?COUNTRIES:[]; return {key:f.k,label:f.l+(f.req?" *":""),half:!!f.half,type:f.type||"text",value:F[f.k]||"",err:!!FE[f.k],inputStyle:inStyle(!!FE[f.k]),wrapStyle:wrap(!!f.half),onChange:(e)=>this.setField(f.k,e.target.value),isSelect,notSelect:!isSelect,options:opts,placeholder:lang==="es"?"Seleccionar...":"Select..."}};
     const ownerFields = OWNER_FIELDS[lang].map(mkField);
     const vesselFields = VESSEL_FIELDS[lang].map(mkField);
     const docBox = (err,done)=>({display:"flex",alignItems:"center",gap:"16px",padding:"16px 18px",border:"1px solid "+(err?"#c0563f":(done?"#cdbf9a":"#d3dbe1")),borderRadius:"6px",background:done?"#faf7ef":(err?"#fdf5f3":"#fff"),cursor:"pointer",transition:"border-color .2s,background .2s"});
@@ -1083,6 +1136,13 @@ class Component extends DCLogic {
       tp,
       servicesAll, servicesDetail, amenities, gettingHere, entryReqs, faqs, resources,
       reserveTypes, ownerFields, vesselFields, docUploads, showReserveError,
+      showReservationDates: this.state.resType==="slip"||this.state.resType==="dry",
+      showTractorDate: this.state.resType==="tractor",
+      reservationStartDate: this.state.resStartDate,
+      reservationEndDate: this.state.resEndDate,
+      reservationLaunchDate: this.state.resLaunchDate,
+      onStartDateChange:this.onStartDateChange, onEndDateChange:this.onEndDateChange, onLaunchDateChange:this.onLaunchDateChange,
+      dateInputStyle: {...baseInput},
       submitReserve:this.submitReserve, resetReserve:this.resetReserve, submitted:this.state.submitted, notSubmitted:!this.state.submitted,
       contactFields, msgValue:(this.state.contact.message||""), msgErr:!!this.state.cErrors.message, msgStyle,
       msgOnChange:(e)=>this.setContact("message",e.target.value),
