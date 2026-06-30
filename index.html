@@ -91,36 +91,27 @@
         </div>
       </section>
 
-      <!-- INTRO -->
+      <!-- INTRO + MISSION / VISION / VALUES -->
       <section style="max-width:1040px;margin:0 auto;padding:clamp(72px,10vw,130px) 36px;text-align:center;">
         <div style="display:flex;align-items:center;gap:14px;justify-content:center;margin-bottom:28px;"><span style="width:30px;height:1px;background:#c2a978;"></span><span style="font-family:'Archivo',sans-serif;font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:#7d8b97;">{{ t.intro.eyebrow }}</span><span style="width:30px;height:1px;background:#c2a978;"></span></div>
         <p style="font-family:'Marcellus',serif;font-size:clamp(25px,3.2vw,42px);line-height:1.32;color:#122c44;margin:0;text-wrap:balance;font-weight:400;">{{ t.intro.lead }}</p>
         <p style="font-size:17px;line-height:1.85;color:#5a6b78;max-width:680px;margin:32px auto 0;font-weight:300;">{{ t.intro.body }}</p>
-      </section>
-
-      <!-- ABOUT / MISSION VISION VALUES -->
-      <section style="background:#f5f7f8;border-top:1px solid #e6eaed;border-bottom:1px solid #e6eaed;padding:clamp(64px,9vw,116px) 0;">
-        <div style="max-width:1320px;margin:0 auto;padding:0 36px;">
-          <div style="display:flex;flex-direction:column;align-items:center;text-align:center;margin-bottom:54px;">
-            <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px;"><span style="width:30px;height:1px;background:#c2a978;"></span><span style="font-family:'Archivo',sans-serif;font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:#7d8b97;">{{ t.about.eyebrow }}</span><span style="width:30px;height:1px;background:#c2a978;"></span></div>
-            <h2 style="font-family:'Marcellus',serif;color:#122c44;font-size:clamp(30px,4vw,52px);font-weight:400;margin:0;">{{ t.about.est }}</h2>
+        <!-- mission / vision / values -->
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(258px,1fr));gap:1px;background:#e6eaed;border:1px solid #e6eaed;margin-top:50px;">
+          <div style="background:#fff;padding:40px 34px;">
+            <h3 style="font-family:'Marcellus',serif;color:#122c44;font-size:24px;font-weight:400;margin:0 0 14px;">{{ t.about.missionT }}</h3>
+            <p style="font-size:15.5px;line-height:1.75;color:#5a6b78;margin:0;font-weight:300;">{{ t.about.mission }}</p>
           </div>
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(258px,1fr));gap:1px;background:#e6eaed;border:1px solid #e6eaed;">
-            <div style="background:#fff;padding:40px 34px;">
-              <h3 style="font-family:'Marcellus',serif;color:#122c44;font-size:24px;font-weight:400;margin:0 0 14px;">{{ t.about.missionT }}</h3>
-              <p style="font-size:15.5px;line-height:1.75;color:#5a6b78;margin:0;font-weight:300;">{{ t.about.mission }}</p>
-            </div>
-            <div style="background:#fff;padding:40px 34px;">
-              <h3 style="font-family:'Marcellus',serif;color:#122c44;font-size:24px;font-weight:400;margin:0 0 14px;">{{ t.about.visionT }}</h3>
-              <p style="font-size:15.5px;line-height:1.75;color:#5a6b78;margin:0;font-weight:300;">{{ t.about.vision }}</p>
-            </div>
-            <div style="background:#fff;padding:40px 34px;">
-              <h3 style="font-family:'Marcellus',serif;color:#122c44;font-size:24px;font-weight:400;margin:0 0 16px;">{{ t.about.valuesT }}</h3>
-              <div style="display:flex;flex-direction:column;gap:12px;">
-                <sc-for list="{{ t.about.values }}" as="v" hint-placeholder-count="3">
-                  <div style="display:flex;align-items:center;gap:12px;"><span style="width:6px;height:6px;border-radius:50%;background:#c2a978;flex-shrink:0;"></span><span style="font-size:15.5px;color:#3a4b58;">{{ v }}</span></div>
-                </sc-for>
-              </div>
+          <div style="background:#fff;padding:40px 34px;">
+            <h3 style="font-family:'Marcellus',serif;color:#122c44;font-size:24px;font-weight:400;margin:0 0 14px;">{{ t.about.visionT }}</h3>
+            <p style="font-size:15.5px;line-height:1.75;color:#5a6b78;margin:0;font-weight:300;">{{ t.about.vision }}</p>
+          </div>
+          <div style="background:#fff;padding:40px 34px;">
+            <h3 style="font-family:'Marcellus',serif;color:#122c44;font-size:24px;font-weight:400;margin:0 0 16px;">{{ t.about.valuesT }}</h3>
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <sc-for list="{{ t.about.values }}" as="v" hint-placeholder-count="3">
+                <div style="display:flex;align-items:center;gap:12px;"><span style="width:6px;height:6px;border-radius:50%;background:#c2a978;flex-shrink:0;"></span><span style="font-size:15.5px;color:#3a4b58;">{{ v }}</span></div>
+              </sc-for>
             </div>
           </div>
         </div>
@@ -232,7 +223,7 @@
       <section style="width:100%;border-top:1px solid rgba(255,255,255,.06);">
         <div style="position:relative;width:100%;height:440px;overflow:hidden;">
           <div id="home-map" style="width:100%;height:100%;"></div>
-          <a href="https://www.google.com/maps/dir/?api=1&destination=27.9467,-111.0536" target="_blank" rel="noopener" style="position:absolute;bottom:24px;right:24px;z-index:500;background:#0a1c2e;color:#fff;border:1px solid rgba(255,255,255,.15);border-radius:999px;cursor:pointer;font-family:'Archivo',sans-serif;font-size:12px;font-weight:600;letter-spacing:.04em;padding:10px 20px;text-decoration:none;display:inline-flex;align-items:center;gap:6px;box-shadow:0 4px 16px rgba(0,0,0,.2);">📍 {{ tp.contact.directions }} →</a>
+          <a href="https://www.google.com/maps/dir/?api=1&destination=27.948278,-111.054639" target="_blank" rel="noopener" style="position:absolute;bottom:24px;right:24px;z-index:500;background:#0a1c2e;color:#fff;border:1px solid rgba(255,255,255,.15);border-radius:999px;cursor:pointer;font-family:'Archivo',sans-serif;font-size:12px;font-weight:600;letter-spacing:.04em;padding:10px 20px;text-decoration:none;display:inline-flex;align-items:center;gap:6px;box-shadow:0 4px 16px rgba(0,0,0,.2);">📍 {{ tp.contact.directions }} →</a>
         </div>
       </section>
 
@@ -296,18 +287,18 @@
         </div>
       </section>
     </div></sc-if>
-    <!-- ===================== PAGE: VISITOR ===================== -->
-    <sc-if value="{{ isVisitor }}" hint-placeholder-val="{{ true }}"><div data-screen-label="Visitor Info">
+    <!-- ===================== PAGE: RESOURCES ===================== -->
+    <sc-if value="{{ isResources }}" hint-placeholder-val="{{ true }}"><div data-screen-label="Resources">
       <section style="background:#0a1c2e;padding:clamp(60px,8vw,100px) 0 clamp(48px,6vw,72px);">
         <div style="max-width:1320px;margin:0 auto;padding:0 36px;animation:mscFade .6s ease both;">
-          <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;"><span style="width:30px;height:1px;background:#c2a978;"></span><span style="font-family:'Archivo',sans-serif;font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:#8aa0b2;">{{ tp.visitor.eyebrow }}</span></div>
-          <h1 style="font-family:'Marcellus',serif;color:#fff;font-size:clamp(34px,5vw,66px);font-weight:400;margin:0;line-height:1.04;max-width:880px;">{{ tp.visitor.title }}</h1>
-          <p style="color:#9fb1c0;font-size:18px;line-height:1.75;margin:24px 0 0;max-width:640px;font-weight:300;">{{ tp.visitor.intro }}</p>
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;"><span style="width:30px;height:1px;background:#c2a978;"></span><span style="font-family:'Archivo',sans-serif;font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:#8aa0b2;">{{ tp.resources.eyebrow }}</span></div>
+          <h1 style="font-family:'Marcellus',serif;color:#fff;font-size:clamp(34px,5vw,66px);font-weight:400;margin:0;line-height:1.04;max-width:880px;">{{ tp.resources.title }}</h1>
+          <p style="color:#9fb1c0;font-size:18px;line-height:1.75;margin:24px 0 0;max-width:640px;font-weight:300;">{{ tp.resources.intro }}</p>
         </div>
       </section>
 
       <section style="max-width:1320px;margin:0 auto;padding:clamp(56px,7vw,96px) 36px clamp(40px,5vw,60px);">
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:30px;"><span style="width:30px;height:1px;background:#c2a978;"></span><span style="font-family:'Archivo',sans-serif;font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:#7d8b97;">{{ tp.visitor.hereEyebrow }}</span></div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:30px;"><span style="width:30px;height:1px;background:#c2a978;"></span><span style="font-family:'Archivo',sans-serif;font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:#7d8b97;">{{ tp.resources.hereEyebrow }}</span></div>
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;">
           <sc-for list="{{ gettingHere }}" as="g" hint-placeholder-count="3">
             <div style="border:1px solid #e6eaed;border-radius:6px;padding:34px 32px;background:#fff;">
@@ -322,7 +313,7 @@
       <section style="max-width:1320px;margin:0 auto;padding:0 36px clamp(56px,7vw,96px);">
         <div style="background:#fff;border:1px solid #e6eaed;border-radius:8px;padding:36px 32px;">
           <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;"><span style="width:30px;height:1px;background:#c2a978;"></span><span style="font-family:'Archivo',sans-serif;font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:#7d8b97;">Live Conditions</span></div>
-          <h3 style="font-family:'Marcellus',serif;color:#122c44;font-size:24px;font-weight:400;margin:0 0 6px;">{{ tp.visitor.waterLevel }}</h3>
+          <h3 style="font-family:'Marcellus',serif;color:#122c44;font-size:24px;font-weight:400;margin:0 0 6px;">{{ tp.resources.waterLevel }}</h3>
           <p style="font-size:14px;color:#7d8b97;margin:0 0 18px;font-weight:300;">Powered by <a href="https://hohonu.io" target="_blank" rel="noopener" style="color:#7d8b97;text-decoration:underline;">Hohonu</a></p>
           <iframe src="https://dashboard.hohonu.io/chart/hohonu-000" style="width:100%;height:750px;border:none;border-radius:6px;" frameborder="0"></iframe>
         </div>
@@ -330,8 +321,8 @@
 
       <section style="background:#f5f7f8;border-top:1px solid #e6eaed;border-bottom:1px solid #e6eaed;padding:clamp(60px,8vw,100px) 0;">
         <div style="max-width:1320px;margin:0 auto;padding:0 36px;">
-          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;"><span style="width:30px;height:1px;background:#c2a978;"></span><span style="font-family:'Archivo',sans-serif;font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:#7d8b97;">{{ tp.visitor.entryEyebrow }}</span></div>
-          <h2 style="font-family:'Marcellus',serif;color:#122c44;font-size:clamp(28px,3.6vw,46px);font-weight:400;margin:0 0 44px;">{{ tp.visitor.entryTitle }}</h2>
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;"><span style="width:30px;height:1px;background:#c2a978;"></span><span style="font-family:'Archivo',sans-serif;font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:#7d8b97;">{{ tp.resources.entryEyebrow }}</span></div>
+          <h2 style="font-family:'Marcellus',serif;color:#122c44;font-size:clamp(28px,3.6vw,46px);font-weight:400;margin:0 0 44px;">{{ tp.resources.entryTitle }}</h2>
           <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:0 56px;">
             <sc-for list="{{ entryReqs }}" as="e" hint-placeholder-count="4">
               <div style="display:flex;gap:20px;align-items:flex-start;border-top:1px solid #dfe4e8;padding:26px 0;">
@@ -348,8 +339,8 @@
 
       <section style="max-width:920px;margin:0 auto;padding:clamp(60px,8vw,100px) 36px;">
         <div style="text-align:center;margin-bottom:44px;">
-          <div style="display:flex;align-items:center;gap:14px;justify-content:center;margin-bottom:16px;"><span style="width:30px;height:1px;background:#c2a978;"></span><span style="font-family:'Archivo',sans-serif;font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:#7d8b97;">{{ tp.visitor.faqEyebrow }}</span><span style="width:30px;height:1px;background:#c2a978;"></span></div>
-          <h2 style="font-family:'Marcellus',serif;color:#122c44;font-size:clamp(28px,3.6vw,46px);font-weight:400;margin:0;">{{ tp.visitor.faqTitle }}</h2>
+          <div style="display:flex;align-items:center;gap:14px;justify-content:center;margin-bottom:16px;"><span style="width:30px;height:1px;background:#c2a978;"></span><span style="font-family:'Archivo',sans-serif;font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:#7d8b97;">{{ tp.resources.faqEyebrow }}</span><span style="width:30px;height:1px;background:#c2a978;"></span></div>
+          <h2 style="font-family:'Marcellus',serif;color:#122c44;font-size:clamp(28px,3.6vw,46px);font-weight:400;margin:0;">{{ tp.resources.faqTitle }}</h2>
         </div>
         <div style="border-top:1px solid #e6eaed;">
           <sc-for list="{{ faqs }}" as="f" hint-placeholder-count="6">
@@ -368,8 +359,8 @@
 
       <section style="background:#0a1c2e;padding:clamp(60px,8vw,100px) 0;">
         <div style="max-width:1320px;margin:0 auto;padding:0 36px;">
-          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;"><span style="width:30px;height:1px;background:#c2a978;"></span><span style="font-family:'Archivo',sans-serif;font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:#8aa0b2;">{{ tp.visitor.resEyebrow }}</span></div>
-          <h2 style="font-family:'Marcellus',serif;color:#fff;font-size:clamp(28px,3.6vw,46px);font-weight:400;margin:0 0 42px;">{{ tp.visitor.resTitle }}</h2>
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;"><span style="width:30px;height:1px;background:#c2a978;"></span><span style="font-family:'Archivo',sans-serif;font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:#8aa0b2;">{{ tp.resources.resEyebrow }}</span></div>
+          <h2 style="font-family:'Marcellus',serif;color:#fff;font-size:clamp(28px,3.6vw,46px);font-weight:400;margin:0 0 42px;">{{ tp.resources.resTitle }}</h2>
           <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:1px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.1);">
             <sc-for list="{{ resources }}" as="r" hint-placeholder-count="6">
               <div style="background:#0a1c2e;padding:30px 30px;display:flex;align-items:flex-start;gap:18px;cursor:pointer;transition:background .3s;" style-hover="background:#122c44;">
@@ -377,13 +368,44 @@
                 <div style="flex:1;">
                   <h3 style="font-size:16px;font-weight:600;color:#fff;margin:0 0 5px;">{{ r.t }}</h3>
                   <p style="font-size:13.5px;line-height:1.6;color:#8aa0b2;margin:0 0 10px;font-weight:300;">{{ r.d }}</p>
-                  <span style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#cfd9e1;font-weight:600;">↓ {{ tp.visitor.download }}</span>
+                  <span style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#cfd9e1;font-weight:600;">↓ {{ tp.resources.download }}</span>
                 </div>
               </div>
             </sc-for>
           </div>
         </div>
       </section>
+    </div></sc-if>
+
+      <!-- Recommended Charters -->
+      <section style="background:#fff;border-top:1px solid #e6eaed;padding:clamp(56px,7vw,90px) 0;">
+        <div style="max-width:1320px;margin:0 auto;padding:0 36px;">
+          <div style="text-align:center;margin-bottom:40px;">
+            <div style="display:flex;align-items:center;gap:14px;justify-content:center;margin-bottom:16px;"><span style="width:30px;height:1px;background:#c2a978;"></span><span style="font-family:'Archivo',sans-serif;font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:#7d8b97;">{{ tp.resources.chartersEyebrow }}</span><span style="width:30px;height:1px;background:#c2a978;"></span></div>
+            <h2 style="font-family:'Marcellus',serif;color:#122c44;font-size:clamp(28px,3.6vw,42px);font-weight:400;margin:0;">{{ tp.resources.chartersTitle }}</h2>
+            <p style="font-size:16px;color:#5a6b78;max-width:560px;margin:14px auto 0;line-height:1.7;font-weight:300;">{{ tp.resources.chartersBody }}</p>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;">
+            <sc-for list="{{ charters }}" as="c" hint-placeholder-count="4">
+              <div style="border:1px solid #e6eaed;border-radius:8px;padding:32px;background:#fff;transition:box-shadow .3s,transform .3s;display:flex;flex-direction:column;" style-hover="box-shadow:0 12px 36px rgba(10,28,46,.08);transform:translateY(-2px);">
+                <div style="background:#0a1c2e;color:#c2a978;width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:17px;margin-bottom:18px;flex-shrink:0;">{{ c.initials }}</div>
+                <h3 style="font-family:'Marcellus',serif;color:#122c44;font-size:20px;font-weight:400;margin:0 0 6px;">{{ c.name }}</h3>
+                <div style="font-size:13px;color:#7d8b97;letter-spacing:.08em;text-transform:uppercase;font-weight:500;margin-bottom:14px;">{{ c.type }}</div>
+                <p style="font-size:14.5px;line-height:1.7;color:#5a6b78;margin:0 0 18px;font-weight:300;flex:1;">{{ c.desc }}</p>
+                <div style="display:flex;gap:12px;flex-wrap:wrap;">
+                  <sc-if value="{{ c.phone }}" hint-placeholder-val="{{ true }}">
+                    <a href="tel:{{ c.phone }}" style="font-size:12px;color:#0a1c2e;text-decoration:none;font-weight:600;letter-spacing:.04em;border:1px solid #d3dbe1;border-radius:999px;padding:8px 16px;display:inline-flex;align-items:center;gap:5px;" style-hover="background:#f5f7f8;">{{ c.phone }}</a>
+                  </sc-if>
+                  <sc-if value="{{ c.web }}" hint-placeholder-val="{{ false }}">
+                    <a href="{{ c.web }}" target="_blank" rel="noopener" style="font-size:12px;color:#0a1c2e;text-decoration:none;font-weight:600;letter-spacing:.04em;border:1px solid #d3dbe1;border-radius:999px;padding:8px 16px;display:inline-flex;align-items:center;gap:5px;" style-hover="background:#f5f7f8;">{{ tp.resources.visitWebsite }} →</a>
+                  </sc-if>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </section>
+
     </div></sc-if>
     <!-- ===================== PAGE: RESERVE ===================== -->
     <sc-if value="{{ isReserve }}" hint-placeholder-val="{{ true }}"><div data-screen-label="Reserve" style="background:#f5f7f8;">
@@ -525,7 +547,7 @@
               </div>
             </div>
             <div style="position:absolute;top:14px;left:16px;font-family:monospace;font-size:10.5px;letter-spacing:.1em;color:#8597a4;z-index:500;pointer-events:none;text-shadow:0 1px 2px rgba(255,255,255,.7);">{{ tp.contact.mapLabel }}</div>
-            <a id="map-directions" href="https://www.google.com/maps/dir/?api=1&destination=27.9467,-111.0536" target="_blank" rel="noopener" style="position:absolute;bottom:16px;right:16px;z-index:500;background:#fff;border:1px solid #d3dbe1;border-radius:999px;cursor:pointer;font-family:'Archivo',sans-serif;font-size:12px;font-weight:600;letter-spacing:.04em;color:#122c44;padding:10px 18px;text-decoration:none;display:inline-flex;align-items:center;gap:6px;">{{ tp.contact.directions }} →</a>
+            <a id="map-directions" href="https://www.google.com/maps/dir/?api=1&destination=27.948278,-111.054639" target="_blank" rel="noopener" style="position:absolute;bottom:16px;right:16px;z-index:500;background:#fff;border:1px solid #d3dbe1;border-radius:999px;cursor:pointer;font-family:'Archivo',sans-serif;font-size:12px;font-weight:600;letter-spacing:.04em;color:#122c44;padding:10px 18px;text-decoration:none;display:inline-flex;align-items:center;gap:6px;">{{ tp.contact.directions }} →</a>
           <div style="background:#fff;border:1px solid #e6eaed;border-radius:8px;padding:32px 30px;">
             <div style="font-family:'Marcellus',serif;font-size:22px;color:#122c44;margin-bottom:20px;">{{ tp.contact.infoTitle }}</div>
             <div style="display:flex;flex-direction:column;gap:16px;font-size:15px;color:#3a4b58;">
@@ -590,7 +612,7 @@
           <div style="display:flex;flex-direction:column;gap:11px;font-size:14px;">
             <button onClick="{{ goHome }}" style="background:none;border:none;color:#8aa0b2;text-align:left;cursor:pointer;padding:0;font-family:inherit;font-size:14px;" style-hover="color:#fff;">{{ t.nav.home }}</button>
             <button onClick="{{ goServices }}" style="background:none;border:none;color:#8aa0b2;text-align:left;cursor:pointer;padding:0;font-family:inherit;font-size:14px;" style-hover="color:#fff;">{{ t.nav.services }}</button>
-            <button onClick="{{ goVisitor }}" style="background:none;border:none;color:#8aa0b2;text-align:left;cursor:pointer;padding:0;font-family:inherit;font-size:14px;" style-hover="color:#fff;">{{ t.nav.visitor }}</button>
+            <button onClick="{{ goResources }}" style="background:none;border:none;color:#8aa0b2;text-align:left;cursor:pointer;padding:0;font-family:inherit;font-size:14px;" style-hover="color:#fff;">{{ t.nav.resources }}</button>
             <button onClick="{{ goContact }}" style="background:none;border:none;color:#8aa0b2;text-align:left;cursor:pointer;padding:0;font-family:inherit;font-size:14px;" style-hover="color:#fff;">{{ t.nav.contact }}</button>
           </div>
         </div>
@@ -628,7 +650,7 @@ const DICT = {
   en: {
     brand:{tag:"SONORA · MÉXICO"},
     topbar:{open:"Mon-Sat 7:30 AM - 5 PM · Sun 8 - 5", vhf:"Monitoring VHF 16"},
-    nav:{home:"Home", services:"Services", visitor:"Visitor Info", contact:"Contact", reserve:"Reserve a Slip"},
+    nav:{home:"Home", services:"Services", resources:"Resources", contact:"Contact", reserve:"Reserve a Slip"},
     hero:{
       variantLabel:"Hero",
       eyebrow:"The Sea of Cortez · Sonora, Mexico",
@@ -669,7 +691,7 @@ const DICT = {
   es: {
     brand:{tag:"SONORA · MÉXICO"},
     topbar:{open:"Lun-Sáb 7:30 - 17:00 · Dom 8 - 17", vhf:"Monitoreo VHF 16"},
-    nav:{home:"Inicio", services:"Servicios", visitor:"Información", contact:"Contacto", reserve:"Reservar Espacio"},
+    nav:{home:"Inicio", services:"Servicios", resources:"Recursos", contact:"Contacto", reserve:"Reservar Espacio"},
     hero:{
       variantLabel:"Portada",
       eyebrow:"El Mar de Cortés · Sonora, México",
@@ -873,6 +895,21 @@ const RESOURCES = {
   ]
 };
 
+const CHARTERS = {
+  en:[
+    {name:"Cortez Charter", type:"Sportfishing", desc:"Full-day and half-day fishing charters targeting marlin, dorado, tuna and more. Family-friendly crews with top-tier tackle.", initials:"CC", phone:"+526221234567", web:"https://cortezcharter.com"},
+    {name:"Sea of Cortez Sailing", type:"Sailing Charters", desc:"Sunset sails, island-hopping and snorkeling excursions aboard a comfortable 42' catamaran. Groups welcome.", initials:"SC", phone:"+526227654321", web:"https://seaofcortezsailing.com"},
+    {name:"Marlin Hunter", type:"Sportfishing", desc:"Experienced captains who know the best spots. Inshore and offshore trips for all skill levels. Catch and release available.", initials:"MH", phone:"+526221113355"},
+    {name:"San Carlos Dive", type:"Diving & Snorkeling", desc:"Guided scuba and snorkeling trips to the best reefs and islands. Equipment included, certifications available.", initials:"SD", phone:"+526229990077"}
+  ],
+  es:[
+    {name:"Cortez Charter", type:"Pesca Deportiva", desc:"Excursiones de pesca de día completo y medio día para marlín, dorado, atún y más. Tripulaciones amigables con equipo de primera.", initials:"CC", phone:"+526221234567", web:"https://cortezcharter.com"},
+    {name:"Sea of Cortez Sailing", type:"Charters de Vela", desc:"Atardeceres, excursiones de isla en isla y esnórquel a bordo de un cómodo catamarán de 42'. Grupos bienvenidos.", initials:"SC", phone:"+526227654321", web:"https://seaofcortezsailing.com"},
+    {name:"Marlin Hunter", type:"Pesca Deportiva", desc:"Capitanes experimentados que conocen los mejores lugares. Excursiones de costa y mar abierto para todos los niveles.", initials:"MH", phone:"+526221113355"},
+    {name:"San Carlos Dive", type:"Buceo y Esnórquel", desc:"Excursiones guiadas de buceo y esnórquel a los mejores arrecifes e islas. Equipo incluido, certificaciones disponibles.", initials:"SD", phone:"+526229990077"}
+  ]
+};
+
 const RESERVE_TYPES = {
   en:[{k:"slip",l:"Marina Slip"},{k:"dry",l:"Dry Storage"},{k:"haul",l:"Haul-Out"},{k:"tractor",l:"Tractor / Launch"}],
   es:[{k:"slip",l:"Espacio en Agua"},{k:"dry",l:"Almacenamiento Seco"},{k:"haul",l:"Sacado"},{k:"tractor",l:"Tractor / Botado"}]
@@ -917,13 +954,13 @@ const SERVICES_FULL = {
 const PAGES = {
   en:{
     services:{eyebrow:"Marina Services", title:"A full-service marina & boatyard", intro:"From a protected slip for the season to a full refit on the hard, everything your vessel needs lives in one place - backed by a crew that has cared for boats on the Sea of Cortez for decades.", amenEyebrow:"On-site", amenTitle:"Featured amenities", ctaTitle:"Ready to bring your boat to San Carlos?", ctaBody:"Reserve a slip or storage, or reach out with questions about your vessel and dates.", ctaBtn:"Reserve Now"},
-    visitor:{eyebrow:"Visitor Information", title:"Everything you need to cruise to Mexico", intro:"Bringing a foreign vessel into Mexico is simpler than most cruisers expect - especially with a team that does it every day. Here's how to get here and what to have ready.", hereEyebrow:"Getting here", hereTitle:"Three ways to arrive", waterLevel:"Live Water Level at Marina San Carlos", entryEyebrow:"Before you arrive", entryTitle:"Entry requirements for Mexico", faqEyebrow:"Good to know", faqTitle:"Frequently asked questions", resEyebrow:"Resources", resTitle:"Forms & downloads", download:"Download"},
+    resources:{eyebrow:"Resources", title:"Everything you need to cruise to Mexico", intro:"Bringing a foreign vessel into Mexico is simpler than most cruisers expect - especially with a team that does it every day. Here's how to get here and what to have ready.", hereEyebrow:"Getting here", hereTitle:"Three ways to arrive", waterLevel:"Live Water Level at Marina San Carlos", entryEyebrow:"Before you arrive", entryTitle:"Entry requirements for Mexico", faqEyebrow:"Good to know", faqTitle:"Frequently asked questions", resEyebrow:"Resources", resTitle:"Forms & downloads", download:"Download", chartersEyebrow:"On the water", chartersTitle:"Recommended charters & captains", chartersBody:"Book a day on the water with trusted local captains who know the Sea of Cortez.", visitWebsite:"Visit website"},
     reserve:{eyebrow:"Reservations", title:"Reserve your space", intro:"Tell us about your vessel and what you need. Submitting this form sends your request straight to our reservations team, who will confirm availability and next steps.", typeLabel:"What would you like to reserve?", ownerTitle:"Owner Information", vesselTitle:"Vessel Information", datesTitle:"Reservation Dates", startDate:"Start Date", endDate:"End Date", launchTitle:"Tractor Launch", launchDate:"Launch Date", docsTitle:"Document Uploads", docsNote:"Upload clear photos or PDFs. You can also email documents to our team later.", submit:"Submit Reservation Request", required:"Please complete the required fields highlighted below.", successTitle:"Request received", successBody:"Thank you - your reservation request has been sent to our team.", successNote:"A confirmation has been routed to info@marinasancarlos.com. We'll be in touch within one business day.", another:"Submit another request", optional:"optional", choose:"Choose file", uploaded:"Uploaded"},
     contact:{eyebrow:"Contact", title:"Get in touch", intro:"Questions about slips, storage, your crossing or your boat? Reach our team directly - we're on the docks every day.", formTitle:"Send us a message", name:"Full Name", email:"Email Address", phone:"Phone", subject:"Subject", message:"Message", send:"Send Message", sentTitle:"Message sent", sentBody:"Thanks for reaching out - we'll reply within one business day.", infoTitle:"Marina office", hoursTitle:"Office hours", hours:"Mon - Sat 7:30 AM - 5 PM · Sun 8 AM - 5 PM", emergencyTitle:"After-hours & emergencies", emergencyBody:"For urgent on-water assistance, hail Marina San Carlos on VHF 16.", mapLabel:"INTERACTIVE MAP · San Carlos, Sonora", directions:"Get directions", activateMap:"Click to interact with map"}
   },
   es:{
     services:{eyebrow:"Servicios de la Marina", title:"Una marina y astillero de servicio completo", intro:"Desde un espacio protegido por temporada hasta una restauración completa en tierra, todo lo que tu embarcación necesita está en un solo lugar - con un equipo que ha cuidado barcos en el Mar de Cortés por décadas.", amenEyebrow:"En sitio", amenTitle:"Amenidades destacadas", ctaTitle:"¿Listo para traer tu barco a San Carlos?", ctaBody:"Reserva un espacio o almacenaje, o escríbenos con dudas sobre tu embarcación y fechas.", ctaBtn:"Reservar Ahora"},
-    visitor:{eyebrow:"Información para Visitantes", title:"Todo lo necesario para navegar a México", intro:"Traer una embarcación extranjera a México es más sencillo de lo que la mayoría espera - sobre todo con un equipo que lo hace a diario. Así llegas y esto es lo que debes tener listo.", hereEyebrow:"Cómo llegar", hereTitle:"Tres formas de llegar", waterLevel:"Nivel del Agua en Tiempo Real en Marina San Carlos", entryEyebrow:"Antes de llegar", entryTitle:"Requisitos de entrada a México", faqEyebrow:"Bueno saber", faqTitle:"Preguntas frecuentes", resEyebrow:"Recursos", resTitle:"Formatos y descargas", download:"Descargar"},
+    resources:{eyebrow:"Recursos", title:"Todo lo necesario para navegar a México", intro:"Traer una embarcación extranjera a México es más sencillo de lo que la mayoría espera - sobre todo con un equipo que lo hace a diario. Así llegas y esto es lo que debes tener listo.", hereEyebrow:"Cómo llegar", hereTitle:"Tres formas de llegar", waterLevel:"Nivel del Agua en Tiempo Real en Marina San Carlos", entryEyebrow:"Antes de llegar", entryTitle:"Requisitos de entrada a México", faqEyebrow:"Bueno saber", faqTitle:"Preguntas frecuentes", resEyebrow:"Recursos", resTitle:"Formatos y descargas", download:"Descargar", chartersEyebrow:"En el agua", chartersTitle:"Charters y capitanes recomendados", chartersBody:"Reserva un día en el agua con capitanes locales de confianza que conocen el Mar de Cortés.", visitWebsite:"Visitar sitio web"},
     reserve:{eyebrow:"Reservaciones", title:"Reserva tu espacio", intro:"Cuéntanos sobre tu embarcación y lo que necesitas. Al enviar este formulario, tu solicitud llega directo a nuestro equipo de reservaciones, que confirmará disponibilidad y siguientes pasos.", typeLabel:"¿Qué deseas reservar?", ownerTitle:"Información del Propietario", vesselTitle:"Información de la Embarcación", datesTitle:"Fechas de Reservación", startDate:"Fecha de Inicio", endDate:"Fecha de Fin", launchTitle:"Lanzamiento con Tractor", launchDate:"Fecha de Lanzamiento", docsTitle:"Carga de Documentos", docsNote:"Sube fotos claras o PDFs. También puedes enviar los documentos por correo más adelante.", submit:"Enviar Solicitud de Reservación", required:"Por favor completa los campos requeridos marcados abajo.", successTitle:"Solicitud recibida", successBody:"Gracias - tu solicitud de reservación ha sido enviada a nuestro equipo.", successNote:"Se ha enviado una confirmación a info@marinasancarlos.com. Te contactaremos en un día hábil.", another:"Enviar otra solicitud", optional:"opcional", choose:"Elegir archivo", uploaded:"Cargado"},
     contact:{eyebrow:"Contacto", title:"Ponte en contacto", intro:"¿Dudas sobre espacios, almacenaje, tu travesía o tu barco? Contacta a nuestro equipo directamente - estamos en los muelles todos los días.", formTitle:"Envíanos un mensaje", name:"Nombre Completo", email:"Correo Electrónico", phone:"Teléfono", subject:"Asunto", message:"Mensaje", send:"Enviar Mensaje", sentTitle:"Mensaje enviado", sentBody:"Gracias por escribirnos - responderemos en un día hábil.", infoTitle:"Oficina de la marina", hoursTitle:"Horario", hours:"Lun - Sáb 7:30 - 17:00 · Dom 8:00 - 17:00", emergencyTitle:"Fuera de horario y emergencias", emergencyBody:"Para asistencia urgente en el agua, llama a Marina San Carlos por VHF 16.", mapLabel:"MAPA INTERACTIVO · San Carlos, Sonora", directions:"Cómo llegar", activateMap:"Haz clic para interactuar con el mapa"}
   }
@@ -1020,19 +1057,20 @@ class Component extends DCLogic {
     }).addTo(map);
 
     const MARINA_PINS = [
-      { lat: 27.948278, lng: -111.054639, name: "Marina San Carlos", sub: "Edificio Marina" },
-      { lat: 27.956509, lng: -111.051465, name: "Marina San Carlos", sub: "Dry Storage" }
+      { lat: 27.948278, lng: -111.054639, name: "Marina San Carlos", sub: "Edificio Marina", dirs: "27.948278,-111.054639" },
+      { lat: 27.956509, lng: -111.051465, name: "Marina San Carlos", sub: "Dry Storage", dirs: "27.956509,-111.051465" }
     ];
 
     MARINA_PINS.forEach(p => {
       // Pin SVG
       const pinSvg = '<svg width="28" height="40" viewBox="0 0 36 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18 0C8.1 0 0 8.1 0 18c0 13.5 18 30 18 30s18-16.5 18-30C36 8.1 27.9 0 18 0Z" fill="#d32f2f"/><circle cx="18" cy="17" r="7" fill="#fff"/></svg>';
-      const labelHtml = '<div style="display:inline-flex;align-items:center;gap:6px;white-space:nowrap;">' +
+      const dirsUrl = "https://www.google.com/maps/dir/?api=1&destination=" + p.dirs;
+      const labelHtml = '<a href="' + dirsUrl + '" target="_blank" rel="noopener" style="text-decoration:none;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;">' +
         pinSvg +
         '<div style="background:#fff;border:1px solid #d3dbe1;border-radius:6px;padding:5px 11px;font-family:Archivo,sans-serif;font-size:12px;font-weight:600;color:#122c44;box-shadow:0 2px 8px rgba(0,0,0,.1);line-height:1.3;">' +
         '<div>' + p.name + '</div>' +
         '<div style="font-size:11px;font-weight:400;color:#5a6b78;">' + p.sub + '</div>' +
-        '</div></div>';
+        '</div></a>';
 
       const labelIcon = L.divIcon({
         className: "",
@@ -1046,7 +1084,8 @@ class Component extends DCLogic {
         .addTo(map)
         .bindPopup(
           '<div style="font-family:Archivo,sans-serif;font-size:14px;font-weight:600;color:#122c44;">' + p.name + '</div>' +
-          '<div style="font-family:Archivo,sans-serif;font-size:12px;color:#3a4b58;">' + p.sub + '</div>'
+          '<div style="font-family:Archivo,sans-serif;font-size:12px;color:#3a4b58;">' + p.sub + '</div>' +
+          '<a href="' + dirsUrl + '" target="_blank" rel="noopener" style="display:inline-block;margin-top:8px;background:#0a1c2e;color:#fff;border-radius:999px;padding:6px 14px;font-size:11px;font-weight:600;letter-spacing:.04em;text-decoration:none;">📍 Get Directions</a>'
         );
     });
 
@@ -1078,7 +1117,7 @@ class Component extends DCLogic {
     const navDef = [
       {key:"home", label:t.nav.home, p:"home"},
       {key:"services", label:t.nav.services, p:"services"},
-      {key:"visitor", label:t.nav.visitor, p:"visitor"},
+      {key:"resources", label:t.nav.resources, p:"resources"},
       {key:"contact", label:t.nav.contact, p:"contact"}
     ];
     const navItems = navDef.map(n => ({ label:n.label, active: page===n.p, onClick:()=>this.go(n.p) }));
@@ -1111,6 +1150,7 @@ class Component extends DCLogic {
     const entryReqs = ENTRY_REQS[lang].map((e,i)=>({num:String(i+1).padStart(2,"0"),t:e.t,d:e.d}));
     const faqs = FAQS[lang].map((f,i)=>({q:f.q,a:f.a,open:this.state.faqOpen===i,sign:this.state.faqOpen===i?"-":"+",onClick:()=>this.toggleFaq(i)}));
     const resources = RESOURCES[lang];
+    const charters = CHARTERS[lang];
     const reserveTypes = RESERVE_TYPES[lang].map(rt=>{ const sel=this.state.resType===rt.k; return {label:rt.l,selected:sel,onClick:()=>this.setResType(rt.k),chipStyle:{flex:"1 1 140px",minWidth:"130px",padding:"18px 16px",borderRadius:"6px",border:"1px solid "+(sel?"#0a1c2e":"#d3dbe1"),background:sel?"#0a1c2e":"#fff",color:sel?"#fff":"#3a4b58",cursor:"pointer",fontFamily:"'Archivo',sans-serif",fontSize:"14.5px",fontWeight:sel?"600":"500",letterSpacing:".02em",textAlign:"center",transition:"all .2s"}}; });
     const baseInput = {width:"100%",padding:"13px 15px",border:"1px solid #d3dbe1",borderRadius:"4px",fontSize:"15px",fontFamily:"'Archivo',sans-serif",color:"#11202e",background:"#fff",outline:"none",boxSizing:"border-box"};
     const inStyle = (err)=> err ? {...baseInput,borderColor:"#c0563f",background:"#fdf5f3"} : baseInput;
@@ -1130,10 +1170,10 @@ class Component extends DCLogic {
       rootStyle: { "--accent":"#c2a978" },
       lang, t,
       isHome: page==="home", isServices: page==="services",
-      isVisitor: page==="visitor", isReserve: page==="reserve", isContact: page==="contact",
+      isResources: page==="resources", isReserve: page==="reserve", isContact: page==="contact",
       navItems,
       goHome:()=>this.go("home"), goServices:()=>this.go("services"),
-      goVisitor:()=>this.go("visitor"), goContact:()=>this.go("contact"),
+      goResources:()=>this.go("resources"), goContact:()=>this.go("contact"),
       goReserve:()=>this.go("reserve"),
       setEN:()=>this.setState({lang:"en"}), setES:()=>this.setState({lang:"es"}),
       langEnStyle: langBtn(lang==="en"), langEsStyle: langBtn(lang==="es"),
@@ -1145,7 +1185,7 @@ class Component extends DCLogic {
       testimonials: TESTIMONIALS[lang],
       affiliates: AFFILIATES[lang],
       tp,
-      servicesAll, servicesDetail, amenities, gettingHere, entryReqs, faqs, resources,
+      servicesAll, servicesDetail, amenities, gettingHere, entryReqs, faqs, resources, charters,
       reserveTypes, ownerFields, vesselFields, docUploads, showReserveError,
       showReservationDates: this.state.resType==="slip"||this.state.resType==="dry",
       showTractorDate: this.state.resType==="tractor",
