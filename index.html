@@ -257,11 +257,11 @@
         </div>
         <div class="msc-grid-auto" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px;">
           <sc-for list="{{ affiliates }}" as="a" hint-placeholder-count="3">
-            <div style="border:1px solid #e6eaed;border-radius:6px;padding:34px 32px;background:#fff;cursor:pointer;transition:box-shadow .3s,transform .3s,border-color .3s;" style-hover="box-shadow:0 18px 44px rgba(10,28,46,.1);transform:translateY(-3px);border-color:#d3dbe1;">
+            <button onClick="{{ a.onClick }}" style="display:block;width:100%;text-align:left;font-family:inherit;border:1px solid #e6eaed;border-radius:6px;padding:34px 32px;background:#fff;cursor:pointer;transition:box-shadow .3s,transform .3s,border-color .3s;" style-hover="box-shadow:0 18px 44px rgba(10,28,46,.1);transform:translateY(-3px);border-color:#d3dbe1;">
               <div style="height:30px;display:flex;align-items:center;font-family:'Marcellus',serif;font-size:22px;color:#122c44;letter-spacing:.03em;">{{ a.name }}</div>
               <p style="font-size:14.5px;line-height:1.65;color:#5a6b78;margin:16px 0 18px;font-weight:300;">{{ a.desc }}</p>
               <span style="font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:#122c44;font-weight:600;">{{ t.affiliates.visit }} →</span>
-            </div>
+            </button>
           </sc-for>
         </div>
       </section>
@@ -435,36 +435,37 @@
       </section>
     </div></sc-if>
 
-      <!-- Recommended Charters -->
-      <section style="background:#fff;border-top:1px solid #e6eaed;padding:clamp(56px,7vw,90px) 0;">
-        <div style="max-width:1320px;margin:0 auto;padding:0 36px;">
-          <div style="text-align:center;margin-bottom:40px;">
-            <div style="display:flex;align-items:center;gap:14px;justify-content:center;margin-bottom:16px;"><span style="width:30px;height:1px;background:#c2a978;"></span><span style="font-family:'Archivo',sans-serif;font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:#7d8b97;">{{ tp.resources.chartersEyebrow }}</span><span style="width:30px;height:1px;background:#c2a978;"></span></div>
-            <h2 style="font-family:'Marcellus',serif;color:#122c44;font-size:clamp(28px,3.6vw,42px);font-weight:400;margin:0;">{{ tp.resources.chartersTitle }}</h2>
-            <p style="font-size:16px;color:#5a6b78;max-width:560px;margin:14px auto 0;line-height:1.7;font-weight:300;">{{ tp.resources.chartersBody }}</p>
-          </div>
-          <div class="msc-grid-auto" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;">
-            <sc-for list="{{ charters }}" as="c" hint-placeholder-count="4">
-              <div style="border:1px solid #e6eaed;border-radius:8px;padding:32px;background:#fff;transition:box-shadow .3s,transform .3s;display:flex;flex-direction:column;" style-hover="box-shadow:0 12px 36px rgba(10,28,46,.08);transform:translateY(-2px);">
-                <div style="background:#0a1c2e;color:#c2a978;width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:17px;margin-bottom:18px;flex-shrink:0;">{{ c.initials }}</div>
-                <h3 style="font-family:'Marcellus',serif;color:#122c44;font-size:20px;font-weight:400;margin:0 0 6px;">{{ c.name }}</h3>
-                <div style="font-size:13px;color:#7d8b97;letter-spacing:.08em;text-transform:uppercase;font-weight:500;margin-bottom:14px;">{{ c.type }}</div>
-                <p style="font-size:14.5px;line-height:1.7;color:#5a6b78;margin:0 0 18px;font-weight:300;flex:1;">{{ c.desc }}</p>
-                <div style="display:flex;gap:12px;flex-wrap:wrap;">
-                  <sc-if value="{{ c.phone }}" hint-placeholder-val="{{ true }}">
-                    <a href="tel:{{ c.phone }}" style="font-size:12px;color:#0a1c2e;text-decoration:none;font-weight:600;letter-spacing:.04em;border:1px solid #d3dbe1;border-radius:999px;padding:8px 16px;display:inline-flex;align-items:center;gap:5px;" style-hover="background:#f5f7f8;">{{ c.phone }}</a>
-                  </sc-if>
-                  <sc-if value="{{ c.web }}" hint-placeholder-val="{{ false }}">
-                    <a href="{{ c.web }}" target="_blank" rel="noopener" style="font-size:12px;color:#0a1c2e;text-decoration:none;font-weight:600;letter-spacing:.04em;border:1px solid #d3dbe1;border-radius:999px;padding:8px 16px;display:inline-flex;align-items:center;gap:5px;" style-hover="background:#f5f7f8;">{{ tp.resources.visitWebsite }} →</a>
-                  </sc-if>
-                </div>
-              </div>
-            </sc-for>
-          </div>
+    <!-- ===================== PAGE: CHARTER & CAPTAINS ===================== -->
+    <sc-if value="{{ isCharters }}" hint-placeholder-val="{{ false }}"><div data-screen-label="Charters">
+      <section style="background:#0a1c2e;padding:clamp(60px,8vw,100px) 0 clamp(48px,6vw,72px);">
+        <div style="max-width:1320px;margin:0 auto;padding:0 36px;animation:mscFade .6s ease both;">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;"><span style="width:30px;height:1px;background:#c2a978;"></span><span style="font-family:'Archivo',sans-serif;font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:#8aa0b2;">{{ tp.chartersPage.eyebrow }}</span></div>
+          <h1 style="font-family:'Marcellus',serif;color:#fff;font-size:clamp(34px,5vw,66px);font-weight:400;margin:0;line-height:1.04;max-width:880px;">{{ tp.chartersPage.title }}</h1>
+          <p style="color:#9fb1c0;font-size:18px;line-height:1.75;margin:24px 0 0;max-width:640px;font-weight:300;">{{ tp.chartersPage.intro }}</p>
         </div>
       </section>
-
+      <section style="max-width:1320px;margin:0 auto;padding:clamp(56px,7vw,90px) 36px;">
+        <div class="msc-grid-auto" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;">
+          <sc-for list="{{ charters }}" as="c" hint-placeholder-count="1">
+            <div style="border:1px solid #e6eaed;border-radius:8px;padding:32px;background:#fff;transition:box-shadow .3s,transform .3s;display:flex;flex-direction:column;" style-hover="box-shadow:0 12px 36px rgba(10,28,46,.08);transform:translateY(-2px);">
+              <div style="background:#0a1c2e;color:#c2a978;width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:17px;margin-bottom:18px;flex-shrink:0;">{{ c.initials }}</div>
+              <h3 style="font-family:'Marcellus',serif;color:#122c44;font-size:20px;font-weight:400;margin:0 0 6px;">{{ c.name }}</h3>
+              <div style="font-size:13px;color:#7d8b97;letter-spacing:.08em;text-transform:uppercase;font-weight:500;margin-bottom:14px;">{{ c.type }}</div>
+              <p style="font-size:14.5px;line-height:1.7;color:#5a6b78;margin:0 0 18px;font-weight:300;flex:1;">{{ c.desc }}</p>
+              <div style="display:flex;gap:12px;flex-wrap:wrap;">
+                <sc-if value="{{ c.phone }}" hint-placeholder-val="{{ false }}">
+                  <a href="tel:{{ c.phone }}" style="font-size:12px;color:#0a1c2e;text-decoration:none;font-weight:600;letter-spacing:.04em;border:1px solid #d3dbe1;border-radius:999px;padding:8px 16px;display:inline-flex;align-items:center;gap:5px;" style-hover="background:#f5f7f8;">{{ c.phone }}</a>
+                </sc-if>
+                <sc-if value="{{ c.web }}" hint-placeholder-val="{{ true }}">
+                  <a href="{{ c.web }}" target="_blank" rel="noopener" style="font-size:12px;color:#0a1c2e;text-decoration:none;font-weight:600;letter-spacing:.04em;border:1px solid #d3dbe1;border-radius:999px;padding:8px 16px;display:inline-flex;align-items:center;gap:5px;" style-hover="background:#f5f7f8;">{{ tp.chartersPage.visitWebsite }} →</a>
+                </sc-if>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </section>
     </div></sc-if>
+
     <!-- ===================== PAGE: RESERVE ===================== -->
     <sc-if value="{{ isReserve }}" hint-placeholder-val="{{ true }}"><div data-screen-label="Reserve" style="background:#f5f7f8;">
       <section style="background:#0a1c2e;padding:clamp(60px,8vw,96px) 0 clamp(44px,6vw,64px);">
@@ -545,11 +546,25 @@
               </div>
             </sc-if>
 
+            <sc-if value="{{ showHaulDate }}" hint-placeholder-val="{{ false }}">
+              <h2 style="font-family:'Marcellus',serif;color:#122c44;font-size:24px;font-weight:400;margin:0 0 6px;">{{ tp.reserve.haulDateTitle }}</h2>
+              <div style="width:100%;height:1px;background:#e6eaed;margin:0 0 24px;"></div>
+              <div style="max-width:380px;margin-bottom:42px;">
+                <label style="display:block;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#5a6b78;font-weight:600;margin-bottom:8px;">{{ tp.reserve.serviceDate }} *</label>
+                <input type="date" value="{{ reservationHaulDate }}" onChange="{{ onHaulDateChange }}" style="{{ dateInputStyle }}" style-focus="border-color:#0a1c2e;box-shadow:0 0 0 3px rgba(10,28,46,.07);">
+              </div>
+            </sc-if>
+
             <sc-if value="{{ showTractorDate }}" hint-placeholder-val="{{ false }}">
               <h2 style="font-family:'Marcellus',serif;color:#122c44;font-size:24px;font-weight:400;margin:0 0 6px;">{{ tp.reserve.launchTitle }}</h2>
               <div style="width:100%;height:1px;background:#e6eaed;margin:0 0 24px;"></div>
+              <div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:20px;">
+                <sc-for list="{{ tractorActions }}" as="ta" hint-placeholder-count="2">
+                  <button onClick="{{ ta.onClick }}" style="{{ ta.chipStyle }}">{{ ta.label }}</button>
+                </sc-for>
+              </div>
               <div style="max-width:380px;margin-bottom:42px;">
-                <label style="display:block;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#5a6b78;font-weight:600;margin-bottom:8px;">{{ tp.reserve.launchDate }} *</label>
+                <label style="display:block;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#5a6b78;font-weight:600;margin-bottom:8px;">{{ tp.reserve.serviceDate }} *</label>
                 <input type="date" value="{{ reservationLaunchDate }}" onChange="{{ onLaunchDateChange }}" style="{{ dateInputStyle }}" style-focus="border-color:#0a1c2e;box-shadow:0 0 0 3px rgba(10,28,46,.07);">
               </div>
             </sc-if>
@@ -677,10 +692,10 @@
         <div>
           <div style="color:#fff;font-size:11px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:18px;">{{ t.footer.partners }}</div>
           <div class="msc-footer-links" style="display:flex;flex-direction:column;gap:11px;font-size:14px;">
-            <a href="#" style="color:#8aa0b2;text-decoration:none;cursor:pointer;" style-hover="color:#fff;">Star Marine</a>
-            <a href="#" style="color:#8aa0b2;text-decoration:none;cursor:pointer;" style-hover="color:#fff;">Loma del Mar</a>
-            <a href="#" style="color:#8aa0b2;text-decoration:none;cursor:pointer;" style-hover="color:#fff;">AMMT</a>
-            <a href="#" style="color:#8aa0b2;text-decoration:none;cursor:pointer;" style-hover="color:#fff;">Charter Boats</a>
+            <a href="https://starmarine.mx" target="_blank" rel="noopener" style="color:#8aa0b2;text-decoration:none;cursor:pointer;" style-hover="color:#fff;">Star Marine</a>
+            <a href="https://lomadelmarsancarlos.com/home" target="_blank" rel="noopener" style="color:#8aa0b2;text-decoration:none;cursor:pointer;" style-hover="color:#fff;">Loma del Mar</a>
+            <a href="https://ammtac.com/es/" target="_blank" rel="noopener" style="color:#8aa0b2;text-decoration:none;cursor:pointer;" style-hover="color:#fff;">AMMT</a>
+            <button onClick="{{ goCharters }}" style="background:none;border:none;padding:0;font-family:inherit;color:#8aa0b2;text-decoration:none;cursor:pointer;text-align:left;font-size:14px;" style-hover="color:#fff;">Charter Boats</button>
           </div>
         </div>
         <div>
@@ -708,7 +723,7 @@ const DICT = {
   en: {
     brand:{tag:"SONORA · MÉXICO"},
     topbar:{open:"Mon-Sat 7:30 AM - 5 PM · Sun 8 - 5", vhf:"Monitoring VHF 16", tide:"San Carlos Tide"},
-    nav:{home:"Home", services:"Services", resources:"Resources", contact:"Contact", reserve:"Reserve a Slip"},
+    nav:{home:"Home", services:"Services", resources:"Resources", contact:"Contact", reserve:"Reserve"},
     hero:{
       variantLabel:"Hero",
       eyebrow:"The Sea of Cortez · Sonora, Mexico",
@@ -717,7 +732,7 @@ const DICT = {
       titleB:"Your home port on the Sea of Cortez",
       subB:"Deep-water slips, dry storage and a full boatyard, sheltered beneath the twin peaks of Tetakawi.",
       titleC:"A safe harbor beneath Tetakawi",
-      ctaPrimary:"Reserve a Slip", ctaSecondary:"Explore Services", ctaContact:"Contact Us"
+      ctaPrimary:"Reserve", ctaSecondary:"Explore Services", ctaContact:"Contact Us"
     },
     intro:{
       eyebrow:"Welcome to Marina San Carlos",
@@ -749,7 +764,7 @@ const DICT = {
   es: {
     brand:{tag:"SONORA · MÉXICO"},
     topbar:{open:"Lun-Sáb 7:30 - 17:00 · Dom 8 - 17", vhf:"Monitoreo VHF 16", tide:"Marea de San Carlos"},
-    nav:{home:"Inicio", services:"Servicios", resources:"Recursos", contact:"Contacto", reserve:"Reservar Espacio"},
+    nav:{home:"Inicio", services:"Servicios", resources:"Recursos", contact:"Contacto", reserve:"Reservar"},
     hero:{
       variantLabel:"Portada",
       eyebrow:"El Mar de Cortés · Sonora, México",
@@ -758,7 +773,7 @@ const DICT = {
       titleB:"Tu puerto base en el Mar de Cortés",
       subB:"Espacios en agua profunda, almacenamiento en seco y un astillero completo, al amparo de los picos gemelos del Tetakawi.",
       titleC:"Un puerto seguro bajo el Tetakawi",
-      ctaPrimary:"Reservar Espacio", ctaSecondary:"Ver Servicios", ctaContact:"Contáctanos"
+      ctaPrimary:"Reservar", ctaSecondary:"Ver Servicios", ctaContact:"Contáctanos"
     },
     intro:{
       eyebrow:"Bienvenido a Marina San Carlos",
@@ -831,16 +846,16 @@ const TESTIMONIALS = {
 
 const AFFILIATES = {
   en:[
-    {name:"Star Marine", desc:"Marine parts, chandlery and outboard service - the bay's trusted supply store."},
-    {name:"Loma del Mar", desc:"Waterfront real estate, condos and vacation rentals overlooking the marina."},
-    {name:"AMMT", desc:"Asociación Mexicana de Marinas Turísticas - the national marina association co-founded by Marina San Carlos."},
-    {name:"Charter Boats", desc:"Sportfishing and sailing charters out of the bay, arranged through our front desk."}
+    {name:"Star Marine", desc:"Marine parts, chandlery and outboard service - the bay's trusted supply store.", url:"https://starmarine.mx"},
+    {name:"Loma del Mar", desc:"Waterfront real estate, condos and vacation rentals overlooking the marina.", url:"https://lomadelmarsancarlos.com/home"},
+    {name:"AMMT", desc:"Asociación Mexicana de Marinas Turísticas - the national marina association co-founded by Marina San Carlos.", url:"https://ammtac.com/es/"},
+    {name:"Charter Boats", desc:"Sportfishing and sailing charters out of the bay, arranged through our front desk.", url:"internal:charters"}
   ],
   es:[
-    {name:"Star Marine", desc:"Refacciones marinas, tienda náutica y servicio de motores - la tienda de confianza de la bahía."},
-    {name:"Loma del Mar", desc:"Bienes raíces frente al mar, condominios y rentas vacacionales con vista a la marina."},
-    {name:"AMMT", desc:"Asociación Mexicana de Marinas Turísticas - la asociación nacional de marinas cofundada por Marina San Carlos."},
-    {name:"Charter Boats", desc:"Charters de pesca deportiva y vela en la bahía, gestionados en nuestra recepción."}
+    {name:"Star Marine", desc:"Refacciones marinas, tienda náutica y servicio de motores - la tienda de confianza de la bahía.", url:"https://starmarine.mx"},
+    {name:"Loma del Mar", desc:"Bienes raíces frente al mar, condominios y rentas vacacionales con vista a la marina.", url:"https://lomadelmarsancarlos.com/home"},
+    {name:"AMMT", desc:"Asociación Mexicana de Marinas Turísticas - la asociación nacional de marinas cofundada por Marina San Carlos.", url:"https://ammtac.com/es/"},
+    {name:"Charter Boats", desc:"Charters de pesca deportiva y vela en la bahía, gestionados en nuestra recepción.", url:"internal:charters"}
   ]
 };
 
@@ -955,22 +970,16 @@ const RESOURCES = {
 
 const CHARTERS = {
   en:[
-    {name:"Cortez Charter", type:"Sportfishing", desc:"Full-day and half-day fishing charters targeting marlin, dorado, tuna and more. Family-friendly crews with top-tier tackle.", initials:"CC", phone:"+526221234567", web:"https://cortezcharter.com"},
-    {name:"Sea of Cortez Sailing", type:"Sailing Charters", desc:"Sunset sails, island-hopping and snorkeling excursions aboard a comfortable 42' catamaran. Groups welcome.", initials:"SC", phone:"+526227654321", web:"https://seaofcortezsailing.com"},
-    {name:"Marlin Hunter", type:"Sportfishing", desc:"Experienced captains who know the best spots. Inshore and offshore trips for all skill levels. Catch and release available.", initials:"MH", phone:"+526221113355"},
-    {name:"San Carlos Dive", type:"Diving & Snorkeling", desc:"Guided scuba and snorkeling trips to the best reefs and islands. Equipment included, certifications available.", initials:"SD", phone:"+526229990077"}
+    {name:"Mareax", type:"Charter Service", desc:"Sportfishing and sailing charters out of the bay, arranged directly through Mareax.", initials:"MX", web:"https://www.mareax.com/v2"}
   ],
   es:[
-    {name:"Cortez Charter", type:"Pesca Deportiva", desc:"Excursiones de pesca de día completo y medio día para marlín, dorado, atún y más. Tripulaciones amigables con equipo de primera.", initials:"CC", phone:"+526221234567", web:"https://cortezcharter.com"},
-    {name:"Sea of Cortez Sailing", type:"Charters de Vela", desc:"Atardeceres, excursiones de isla en isla y esnórquel a bordo de un cómodo catamarán de 42'. Grupos bienvenidos.", initials:"SC", phone:"+526227654321", web:"https://seaofcortezsailing.com"},
-    {name:"Marlin Hunter", type:"Pesca Deportiva", desc:"Capitanes experimentados que conocen los mejores lugares. Excursiones de costa y mar abierto para todos los niveles.", initials:"MH", phone:"+526221113355"},
-    {name:"San Carlos Dive", type:"Buceo y Esnórquel", desc:"Excursiones guiadas de buceo y esnórquel a los mejores arrecifes e islas. Equipo incluido, certificaciones disponibles.", initials:"SD", phone:"+526229990077"}
+    {name:"Mareax", type:"Servicio de Charter", desc:"Charters de pesca deportiva y vela en la bahía, gestionados directamente con Mareax.", initials:"MX", web:"https://www.mareax.com/v2"}
   ]
 };
 
 const RESERVE_TYPES = {
-  en:[{k:"slip",l:"Marina Slip"},{k:"dry",l:"Dry Storage"},{k:"haul",l:"Haul-Out"},{k:"tractor",l:"Tractor / Launch"}],
-  es:[{k:"slip",l:"Espacio en Agua"},{k:"dry",l:"Almacenamiento Seco"},{k:"haul",l:"Sacado"},{k:"tractor",l:"Tractor / Botado"}]
+  en:[{k:"slip",l:"Marina Slip"},{k:"dry",l:"Dry Storage"},{k:"haul",l:"Hydraulic Trailer"},{k:"tractor",l:"Tractor"}],
+  es:[{k:"slip",l:"Espacio en Agua"},{k:"dry",l:"Almacenamiento Seco"},{k:"haul",l:"Remolque Hidráulico"},{k:"tractor",l:"Tractor"}]
 };
 
 const OWNER_FIELDS = {
@@ -981,8 +990,8 @@ const OWNER_FIELDS = {
 const COUNTRIES = ["Afghanistan","Albania","Algeria","American Samoa","Andorra","Angola","Antigua and Barbuda","Argentina","Armenia","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bermuda","Bhutan","Bolivia","Bosnia and Herzegovina","Botswana","Brazil","Brunei","Bulgaria","Burkina Faso","Burundi","Cambodia","Cameroon","Canada","Cape Verde","Cayman Islands","Central African Republic","Chad","Chile","China","Colombia","Comoros","Congo","Costa Rica","Croatia","Cuba","Cyprus","Czech Republic","Denmark","Djibouti","Dominica","Dominican Republic","Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Ethiopia","Fiji","Finland","France","Gabon","Gambia","Georgia","Germany","Ghana","Greece","Grenada","Guatemala","Guinea","Guinea-Bissau","Guyana","Haiti","Honduras","Hong Kong","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel","Italy","Jamaica","Japan","Jordan","Kazakhstan","Kenya","Kiribati","Kosovo","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands","Mauritania","Mauritius","Mexico","Micronesia","Moldova","Monaco","Mongolia","Montenegro","Morocco","Mozambique","Myanmar","Namibia","Nauru","Nepal","Netherlands","New Zealand","Nicaragua","Niger","Nigeria","North Korea","North Macedonia","Norway","Oman","Pakistan","Palau","Palestine","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Qatar","Romania","Russia","Rwanda","Saint Kitts and Nevis","Saint Lucia","Saint Vincent and the Grenadines","Samoa","San Marino","Sao Tome and Principe","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","South Korea","South Sudan","Spain","Sri Lanka","Sudan","Suriname","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Timor-Leste","Togo","Tonga","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan","Tuvalu","Uganda","Ukraine","United Arab Emirates","United Kingdom","United States","Uruguay","Uzbekistan","Vanuatu","Vatican City","Venezuela","Vietnam","Yemen","Zambia","Zimbabwe"];
 
 const VESSEL_FIELDS = {
-  en:[{k:"vName",l:"Vessel Name",req:true,half:true},{k:"flag",l:"Flag State / Country",req:true,half:true,type:"select"},{k:"make",l:"Make",req:false,half:true},{k:"model",l:"Model",req:false,half:true},{k:"length",l:"Length (LOA)",req:true,half:true},{k:"beam",l:"Beam",req:false,half:true},{k:"draft",l:"Draft",req:false,half:true},{k:"reg",l:"Hull Number",req:false,half:true}],
-  es:[{k:"vName",l:"Nombre de la Embarcación",req:true,half:true},{k:"flag",l:"País / Bandera",req:true,half:true,type:"select"},{k:"make",l:"Marca",req:false,half:true},{k:"model",l:"Modelo",req:false,half:true},{k:"length",l:"Eslora (LOA)",req:true,half:true},{k:"beam",l:"Manga",req:false,half:true},{k:"draft",l:"Calado",req:false,half:true},{k:"reg",l:"No. de Casco",req:false,half:true}]
+  en:[{k:"vName",l:"Vessel Name",req:true,half:true},{k:"flag",l:"Flag State / Country",req:true,half:true,type:"select"},{k:"make",l:"Make",req:false,half:true},{k:"model",l:"Model",req:false,half:true},{k:"length",l:"Length (LOA)",req:true,half:true},{k:"beam",l:"Beam",req:false,half:true},{k:"draft",l:"Draft",req:false,half:true},{k:"weight",l:"Weight (tons)",req:false,half:true},{k:"reg",l:"Hull Number",req:false,half:true}],
+  es:[{k:"vName",l:"Nombre de la Embarcación",req:true,half:true},{k:"flag",l:"País / Bandera",req:true,half:true,type:"select"},{k:"make",l:"Marca",req:false,half:true},{k:"model",l:"Modelo",req:false,half:true},{k:"length",l:"Eslora (LOA)",req:true,half:true},{k:"beam",l:"Manga",req:false,half:true},{k:"draft",l:"Calado",req:false,half:true},{k:"weight",l:"Peso (toneladas)",req:false,half:true},{k:"reg",l:"No. de Casco",req:false,half:true}]
 };
 
 const DOC_UPLOADS = {
@@ -1012,14 +1021,16 @@ const SERVICES_FULL = {
 const PAGES = {
   en:{
     services:{eyebrow:"Marina Services", title:"A full-service marina & boatyard", intro:"From a protected slip for the season to a full refit on the hard, everything your vessel needs lives in one place - backed by a crew that has cared for boats on the Sea of Cortez for decades.", amenEyebrow:"On-site", amenTitle:"Featured amenities", ctaTitle:"Ready to bring your boat to San Carlos?", ctaBody:"Reserve a slip or storage, or reach out with questions about your vessel and dates.", ctaBtn:"Reserve Now"},
-    resources:{eyebrow:"Resources", title:"Everything you need to cruise to Mexico", intro:"Bringing a foreign vessel into Mexico is simpler than most cruisers expect - especially with a team that does it every day. Here's how to get here and what to have ready.", hereEyebrow:"Getting here", hereTitle:"Three ways to arrive", waterLevel:"Live Water Level at Marina San Carlos", entryEyebrow:"Before you arrive", entryTitle:"Entry requirements for Mexico", faqEyebrow:"Good to know", faqTitle:"Frequently asked questions", resEyebrow:"Resources", resTitle:"Forms & downloads", download:"Download", chartersEyebrow:"On the water", chartersTitle:"Recommended charters & captains", chartersBody:"Book a day on the water with trusted local captains who know the Sea of Cortez.", visitWebsite:"Visit website"},
-    reserve:{eyebrow:"Reservations", title:"Reserve your space", intro:"Tell us about your vessel and what you need. Submitting this form sends your request straight to our reservations team, who will confirm availability and next steps.", typeLabel:"What would you like to reserve?", ownerTitle:"Owner Information", vesselTitle:"Vessel Information", datesTitle:"Reservation Dates", startDate:"Start Date", endDate:"End Date", launchTitle:"Tractor Launch", launchDate:"Launch Date", docsTitle:"Document Uploads", docsNote:"Upload clear photos or PDFs. You can also email documents to our team later.", submit:"Submit Reservation Request", required:"Please complete the required fields highlighted below.", successTitle:"Request received", successBody:"Thank you - your reservation request has been sent to our team.", successNote:"A confirmation has been routed to info@marinasancarlos.com. We'll be in touch within one business day.", another:"Submit another request", optional:"optional", choose:"Choose file", uploaded:"Uploaded"},
+    resources:{eyebrow:"Resources", title:"Everything you need to cruise to Mexico", intro:"Bringing a foreign vessel into Mexico is simpler than most cruisers expect - especially with a team that does it every day. Here's how to get here and what to have ready.", hereEyebrow:"Getting here", hereTitle:"Three ways to arrive", waterLevel:"Live Water Level at Marina San Carlos", entryEyebrow:"Before you arrive", entryTitle:"Entry requirements for Mexico", faqEyebrow:"Good to know", faqTitle:"Frequently asked questions", resEyebrow:"Resources", resTitle:"Forms & downloads", download:"Download"},
+    chartersPage:{eyebrow:"On the water", title:"Charter & Captains", intro:"Book a day on the water with trusted local charter operators who know the Sea of Cortez. We're growing this list - check back for more options soon.", visitWebsite:"Visit website"},
+    reserve:{eyebrow:"Reservations", title:"Reserve your space", intro:"Tell us about your vessel and what you need. Submitting this form sends your request straight to our reservations team, who will confirm availability and next steps.", typeLabel:"What would you like to reserve?", ownerTitle:"Owner Information", vesselTitle:"Vessel Information", datesTitle:"Reservation Dates", startDate:"Start Date", endDate:"End Date", launchTitle:"Tractor Service", haulDateTitle:"Hydraulic Trailer Date", serviceDate:"Date", haulOutOption:"Haul Out", launchOption:"Launch", docsTitle:"Document Uploads", docsNote:"Upload clear photos or PDFs. You can also email documents to our team later.", submit:"Submit Reservation Request", required:"Please complete the required fields highlighted below.", successTitle:"Request received", successBody:"Thank you - your reservation request has been sent to our team.", successNote:"A confirmation has been routed to our reservations team. We'll be in touch within one business day.", another:"Submit another request", optional:"optional", choose:"Choose file", uploaded:"Uploaded"},
     contact:{eyebrow:"Contact", title:"Get in touch", intro:"Questions about slips, storage, your crossing or your boat? Reach our team directly - we're on the docks every day.", formTitle:"Send us a message", name:"Full Name", email:"Email Address", phone:"Phone", subject:"Subject", message:"Message", send:"Send Message", sentTitle:"Message sent", sentBody:"Thanks for reaching out - we'll reply within one business day.", infoTitle:"Marina office", hoursTitle:"Office hours", hours:"Mon - Sat 7:30 AM - 5 PM · Sun 8 AM - 5 PM", emergencyTitle:"After-hours & emergencies", emergencyBody:"For urgent on-water assistance, hail Marina San Carlos on VHF 16.", mapLabel:"INTERACTIVE MAP · San Carlos, Sonora", directions:"Get directions", activateMap:"Click to interact with map"}
   },
   es:{
     services:{eyebrow:"Servicios de la Marina", title:"Una marina y astillero de servicio completo", intro:"Desde un espacio protegido por temporada hasta una restauración completa en tierra, todo lo que tu embarcación necesita está en un solo lugar - con un equipo que ha cuidado barcos en el Mar de Cortés por décadas.", amenEyebrow:"En sitio", amenTitle:"Amenidades destacadas", ctaTitle:"¿Listo para traer tu barco a San Carlos?", ctaBody:"Reserva un espacio o almacenaje, o escríbenos con dudas sobre tu embarcación y fechas.", ctaBtn:"Reservar Ahora"},
-    resources:{eyebrow:"Recursos", title:"Todo lo necesario para navegar a México", intro:"Traer una embarcación extranjera a México es más sencillo de lo que la mayoría espera - sobre todo con un equipo que lo hace a diario. Así llegas y esto es lo que debes tener listo.", hereEyebrow:"Cómo llegar", hereTitle:"Tres formas de llegar", waterLevel:"Nivel del Agua en Tiempo Real en Marina San Carlos", entryEyebrow:"Antes de llegar", entryTitle:"Requisitos de entrada a México", faqEyebrow:"Bueno saber", faqTitle:"Preguntas frecuentes", resEyebrow:"Recursos", resTitle:"Formatos y descargas", download:"Descargar", chartersEyebrow:"En el agua", chartersTitle:"Charters y capitanes recomendados", chartersBody:"Reserva un día en el agua con capitanes locales de confianza que conocen el Mar de Cortés.", visitWebsite:"Visitar sitio web"},
-    reserve:{eyebrow:"Reservaciones", title:"Reserva tu espacio", intro:"Cuéntanos sobre tu embarcación y lo que necesitas. Al enviar este formulario, tu solicitud llega directo a nuestro equipo de reservaciones, que confirmará disponibilidad y siguientes pasos.", typeLabel:"¿Qué deseas reservar?", ownerTitle:"Información del Propietario", vesselTitle:"Información de la Embarcación", datesTitle:"Fechas de Reservación", startDate:"Fecha de Inicio", endDate:"Fecha de Fin", launchTitle:"Lanzamiento con Tractor", launchDate:"Fecha de Lanzamiento", docsTitle:"Carga de Documentos", docsNote:"Sube fotos claras o PDFs. También puedes enviar los documentos por correo más adelante.", submit:"Enviar Solicitud de Reservación", required:"Por favor completa los campos requeridos marcados abajo.", successTitle:"Solicitud recibida", successBody:"Gracias - tu solicitud de reservación ha sido enviada a nuestro equipo.", successNote:"Se ha enviado una confirmación a info@marinasancarlos.com. Te contactaremos en un día hábil.", another:"Enviar otra solicitud", optional:"opcional", choose:"Elegir archivo", uploaded:"Cargado"},
+    resources:{eyebrow:"Recursos", title:"Todo lo necesario para navegar a México", intro:"Traer una embarcación extranjera a México es más sencillo de lo que la mayoría espera - sobre todo con un equipo que lo hace a diario. Así llegas y esto es lo que debes tener listo.", hereEyebrow:"Cómo llegar", hereTitle:"Tres formas de llegar", waterLevel:"Nivel del Agua en Tiempo Real en Marina San Carlos", entryEyebrow:"Antes de llegar", entryTitle:"Requisitos de entrada a México", faqEyebrow:"Bueno saber", faqTitle:"Preguntas frecuentes", resEyebrow:"Recursos", resTitle:"Formatos y descargas", download:"Descargar"},
+    chartersPage:{eyebrow:"En el agua", title:"Charters y Capitanes", intro:"Reserva un día en el agua con operadores de charter locales de confianza que conocen el Mar de Cortés. Estamos ampliando esta lista - vuelve pronto para más opciones.", visitWebsite:"Visitar sitio web"},
+    reserve:{eyebrow:"Reservaciones", title:"Reserva tu espacio", intro:"Cuéntanos sobre tu embarcación y lo que necesitas. Al enviar este formulario, tu solicitud llega directo a nuestro equipo de reservaciones, que confirmará disponibilidad y siguientes pasos.", typeLabel:"¿Qué deseas reservar?", ownerTitle:"Información del Propietario", vesselTitle:"Información de la Embarcación", datesTitle:"Fechas de Reservación", startDate:"Fecha de Inicio", endDate:"Fecha de Fin", launchTitle:"Servicio de Tractor", haulDateTitle:"Fecha de Remolque Hidráulico", serviceDate:"Fecha", haulOutOption:"Sacado", launchOption:"Botado", docsTitle:"Carga de Documentos", docsNote:"Sube fotos claras o PDFs. También puedes enviar los documentos por correo más adelante.", submit:"Enviar Solicitud de Reservación", required:"Por favor completa los campos requeridos marcados abajo.", successTitle:"Solicitud recibida", successBody:"Gracias - tu solicitud de reservación ha sido enviada a nuestro equipo.", successNote:"Se ha enviado una confirmación a nuestro equipo de reservaciones. Te contactaremos en un día hábil.", another:"Enviar otra solicitud", optional:"opcional", choose:"Elegir archivo", uploaded:"Cargado"},
     contact:{eyebrow:"Contacto", title:"Ponte en contacto", intro:"¿Dudas sobre espacios, almacenaje, tu travesía o tu barco? Contacta a nuestro equipo directamente - estamos en los muelles todos los días.", formTitle:"Envíanos un mensaje", name:"Nombre Completo", email:"Correo Electrónico", phone:"Teléfono", subject:"Asunto", message:"Mensaje", send:"Enviar Mensaje", sentTitle:"Mensaje enviado", sentBody:"Gracias por escribirnos - responderemos en un día hábil.", infoTitle:"Oficina de la marina", hoursTitle:"Horario", hours:"Lun - Sáb 7:30 - 17:00 · Dom 8:00 - 17:00", emergencyTitle:"Fuera de horario y emergencias", emergencyBody:"Para asistencia urgente en el agua, llama a Marina San Carlos por VHF 16.", mapLabel:"MAPA INTERACTIVO · San Carlos, Sonora", directions:"Cómo llegar", activateMap:"Haz clic para interactuar con el mapa"}
   }
 };
@@ -1041,6 +1052,8 @@ class Component extends DCLogic {
     resStartDate: "",
     resEndDate: "",
     resLaunchDate: "",
+    resHaulDate: "",
+    tractorAction: "haul",
     serviceGalleries: {},
     mapInited: false,
     menuOpen: false
@@ -1059,6 +1072,8 @@ class Component extends DCLogic {
   onStartDateChange = (e) => this.setState({resStartDate:e.target.value});
   onEndDateChange = (e) => this.setState({resEndDate:e.target.value});
   onLaunchDateChange = (e) => this.setState({resLaunchDate:e.target.value});
+  onHaulDateChange = (e) => this.setState({resHaulDate:e.target.value});
+  setTractorAction = (k) => this.setState({tractorAction:k});
   toggleServiceGallery = (i) => this.setState(s=>({serviceGalleries:{...s.serviceGalleries,[i]:!s.serviceGalleries[i]}}));
 
   submitReserve = () => {
@@ -1213,6 +1228,7 @@ class Component extends DCLogic {
     const resources = RESOURCES[lang];
     const charters = CHARTERS[lang];
     const reserveTypes = RESERVE_TYPES[lang].map(rt=>{ const sel=this.state.resType===rt.k; return {label:rt.l,selected:sel,onClick:()=>this.setResType(rt.k),chipStyle:{flex:"1 1 140px",minWidth:"130px",padding:"18px 16px",borderRadius:"6px",border:"1px solid "+(sel?"#0a1c2e":"#d3dbe1"),background:sel?"#0a1c2e":"#fff",color:sel?"#fff":"#3a4b58",cursor:"pointer",fontFamily:"'Archivo',sans-serif",fontSize:"14.5px",fontWeight:sel?"600":"500",letterSpacing:".02em",textAlign:"center",transition:"all .2s"}}; });
+    const tractorActions = [{k:"haul",l:tp.reserve.haulOutOption},{k:"launch",l:tp.reserve.launchOption}].map(ta=>{ const sel=this.state.tractorAction===ta.k; return {label:ta.l,selected:sel,onClick:()=>this.setTractorAction(ta.k),chipStyle:{flex:"1 1 120px",minWidth:"110px",padding:"14px 16px",borderRadius:"6px",border:"1px solid "+(sel?"#0a1c2e":"#d3dbe1"),background:sel?"#0a1c2e":"#fff",color:sel?"#fff":"#3a4b58",cursor:"pointer",fontFamily:"'Archivo',sans-serif",fontSize:"13.5px",fontWeight:sel?"600":"500",letterSpacing:".02em",textAlign:"center",transition:"all .2s"}}; });
     const baseInput = {width:"100%",padding:"13px 15px",border:"1px solid #d3dbe1",borderRadius:"4px",fontSize:"15px",fontFamily:"'Archivo',sans-serif",color:"#11202e",background:"#fff",outline:"none",boxSizing:"border-box"};
     const inStyle = (err)=> err ? {...baseInput,borderColor:"#c0563f",background:"#fdf5f3"} : baseInput;
     const wrap = (half)=> half ? {} : {gridColumn:"1 / -1"};
@@ -1232,10 +1248,12 @@ class Component extends DCLogic {
       lang, t,
       isHome: page==="home", isServices: page==="services",
       isResources: page==="resources", isReserve: page==="reserve", isContact: page==="contact",
+      isCharters: page==="charters",
       navItems,
       menuOpen: this.state.menuOpen, menuClosed: !this.state.menuOpen, toggleMenu: this.toggleMenu,
       goHome:()=>this.go("home"), goServices:()=>this.go("services"),
       goResources:()=>this.go("resources"), goContact:()=>this.go("contact"),
+      goCharters:()=>this.go("charters"),
       goReserve:()=>this.go("reserve"), goTide:this.goTide,
       setEN:()=>this.setState({lang:"en"}), setES:()=>this.setState({lang:"es"}),
       langEnStyle: langBtn(lang==="en"), langEsStyle: langBtn(lang==="es"),
@@ -1245,18 +1263,21 @@ class Component extends DCLogic {
       conditions: CONDITIONS[lang],
       servicesTop, whyItems,
       testimonials: TESTIMONIALS[lang],
-      affiliates: AFFILIATES[lang],
+      affiliates: AFFILIATES[lang].map(a=>({...a, onClick: a.url==="internal:charters" ? this.goCharters : ()=>window.open(a.url,"_blank","noopener")})),
       tp,
       servicesAll, servicesDetail, amenities, gettingHere, entryReqs, faqs, resources, charters,
-      reserveTypes, ownerFields, vesselFields, docUploads, showReserveError,
+      reserveTypes, tractorActions, ownerFields, vesselFields, docUploads, showReserveError,
       showReservationDates: this.state.resType==="slip"||this.state.resType==="dry",
+      showHaulDate: this.state.resType==="haul",
       showTractorDate: this.state.resType==="tractor",
       reservationStartDate: this.state.resStartDate,
       reservationEndDate: this.state.resEndDate,
       reservationLaunchDate: this.state.resLaunchDate,
+      reservationHaulDate: this.state.resHaulDate,
       onStartDateChange: this.onStartDateChange,
       onEndDateChange: this.onEndDateChange,
       onLaunchDateChange: this.onLaunchDateChange,
+      onHaulDateChange: this.onHaulDateChange,
       dateInputStyle: {...baseInput},
       submitReserve:this.submitReserve, resetReserve:this.resetReserve, submitted:this.state.submitted, notSubmitted:!this.state.submitted,
       contactFields, msgValue:(this.state.contact.message||""), msgErr:!!this.state.cErrors.message, msgStyle,
