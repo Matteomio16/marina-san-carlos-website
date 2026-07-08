@@ -67,6 +67,8 @@
           <span style="display:flex;align-items:center;gap:7px;"><span style="width:6px;height:6px;border-radius:50%;background:#6fd09b;box-shadow:0 0 0 3px rgba(111,208,155,.18);"></span>{{ t.topbar.open }}</span>
           <span style="opacity:.35;">·</span>
           <span style="opacity:.85;">{{ t.topbar.vhf }}</span>
+          <span style="opacity:.35;">·</span>
+          <button onClick="{{ goTide }}" style="background:none;border:none;padding:0;cursor:pointer;font-family:inherit;font-size:12px;letter-spacing:.06em;color:#9fb1c0;opacity:.85;" style-hover="color:#fff;">{{ t.topbar.tide }}</button>
         </div>
         <div style="display:flex;align-items:center;gap:18px;">
           <a href="tel:+526222261202" style="color:#9fb1c0;text-decoration:none;" style-hover="color:#fff;">+52 622 226 12 02</a>
@@ -81,7 +83,7 @@
       <div style="max-width:1320px;margin:0 auto;padding:0 36px;height:80px;display:flex;align-items:center;justify-content:space-between;gap:24px;">
         <button onClick="{{ goHome }}" style="background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:13px;padding:0;white-space:nowrap;">
           <span style="width:42px;height:42px;border:1px solid rgba(255,255,255,.28);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-            <svg width="24" height="20" viewBox="0 0 26 22" fill="none"><path d="M12.4 1.5 4.6 13.2h7.8z" fill="#fff"/><path d="M13.7 4.2v9h6.6z" fill="#cfd9e1"/><path d="M1.5 16.3c2.3 1.7 3.8 1.7 6 0 2.3 1.7 3.8 1.7 6 0 2.3 1.7 3.8 1.7 6 0 2.3 1.7 3.8 1.7 6 0" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg>
+            <img src="assets/logo-white.png" alt="Marina San Carlos" style="width:24px;height:24px;object-fit:contain;">
           </span>
           <span style="text-align:left;line-height:1.1;">
             <span style="display:block;font-family:'Marcellus',serif;color:#fff;font-size:16px;letter-spacing:.2em;white-space:nowrap;">MARINA SAN CARLOS</span>
@@ -366,7 +368,7 @@
       </section>
 
       <!-- Hohonu Live Water Level Widget -->
-      <section style="max-width:1320px;margin:0 auto;padding:0 36px clamp(56px,7vw,96px);">
+      <section id="hohonu-widget" style="max-width:1320px;margin:0 auto;padding:0 36px clamp(56px,7vw,96px);">
         <div style="background:#fff;border:1px solid #e6eaed;border-radius:8px;padding:36px 32px;">
           <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;"><span style="width:30px;height:1px;background:#c2a978;"></span><span style="font-family:'Archivo',sans-serif;font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:#7d8b97;">Live Conditions</span></div>
           <h3 style="font-family:'Marcellus',serif;color:#122c44;font-size:24px;font-weight:400;margin:0 0 6px;">{{ tp.resources.waterLevel }}</h3>
@@ -657,7 +659,7 @@
         <div>
           <div class="msc-footer-brand" style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
             <span style="width:40px;height:40px;border:1px solid rgba(255,255,255,.24);border-radius:50%;display:flex;align-items:center;justify-content:center;">
-              <svg width="22" height="18" viewBox="0 0 26 22" fill="none"><path d="M12.4 1.5 4.6 13.2h7.8z" fill="#fff"/><path d="M13.7 4.2v9h6.6z" fill="#cfd9e1"/><path d="M1.5 16.3c2.3 1.7 3.8 1.7 6 0 2.3 1.7 3.8 1.7 6 0 2.3 1.7 3.8 1.7 6 0 2.3 1.7 3.8 1.7 6 0" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg>
+              <img src="assets/logo-white.png" alt="Marina San Carlos" style="width:22px;height:22px;object-fit:contain;">
             </span>
             <span style="font-family:'Marcellus',serif;color:#fff;font-size:15px;letter-spacing:.18em;">MARINA SAN CARLOS</span>
           </div>
@@ -705,7 +707,7 @@
 const DICT = {
   en: {
     brand:{tag:"SONORA · MÉXICO"},
-    topbar:{open:"Mon-Sat 7:30 AM - 5 PM · Sun 8 - 5", vhf:"Monitoring VHF 16"},
+    topbar:{open:"Mon-Sat 7:30 AM - 5 PM · Sun 8 - 5", vhf:"Monitoring VHF 16", tide:"San Carlos Tide"},
     nav:{home:"Home", services:"Services", resources:"Resources", contact:"Contact", reserve:"Reserve a Slip"},
     hero:{
       variantLabel:"Hero",
@@ -746,7 +748,7 @@ const DICT = {
   },
   es: {
     brand:{tag:"SONORA · MÉXICO"},
-    topbar:{open:"Lun-Sáb 7:30 - 17:00 · Dom 8 - 17", vhf:"Monitoreo VHF 16"},
+    topbar:{open:"Lun-Sáb 7:30 - 17:00 · Dom 8 - 17", vhf:"Monitoreo VHF 16", tide:"Marea de San Carlos"},
     nav:{home:"Inicio", services:"Servicios", resources:"Recursos", contact:"Contacto", reserve:"Reservar Espacio"},
     hero:{
       variantLabel:"Portada",
@@ -1045,6 +1047,7 @@ class Component extends DCLogic {
   };
 
   go = (p) => { try{ window.scrollTo({top:0,behavior:"instant"}); }catch(e){ window.scrollTo(0,0); } this.setState({page:p, menuOpen:false}); };
+  goTide = () => { this.go("resources"); setTimeout(()=>{ const el=document.getElementById("hohonu-widget"); if(el) el.scrollIntoView({behavior:"smooth",block:"start"}); }, 60); };
   toggleMenu = () => this.setState(s=>({menuOpen:!s.menuOpen}));
   svg(markup){ return React.createElement("span",{dangerouslySetInnerHTML:{__html:markup},style:{display:"inline-flex"}}); }
 
@@ -1233,7 +1236,7 @@ class Component extends DCLogic {
       menuOpen: this.state.menuOpen, menuClosed: !this.state.menuOpen, toggleMenu: this.toggleMenu,
       goHome:()=>this.go("home"), goServices:()=>this.go("services"),
       goResources:()=>this.go("resources"), goContact:()=>this.go("contact"),
-      goReserve:()=>this.go("reserve"),
+      goReserve:()=>this.go("reserve"), goTide:this.goTide,
       setEN:()=>this.setState({lang:"en"}), setES:()=>this.setState({lang:"es"}),
       langEnStyle: langBtn(lang==="en"), langEsStyle: langBtn(lang==="es"),
       heroA: hero==="a", heroB: hero==="b", heroC: hero==="c",
