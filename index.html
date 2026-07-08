@@ -32,20 +32,27 @@
   @media (max-width:860px){
     .msc-why-grid{grid-template-columns:1fr !important;}
     .msc-amenities-grid{grid-template-columns:repeat(3,1fr) !important;}
+    .msc-why-heading{text-align:center;justify-content:center;}
   }
   @media (max-width:700px){
-    .msc-topbar-row{flex-wrap:wrap;row-gap:6px;justify-content:center !important;text-align:center;padding:9px 20px !important;}
-    .msc-topbar-right{flex-wrap:wrap;justify-content:center;}
+    .msc-topbar{display:none !important;}
   }
   @media (max-width:640px){
     .msc-grid-auto{grid-template-columns:1fr !important;}
     .msc-amenities-grid{grid-template-columns:repeat(2,1fr) !important;}
     .msc-service-col{flex-basis:100% !important;min-width:0 !important;}
     .msc-gallery-grid{grid-template-columns:1fr !important;}
+    .msc-mvv-grid h3{text-align:center;}
+    .msc-mvv-grid p{text-align:center;}
+    .msc-mvv-grid .msc-values-row{justify-content:center;}
   }
   @media (max-width:560px){
     .msc-form-grid{grid-template-columns:1fr !important;}
-    .msc-footer-grid{grid-template-columns:1fr !important;}
+    .msc-footer-grid{grid-template-columns:1fr !important;text-align:center;}
+    .msc-footer-grid p{margin-left:auto;margin-right:auto;}
+    .msc-footer-brand{justify-content:center;}
+    .msc-footer-links{align-items:center;}
+    .msc-footer-bottom{justify-content:center !important;text-align:center;}
   }
 </style>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
@@ -54,14 +61,14 @@
   <div class="msc-scroll" style="font-family:'Archivo',system-ui,sans-serif;color:#11202e;background:#fff;min-height:100vh;width:100%;overflow-x:hidden;-webkit-font-smoothing:antialiased;">
 
     <!-- ===================== TOP BAR ===================== -->
-    <div style="background:#0a1c2e;color:#9fb1c0;font-size:12px;letter-spacing:.06em;">
-      <div class="msc-topbar-row" style="max-width:1320px;margin:0 auto;padding:9px 36px;display:flex;justify-content:space-between;align-items:center;gap:16px;">
+    <div class="msc-topbar" style="background:#0a1c2e;color:#9fb1c0;font-size:12px;letter-spacing:.06em;">
+      <div style="max-width:1320px;margin:0 auto;padding:9px 36px;display:flex;justify-content:space-between;align-items:center;gap:16px;">
         <div style="display:flex;align-items:center;gap:20px;">
           <span style="display:flex;align-items:center;gap:7px;"><span style="width:6px;height:6px;border-radius:50%;background:#6fd09b;box-shadow:0 0 0 3px rgba(111,208,155,.18);"></span>{{ t.topbar.open }}</span>
           <span style="opacity:.35;">·</span>
           <span style="opacity:.85;">{{ t.topbar.vhf }}</span>
         </div>
-        <div class="msc-topbar-right" style="display:flex;align-items:center;gap:18px;">
+        <div style="display:flex;align-items:center;gap:18px;">
           <a href="tel:+526222261202" style="color:#9fb1c0;text-decoration:none;" style-hover="color:#fff;">+52 622 226 12 02</a>
           <span style="opacity:.35;">·</span>
           <a href="mailto:info@marinasancarlos.com" style="color:#9fb1c0;text-decoration:none;" style-hover="color:#fff;">info@marinasancarlos.com</a>
@@ -146,7 +153,7 @@
         <p style="font-family:'Marcellus',serif;font-size:clamp(25px,3.2vw,42px);line-height:1.32;color:#122c44;margin:0;text-wrap:balance;font-weight:400;">{{ t.intro.lead }}</p>
         <p style="font-size:17px;line-height:1.85;color:#5a6b78;max-width:680px;margin:32px auto 0;font-weight:300;">{{ t.intro.body }}</p>
         <!-- mission / vision / values -->
-        <div class="msc-grid-auto" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(258px,1fr));gap:1px;background:#e6eaed;border:1px solid #e6eaed;margin-top:50px;">
+        <div class="msc-grid-auto msc-mvv-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(258px,1fr));gap:1px;background:#e6eaed;border:1px solid #e6eaed;margin-top:50px;">
           <div style="background:#fff;padding:40px 34px;">
             <h3 style="font-family:'Marcellus',serif;color:#122c44;font-size:24px;font-weight:400;margin:0 0 14px;">{{ t.about.missionT }}</h3>
             <p style="font-size:15.5px;line-height:1.75;color:#5a6b78;margin:0;font-weight:300;">{{ t.about.mission }}</p>
@@ -159,7 +166,7 @@
             <h3 style="font-family:'Marcellus',serif;color:#122c44;font-size:24px;font-weight:400;margin:0 0 16px;">{{ t.about.valuesT }}</h3>
             <div style="display:flex;flex-direction:column;gap:12px;">
               <sc-for list="{{ t.about.values }}" as="v" hint-placeholder-count="3">
-                <div style="display:flex;align-items:center;gap:12px;"><span style="width:6px;height:6px;border-radius:50%;background:#c2a978;flex-shrink:0;"></span><span style="font-size:15.5px;color:#3a4b58;">{{ v }}</span></div>
+                <div class="msc-values-row" style="display:flex;align-items:center;gap:12px;"><span style="width:6px;height:6px;border-radius:50%;background:#c2a978;flex-shrink:0;"></span><span style="font-size:15.5px;color:#3a4b58;">{{ v }}</span></div>
               </sc-for>
             </div>
           </div>
@@ -198,8 +205,8 @@
           </div>
         </div>
         <div>
-          <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;"><span style="width:30px;height:1px;background:#c2a978;"></span><span style="font-family:'Archivo',sans-serif;font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:#7d8b97;">{{ t.why.eyebrow }}</span></div>
-          <h2 style="font-family:'Marcellus',serif;color:#122c44;font-size:clamp(30px,3.6vw,46px);font-weight:400;margin:0 0 26px;line-height:1.1;">{{ t.why.title }}</h2>
+          <div class="msc-why-heading" style="display:flex;align-items:center;gap:12px;margin-bottom:18px;"><span style="width:30px;height:1px;background:#c2a978;"></span><span style="font-family:'Archivo',sans-serif;font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:#7d8b97;">{{ t.why.eyebrow }}</span></div>
+          <h2 class="msc-why-heading" style="font-family:'Marcellus',serif;color:#122c44;font-size:clamp(30px,3.6vw,46px);font-weight:400;margin:0 0 26px;line-height:1.1;">{{ t.why.title }}</h2>
           <div style="display:flex;flex-direction:column;gap:0;">
             <sc-for list="{{ whyItems }}" as="w" hint-placeholder-count="4">
               <div style="display:flex;gap:20px;align-items:flex-start;border-top:1px solid #e6eaed;padding:22px 0;">
@@ -648,7 +655,7 @@
     <footer style="background:#0a1c2e;color:#8aa0b2;padding:clamp(56px,7vw,82px) 0 36px;border-top:1px solid rgba(255,255,255,.06);">
       <div class="msc-footer-grid" style="max-width:1320px;margin:0 auto;padding:0 36px;display:grid;grid-template-columns:1.7fr 1fr 1fr 1fr;gap:40px;">
         <div>
-          <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
+          <div class="msc-footer-brand" style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
             <span style="width:40px;height:40px;border:1px solid rgba(255,255,255,.24);border-radius:50%;display:flex;align-items:center;justify-content:center;">
               <svg width="22" height="18" viewBox="0 0 26 22" fill="none"><path d="M12.4 1.5 4.6 13.2h7.8z" fill="#fff"/><path d="M13.7 4.2v9h6.6z" fill="#cfd9e1"/><path d="M1.5 16.3c2.3 1.7 3.8 1.7 6 0 2.3 1.7 3.8 1.7 6 0 2.3 1.7 3.8 1.7 6 0 2.3 1.7 3.8 1.7 6 0" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg>
             </span>
@@ -658,7 +665,7 @@
         </div>
         <div>
           <div style="color:#fff;font-size:11px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:18px;">{{ t.footer.explore }}</div>
-          <div style="display:flex;flex-direction:column;gap:11px;font-size:14px;">
+          <div class="msc-footer-links" style="display:flex;flex-direction:column;gap:11px;font-size:14px;">
             <button onClick="{{ goHome }}" style="background:none;border:none;color:#8aa0b2;text-align:left;cursor:pointer;padding:0;font-family:inherit;font-size:14px;" style-hover="color:#fff;">{{ t.nav.home }}</button>
             <button onClick="{{ goServices }}" style="background:none;border:none;color:#8aa0b2;text-align:left;cursor:pointer;padding:0;font-family:inherit;font-size:14px;" style-hover="color:#fff;">{{ t.nav.services }}</button>
             <button onClick="{{ goResources }}" style="background:none;border:none;color:#8aa0b2;text-align:left;cursor:pointer;padding:0;font-family:inherit;font-size:14px;" style-hover="color:#fff;">{{ t.nav.resources }}</button>
@@ -667,7 +674,7 @@
         </div>
         <div>
           <div style="color:#fff;font-size:11px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:18px;">{{ t.footer.partners }}</div>
-          <div style="display:flex;flex-direction:column;gap:11px;font-size:14px;">
+          <div class="msc-footer-links" style="display:flex;flex-direction:column;gap:11px;font-size:14px;">
             <a href="#" style="color:#8aa0b2;text-decoration:none;cursor:pointer;" style-hover="color:#fff;">Star Marine</a>
             <a href="#" style="color:#8aa0b2;text-decoration:none;cursor:pointer;" style-hover="color:#fff;">Loma del Mar</a>
             <a href="#" style="color:#8aa0b2;text-decoration:none;cursor:pointer;" style-hover="color:#fff;">AMMT</a>
@@ -676,7 +683,7 @@
         </div>
         <div>
           <div style="color:#fff;font-size:11px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:18px;">{{ t.footer.contact }}</div>
-          <div style="display:flex;flex-direction:column;gap:11px;font-size:14px;">
+          <div class="msc-footer-links" style="display:flex;flex-direction:column;gap:11px;font-size:14px;">
             <span>Edificio Marina San Carlos, Sonora 85506, México</span>
             <a href="tel:+526222261202" style="color:#8aa0b2;text-decoration:none;" style-hover="color:#fff;">+52 (622) 226 12 02</a>
             <a href="tel:+526222261061" style="color:#8aa0b2;text-decoration:none;" style-hover="color:#fff;">+52 (622) 226 10 61</a>
@@ -685,7 +692,7 @@
           </div>
         </div>
       </div>
-      <div style="max-width:1320px;margin:42px auto 0;padding:24px 36px 0;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:12px;color:#5f7384;">
+      <div class="msc-footer-bottom" style="max-width:1320px;margin:42px auto 0;padding:24px 36px 0;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:12px;color:#5f7384;">
         <span>© 2026 Marina San Carlos. {{ t.footer.rights }}</span>
         <span>{{ t.footer.builtIn }}</span>
       </div>
