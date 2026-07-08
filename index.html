@@ -575,7 +575,7 @@
             <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:38px;">
               <sc-for list="{{ docUploads }}" as="d" hint-placeholder-count="4">
                 <label style="{{ d.boxStyle }}">
-                  <input type="file" onChange="{{ d.onChange }}" style="display:none;">
+                  <input type="file" data-key="{{ d.key }}" onChange="{{ d.onChange }}" style="display:none;">
                   <span style="width:40px;height:40px;border-radius:6px;background:#eef2f5;display:flex;align-items:center;justify-content:center;color:#122c44;flex-shrink:0;">
                     <svg width="20" height="20" viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M6 3h9l5 5v15H6V3Z" stroke-linejoin="round"/><path d="M15 3v5h5" stroke-linejoin="round"/></svg>
                   </span>
@@ -592,8 +592,11 @@
             <sc-if value="{{ showReserveError }}" hint-placeholder-val="{{ false }}">
               <div style="background:#fdf5f3;border:1px solid #e9c4b9;border-radius:6px;padding:14px 18px;margin-bottom:22px;color:#b04a30;font-size:14px;">{{ tp.reserve.required }}</div>
             </sc-if>
+            <sc-if value="{{ showReserveSendError }}" hint-placeholder-val="{{ false }}">
+              <div style="background:#fdf5f3;border:1px solid #e9c4b9;border-radius:6px;padding:14px 18px;margin-bottom:22px;color:#b04a30;font-size:14px;">{{ tp.reserve.sendError }}</div>
+            </sc-if>
 
-            <button onClick="{{ submitReserve }}" style="width:100%;background:#0a1c2e;color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:600;font-size:14px;letter-spacing:.1em;text-transform:uppercase;padding:19px;" style-hover="background:#122c44;">{{ tp.reserve.submit }}</button>
+            <button onClick="{{ submitReserve }}" disabled="{{ reserveSending }}" style="width:100%;background:#0a1c2e;color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:600;font-size:14px;letter-spacing:.1em;text-transform:uppercase;padding:19px;" style-hover="background:#122c44;">{{ reserveSubmitLabel }}</button>
           </div>
         </sc-if>
       </section>
@@ -661,7 +664,10 @@
                   <textarea value="{{ msgValue }}" onChange="{{ msgOnChange }}" style="{{ msgStyle }}" style-focus="border-color:#0a1c2e;box-shadow:0 0 0 3px rgba(10,28,46,.07);"></textarea>
                 </div>
               </div>
-              <button onClick="{{ submitContact }}" style="width:100%;margin-top:22px;background:#0a1c2e;color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:600;font-size:14px;letter-spacing:.1em;text-transform:uppercase;padding:18px;" style-hover="background:#122c44;">{{ tp.contact.send }}</button>
+              <sc-if value="{{ showContactSendError }}" hint-placeholder-val="{{ false }}">
+                <div style="background:#fdf5f3;border:1px solid #e9c4b9;border-radius:6px;padding:14px 18px;margin-top:22px;color:#b04a30;font-size:14px;">{{ tp.contact.sendError }}</div>
+              </sc-if>
+              <button onClick="{{ submitContact }}" disabled="{{ contactSending }}" style="width:100%;margin-top:22px;background:#0a1c2e;color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:600;font-size:14px;letter-spacing:.1em;text-transform:uppercase;padding:18px;" style-hover="background:#122c44;">{{ contactSubmitLabel }}</button>
             </div>
           </sc-if>
         </div>
@@ -1023,15 +1029,15 @@ const PAGES = {
     services:{eyebrow:"Marina Services", title:"A full-service marina & boatyard", intro:"From a protected slip for the season to a full refit on the hard, everything your vessel needs lives in one place - backed by a crew that has cared for boats on the Sea of Cortez for decades.", amenEyebrow:"On-site", amenTitle:"Featured amenities", ctaTitle:"Ready to bring your boat to San Carlos?", ctaBody:"Reserve a slip or storage, or reach out with questions about your vessel and dates.", ctaBtn:"Reserve Now"},
     resources:{eyebrow:"Resources", title:"Everything you need to cruise to Mexico", intro:"Bringing a foreign vessel into Mexico is simpler than most cruisers expect - especially with a team that does it every day. Here's how to get here and what to have ready.", hereEyebrow:"Getting here", hereTitle:"Three ways to arrive", waterLevel:"Live Water Level at Marina San Carlos", entryEyebrow:"Before you arrive", entryTitle:"Entry requirements for Mexico", faqEyebrow:"Good to know", faqTitle:"Frequently asked questions", resEyebrow:"Resources", resTitle:"Forms & downloads", download:"Download"},
     chartersPage:{eyebrow:"On the water", title:"Charter & Captains", intro:"Book a day on the water with trusted local charter operators who know the Sea of Cortez. We're growing this list - check back for more options soon.", visitWebsite:"Visit website"},
-    reserve:{eyebrow:"Reservations", title:"Reserve your space", intro:"Tell us about your vessel and what you need. Submitting this form sends your request straight to our reservations team, who will confirm availability and next steps.", typeLabel:"What would you like to reserve?", ownerTitle:"Owner Information", vesselTitle:"Vessel Information", datesTitle:"Reservation Dates", startDate:"Start Date", endDate:"End Date", launchTitle:"Tractor Service", haulDateTitle:"Hydraulic Trailer Date", serviceDate:"Date", haulOutOption:"Haul Out", launchOption:"Launch", docsTitle:"Document Uploads", docsNote:"Upload clear photos or PDFs. You can also email documents to our team later.", submit:"Submit Reservation Request", required:"Please complete the required fields highlighted below.", successTitle:"Request received", successBody:"Thank you - your reservation request has been sent to our team.", successNote:"A confirmation has been routed to our reservations team. We'll be in touch within one business day.", another:"Submit another request", optional:"optional", choose:"Choose file", uploaded:"Uploaded"},
-    contact:{eyebrow:"Contact", title:"Get in touch", intro:"Questions about slips, storage, your crossing or your boat? Reach our team directly - we're on the docks every day.", formTitle:"Send us a message", name:"Full Name", email:"Email Address", phone:"Phone", subject:"Subject", message:"Message", send:"Send Message", sentTitle:"Message sent", sentBody:"Thanks for reaching out - we'll reply within one business day.", infoTitle:"Marina office", hoursTitle:"Office hours", hours:"Mon - Sat 7:30 AM - 5 PM · Sun 8 AM - 5 PM", emergencyTitle:"After-hours & emergencies", emergencyBody:"For urgent on-water assistance, hail Marina San Carlos on VHF 16.", mapLabel:"INTERACTIVE MAP · San Carlos, Sonora", directions:"Get directions", activateMap:"Click to interact with map"}
+    reserve:{eyebrow:"Reservations", title:"Reserve your space", intro:"Tell us about your vessel and what you need. Submitting this form sends your request straight to our reservations team, who will confirm availability and next steps.", typeLabel:"What would you like to reserve?", ownerTitle:"Owner Information", vesselTitle:"Vessel Information", datesTitle:"Reservation Dates", startDate:"Start Date", endDate:"End Date", launchTitle:"Tractor Service", haulDateTitle:"Hydraulic Trailer Date", serviceDate:"Date", haulOutOption:"Haul Out", launchOption:"Launch", docsTitle:"Document Uploads", docsNote:"Upload clear photos or PDFs. You can also email documents to our team later.", submit:"Submit Reservation Request", sending:"Submitting...", required:"Please complete the required fields highlighted below.", sendError:"Something went wrong sending your request. Please try again or contact us directly.", successTitle:"Request received", successBody:"Thank you - your reservation request has been sent to our team.", successNote:"A confirmation has been routed to our reservations team. We'll be in touch within one business day.", another:"Submit another request", optional:"optional", choose:"Choose file", uploaded:"Uploaded"},
+    contact:{eyebrow:"Contact", title:"Get in touch", intro:"Questions about slips, storage, your crossing or your boat? Reach our team directly - we're on the docks every day.", formTitle:"Send us a message", name:"Full Name", email:"Email Address", phone:"Phone", subject:"Subject", message:"Message", send:"Send Message", sending:"Sending...", sentTitle:"Message sent", sentBody:"Thanks for reaching out - we'll reply within one business day.", sendError:"Something went wrong sending your message. Please try again or email us directly.", infoTitle:"Marina office", hoursTitle:"Office hours", hours:"Mon - Sat 7:30 AM - 5 PM · Sun 8 AM - 5 PM", emergencyTitle:"After-hours & emergencies", emergencyBody:"For urgent on-water assistance, hail Marina San Carlos on VHF 16.", mapLabel:"INTERACTIVE MAP · San Carlos, Sonora", directions:"Get directions", activateMap:"Click to interact with map"}
   },
   es:{
     services:{eyebrow:"Servicios de la Marina", title:"Una marina y astillero de servicio completo", intro:"Desde un espacio protegido por temporada hasta una restauración completa en tierra, todo lo que tu embarcación necesita está en un solo lugar - con un equipo que ha cuidado barcos en el Mar de Cortés por décadas.", amenEyebrow:"En sitio", amenTitle:"Amenidades destacadas", ctaTitle:"¿Listo para traer tu barco a San Carlos?", ctaBody:"Reserva un espacio o almacenaje, o escríbenos con dudas sobre tu embarcación y fechas.", ctaBtn:"Reservar Ahora"},
     resources:{eyebrow:"Recursos", title:"Todo lo necesario para navegar a México", intro:"Traer una embarcación extranjera a México es más sencillo de lo que la mayoría espera - sobre todo con un equipo que lo hace a diario. Así llegas y esto es lo que debes tener listo.", hereEyebrow:"Cómo llegar", hereTitle:"Tres formas de llegar", waterLevel:"Nivel del Agua en Tiempo Real en Marina San Carlos", entryEyebrow:"Antes de llegar", entryTitle:"Requisitos de entrada a México", faqEyebrow:"Bueno saber", faqTitle:"Preguntas frecuentes", resEyebrow:"Recursos", resTitle:"Formatos y descargas", download:"Descargar"},
     chartersPage:{eyebrow:"En el agua", title:"Charters y Capitanes", intro:"Reserva un día en el agua con operadores de charter locales de confianza que conocen el Mar de Cortés. Estamos ampliando esta lista - vuelve pronto para más opciones.", visitWebsite:"Visitar sitio web"},
-    reserve:{eyebrow:"Reservaciones", title:"Reserva tu espacio", intro:"Cuéntanos sobre tu embarcación y lo que necesitas. Al enviar este formulario, tu solicitud llega directo a nuestro equipo de reservaciones, que confirmará disponibilidad y siguientes pasos.", typeLabel:"¿Qué deseas reservar?", ownerTitle:"Información del Propietario", vesselTitle:"Información de la Embarcación", datesTitle:"Fechas de Reservación", startDate:"Fecha de Inicio", endDate:"Fecha de Fin", launchTitle:"Servicio de Tractor", haulDateTitle:"Fecha de Remolque Hidráulico", serviceDate:"Fecha", haulOutOption:"Sacado", launchOption:"Botado", docsTitle:"Carga de Documentos", docsNote:"Sube fotos claras o PDFs. También puedes enviar los documentos por correo más adelante.", submit:"Enviar Solicitud de Reservación", required:"Por favor completa los campos requeridos marcados abajo.", successTitle:"Solicitud recibida", successBody:"Gracias - tu solicitud de reservación ha sido enviada a nuestro equipo.", successNote:"Se ha enviado una confirmación a nuestro equipo de reservaciones. Te contactaremos en un día hábil.", another:"Enviar otra solicitud", optional:"opcional", choose:"Elegir archivo", uploaded:"Cargado"},
-    contact:{eyebrow:"Contacto", title:"Ponte en contacto", intro:"¿Dudas sobre espacios, almacenaje, tu travesía o tu barco? Contacta a nuestro equipo directamente - estamos en los muelles todos los días.", formTitle:"Envíanos un mensaje", name:"Nombre Completo", email:"Correo Electrónico", phone:"Teléfono", subject:"Asunto", message:"Mensaje", send:"Enviar Mensaje", sentTitle:"Mensaje enviado", sentBody:"Gracias por escribirnos - responderemos en un día hábil.", infoTitle:"Oficina de la marina", hoursTitle:"Horario", hours:"Lun - Sáb 7:30 - 17:00 · Dom 8:00 - 17:00", emergencyTitle:"Fuera de horario y emergencias", emergencyBody:"Para asistencia urgente en el agua, llama a Marina San Carlos por VHF 16.", mapLabel:"MAPA INTERACTIVO · San Carlos, Sonora", directions:"Cómo llegar", activateMap:"Haz clic para interactuar con el mapa"}
+    reserve:{eyebrow:"Reservaciones", title:"Reserva tu espacio", intro:"Cuéntanos sobre tu embarcación y lo que necesitas. Al enviar este formulario, tu solicitud llega directo a nuestro equipo de reservaciones, que confirmará disponibilidad y siguientes pasos.", typeLabel:"¿Qué deseas reservar?", ownerTitle:"Información del Propietario", vesselTitle:"Información de la Embarcación", datesTitle:"Fechas de Reservación", startDate:"Fecha de Inicio", endDate:"Fecha de Fin", launchTitle:"Servicio de Tractor", haulDateTitle:"Fecha de Remolque Hidráulico", serviceDate:"Fecha", haulOutOption:"Sacado", launchOption:"Botado", docsTitle:"Carga de Documentos", docsNote:"Sube fotos claras o PDFs. También puedes enviar los documentos por correo más adelante.", submit:"Enviar Solicitud de Reservación", sending:"Enviando...", required:"Por favor completa los campos requeridos marcados abajo.", sendError:"Algo salió mal al enviar tu solicitud. Intenta de nuevo o contáctanos directamente.", successTitle:"Solicitud recibida", successBody:"Gracias - tu solicitud de reservación ha sido enviada a nuestro equipo.", successNote:"Se ha enviado una confirmación a nuestro equipo de reservaciones. Te contactaremos en un día hábil.", another:"Enviar otra solicitud", optional:"opcional", choose:"Elegir archivo", uploaded:"Cargado"},
+    contact:{eyebrow:"Contacto", title:"Ponte en contacto", intro:"¿Dudas sobre espacios, almacenaje, tu travesía o tu barco? Contacta a nuestro equipo directamente - estamos en los muelles todos los días.", formTitle:"Envíanos un mensaje", name:"Nombre Completo", email:"Correo Electrónico", phone:"Teléfono", subject:"Asunto", message:"Mensaje", send:"Enviar Mensaje", sending:"Enviando...", sentTitle:"Mensaje enviado", sentBody:"Gracias por escribirnos - responderemos en un día hábil.", sendError:"Algo salió mal al enviar tu mensaje. Intenta de nuevo o escríbenos directamente.", infoTitle:"Oficina de la marina", hoursTitle:"Horario", hours:"Lun - Sáb 7:30 - 17:00 · Dom 8:00 - 17:00", emergencyTitle:"Fuera de horario y emergencias", emergencyBody:"Para asistencia urgente en el agua, llama a Marina San Carlos por VHF 16.", mapLabel:"MAPA INTERACTIVO · San Carlos, Sonora", directions:"Cómo llegar", activateMap:"Haz clic para interactuar con el mapa"}
   }
 };
 
@@ -1046,9 +1052,13 @@ class Component extends DCLogic {
     files: {},
     errors: {},
     submitted: false,
+    reserveSending: false,
+    reserveSendError: false,
     contact: {},
     cErrors: {},
     contactSent: false,
+    contactSending: false,
+    contactSendError: false,
     resStartDate: "",
     resEndDate: "",
     resLaunchDate: "",
@@ -1077,23 +1087,61 @@ class Component extends DCLogic {
   toggleServiceGallery = (i) => this.setState(s=>({serviceGalleries:{...s.serviceGalleries,[i]:!s.serviceGalleries[i]}}));
 
   submitReserve = () => {
-    const lang=this.state.lang;
     const req=["fullName","nationality","email","phone","vName","flag","length"];
     const errors={};
     req.forEach(k=>{ if(!this.state.form[k]||!String(this.state.form[k]).trim()) errors[k]=true; });
     ["ownership","insurance","id"].forEach(k=>{ if(!this.state.files[k]) errors[k]=true; });
     if(Object.keys(errors).length){ this.setState({errors}); return; }
     try{ window.scrollTo({top:0,behavior:"instant"}); }catch(e){ window.scrollTo(0,0); }
-    this.setState({submitted:true});
+    this.setState({reserveSending:true, reserveSendError:false});
+
+    const fd = new FormData();
+    fd.append("resType", this.state.resType);
+    Object.keys(this.state.form).forEach(k=>fd.append(k, this.state.form[k]));
+    fd.append("resStartDate", this.state.resStartDate);
+    fd.append("resEndDate", this.state.resEndDate);
+    fd.append("resHaulDate", this.state.resHaulDate);
+    fd.append("resLaunchDate", this.state.resLaunchDate);
+    fd.append("tractorAction", this.state.tractorAction);
+    document.querySelectorAll('input[type="file"][data-key]').forEach(inp=>{
+      if(inp.files && inp.files[0]) fd.append(inp.getAttribute("data-key"), inp.files[0]);
+    });
+
+    fetch("reserve-handler.php", {method:"POST", body:fd})
+      .then(res=>res.json().catch(()=>({success:false})))
+      .then(data=>{
+        this.setState({reserveSending:false});
+        if(data && data.success){ this.setState({submitted:true}); }
+        else { this.setState({reserveSendError:true}); }
+      })
+      .catch(()=>{ this.setState({reserveSending:false, reserveSendError:true}); });
   };
-  resetReserve = () => this.setState({submitted:false, form:{}, files:{}, errors:{}});
+  resetReserve = () => this.setState({submitted:false, form:{}, files:{}, errors:{}, reserveSendError:false});
 
   submitContact = () => {
     const req=["name","email","message"];
     const cErrors={};
     req.forEach(k=>{ if(!this.state.contact[k]||!String(this.state.contact[k]).trim()) cErrors[k]=true; });
     if(Object.keys(cErrors).length){ this.setState({cErrors}); return; }
-    this.setState({contactSent:true});
+    this.setState({contactSending:true, contactSendError:false});
+
+    fetch("contact-handler.php", {
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({
+        name:this.state.contact.name,
+        email:this.state.contact.email,
+        phone:this.state.contact.phone||"",
+        message:this.state.contact.message
+      })
+    })
+      .then(res=>res.json().catch(()=>({success:false})))
+      .then(data=>{
+        this.setState({contactSending:false});
+        if(data && data.success){ this.setState({contactSent:true}); }
+        else { this.setState({contactSendError:true}); }
+      })
+      .catch(()=>{ this.setState({contactSending:false, contactSendError:true}); });
   };
 
   componentDidMount() {
@@ -1280,9 +1328,13 @@ class Component extends DCLogic {
       onHaulDateChange: this.onHaulDateChange,
       dateInputStyle: {...baseInput},
       submitReserve:this.submitReserve, resetReserve:this.resetReserve, submitted:this.state.submitted, notSubmitted:!this.state.submitted,
+      reserveSending:this.state.reserveSending, reserveSubmitLabel: this.state.reserveSending ? tp.reserve.sending : tp.reserve.submit,
+      showReserveSendError: this.state.reserveSendError,
       contactFields, msgValue:(this.state.contact.message||""), msgErr:!!this.state.cErrors.message, msgStyle,
       msgOnChange:(e)=>this.setContact("message",e.target.value),
-      submitContact:this.submitContact, contactSent:this.state.contactSent, notContactSent:!this.state.contactSent
+      submitContact:this.submitContact, contactSent:this.state.contactSent, notContactSent:!this.state.contactSent,
+      contactSending:this.state.contactSending, contactSubmitLabel: this.state.contactSending ? tp.contact.sending : tp.contact.send,
+      showContactSendError: this.state.contactSendError
     };
   }
 }
