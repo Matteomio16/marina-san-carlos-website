@@ -20,6 +20,40 @@
   input::placeholder,textarea::placeholder{color:#9aa7b2;font-family:'Archivo',sans-serif;}
   @keyframes mscFade{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:none;}}
   @keyframes mscZoom{from{transform:scale(1.1);}to{transform:scale(1);}}
+
+  /* ===== Responsive / mobile ===== */
+  .msc-nav-toggle{display:none;}
+  @media (max-width:900px){
+    .msc-nav-desktop{display:none !important;}
+    .msc-nav-toggle{display:flex !important;}
+    .msc-contact-grid{grid-template-columns:1fr !important;}
+    .msc-footer-grid{grid-template-columns:repeat(2,1fr) !important;}
+  }
+  @media (max-width:860px){
+    .msc-why-grid{grid-template-columns:1fr !important;}
+    .msc-amenities-grid{grid-template-columns:repeat(3,1fr) !important;}
+    .msc-why-heading{text-align:center;justify-content:center;}
+  }
+  @media (max-width:700px){
+    .msc-topbar{display:none !important;}
+  }
+  @media (max-width:640px){
+    .msc-grid-auto{grid-template-columns:1fr !important;}
+    .msc-amenities-grid{grid-template-columns:repeat(2,1fr) !important;}
+    .msc-service-col{flex-basis:100% !important;min-width:0 !important;}
+    .msc-gallery-grid{grid-template-columns:1fr !important;}
+    .msc-mvv-grid h3{text-align:center;}
+    .msc-mvv-grid p{text-align:center;}
+    .msc-mvv-grid .msc-values-row{justify-content:center;}
+  }
+  @media (max-width:560px){
+    .msc-form-grid{grid-template-columns:1fr !important;}
+    .msc-footer-grid{grid-template-columns:1fr !important;text-align:center;}
+    .msc-footer-grid p{margin-left:auto;margin-right:auto;}
+    .msc-footer-brand{justify-content:center;}
+    .msc-footer-links{align-items:center;}
+    .msc-footer-bottom{justify-content:center !important;text-align:center;}
+  }
 </style>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 </helmet>
@@ -27,7 +61,7 @@
   <div class="msc-scroll" style="font-family:'Archivo',system-ui,sans-serif;color:#11202e;background:#fff;min-height:100vh;width:100%;overflow-x:hidden;-webkit-font-smoothing:antialiased;">
 
     <!-- ===================== TOP BAR ===================== -->
-    <div style="background:#0a1c2e;color:#9fb1c0;font-size:12px;letter-spacing:.06em;">
+    <div class="msc-topbar" style="background:#0a1c2e;color:#9fb1c0;font-size:12px;letter-spacing:.06em;">
       <div style="max-width:1320px;margin:0 auto;padding:9px 36px;display:flex;justify-content:space-between;align-items:center;gap:16px;">
         <div style="display:flex;align-items:center;gap:20px;">
           <span style="display:flex;align-items:center;gap:7px;"><span style="width:6px;height:6px;border-radius:50%;background:#6fd09b;box-shadow:0 0 0 3px rgba(111,208,155,.18);"></span>{{ t.topbar.open }}</span>
@@ -54,7 +88,7 @@
             <span style="display:block;color:#7e93a4;font-size:9px;letter-spacing:.36em;margin-top:3px;">{{ t.brand.tag }}</span>
           </span>
         </button>
-        <div style="display:flex;align-items:center;gap:2px;">
+        <div class="msc-nav-desktop" style="display:flex;align-items:center;gap:2px;">
           <sc-for list="{{ navItems }}" as="item" hint-placeholder-count="4">
             <button onClick="{{ item.onClick }}" style="background:none;border:none;cursor:pointer;font-family:'Archivo',sans-serif;font-size:12px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:#cfd9e1;padding:10px 16px;position:relative;white-space:nowrap;" style-hover="color:#fff;">
               {{ item.label }}
@@ -67,7 +101,29 @@
           </div>
           <button onClick="{{ goReserve }}" style="margin-left:12px;background:#fff;color:#0a1c2e;border:none;border-radius:999px;cursor:pointer;font-family:'Archivo',sans-serif;font-weight:600;font-size:12px;letter-spacing:.1em;text-transform:uppercase;padding:13px 22px;white-space:nowrap;" style-hover="background:#dde6ec;">{{ t.nav.reserve }}</button>
         </div>
+        <button class="msc-nav-toggle" onClick="{{ toggleMenu }}" aria-label="Menu" style="align-items:center;justify-content:center;background:none;border:1px solid rgba(255,255,255,.28);border-radius:8px;cursor:pointer;width:44px;height:44px;flex-shrink:0;">
+          <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+            <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#fff" stroke-width="1.8"><path d="M4 4l12 12M16 4 4 16" stroke-linecap="round"/></svg>
+          </sc-if>
+          <sc-if value="{{ menuClosed }}" hint-placeholder-val="{{ true }}">
+            <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#fff" stroke-width="1.8"><path d="M3 5h14M3 10h14M3 15h14" stroke-linecap="round"/></svg>
+          </sc-if>
+        </button>
       </div>
+      <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+        <div class="msc-nav-mobile" style="border-top:1px solid rgba(255,255,255,.08);padding:8px 24px 24px;display:flex;flex-direction:column;">
+          <sc-for list="{{ navItems }}" as="item" hint-placeholder-count="4">
+            <button onClick="{{ item.onClick }}" style="background:none;border:none;border-bottom:1px solid rgba(255,255,255,.06);cursor:pointer;text-align:left;font-family:'Archivo',sans-serif;font-size:15px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:#cfd9e1;padding:16px 4px;">{{ item.label }}</button>
+          </sc-for>
+          <div style="display:flex;align-items:center;gap:10px;margin:18px 0 4px;">
+            <div style="display:flex;align-items:center;border:1px solid rgba(255,255,255,.18);border-radius:999px;overflow:hidden;">
+              <button onClick="{{ setEN }}" style="{{ langEnStyle }}">EN</button>
+              <button onClick="{{ setES }}" style="{{ langEsStyle }}">ES</button>
+            </div>
+          </div>
+          <button onClick="{{ goReserve }}" style="margin-top:12px;background:#fff;color:#0a1c2e;border:none;border-radius:999px;cursor:pointer;font-family:'Archivo',sans-serif;font-weight:600;font-size:13px;letter-spacing:.08em;text-transform:uppercase;padding:16px 22px;">{{ t.nav.reserve }}</button>
+        </div>
+      </sc-if>
     </nav>
 
     <!-- ===================== PAGE: HOME ===================== -->
@@ -97,7 +153,7 @@
         <p style="font-family:'Marcellus',serif;font-size:clamp(25px,3.2vw,42px);line-height:1.32;color:#122c44;margin:0;text-wrap:balance;font-weight:400;">{{ t.intro.lead }}</p>
         <p style="font-size:17px;line-height:1.85;color:#5a6b78;max-width:680px;margin:32px auto 0;font-weight:300;">{{ t.intro.body }}</p>
         <!-- mission / vision / values -->
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(258px,1fr));gap:1px;background:#e6eaed;border:1px solid #e6eaed;margin-top:50px;">
+        <div class="msc-grid-auto msc-mvv-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(258px,1fr));gap:1px;background:#e6eaed;border:1px solid #e6eaed;margin-top:50px;">
           <div style="background:#fff;padding:40px 34px;">
             <h3 style="font-family:'Marcellus',serif;color:#122c44;font-size:24px;font-weight:400;margin:0 0 14px;">{{ t.about.missionT }}</h3>
             <p style="font-size:15.5px;line-height:1.75;color:#5a6b78;margin:0;font-weight:300;">{{ t.about.mission }}</p>
@@ -110,7 +166,7 @@
             <h3 style="font-family:'Marcellus',serif;color:#122c44;font-size:24px;font-weight:400;margin:0 0 16px;">{{ t.about.valuesT }}</h3>
             <div style="display:flex;flex-direction:column;gap:12px;">
               <sc-for list="{{ t.about.values }}" as="v" hint-placeholder-count="3">
-                <div style="display:flex;align-items:center;gap:12px;"><span style="width:6px;height:6px;border-radius:50%;background:#c2a978;flex-shrink:0;"></span><span style="font-size:15.5px;color:#3a4b58;">{{ v }}</span></div>
+                <div class="msc-values-row" style="display:flex;align-items:center;gap:12px;"><span style="width:6px;height:6px;border-radius:50%;background:#c2a978;flex-shrink:0;"></span><span style="font-size:15.5px;color:#3a4b58;">{{ v }}</span></div>
               </sc-for>
             </div>
           </div>
@@ -127,7 +183,7 @@
             </div>
             <button onClick="{{ goServices }}" style="background:none;border:1px solid rgba(255,255,255,.4);color:#fff;border-radius:999px;cursor:pointer;font-size:12px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;padding:14px 26px;" style-hover="background:rgba(255,255,255,.1);">{{ t.servicesHome.all }} →</button>
           </div>
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.1);">
+          <div class="msc-grid-auto" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.1);">
             <sc-for list="{{ servicesTop }}" as="s" hint-placeholder-count="4">
               <div style="background:#0a1c2e;padding:40px 32px;cursor:pointer;transition:background .3s;" style-hover="background:#122c44;" onClick="{{ goServices }}">
                 <div style="color:#aab9c6;margin-bottom:24px;">{{ s.icon }}</div>
@@ -140,7 +196,7 @@
       </section>
 
       <!-- WHY SAN CARLOS -->
-      <section style="max-width:1320px;margin:0 auto;padding:clamp(72px,10vw,120px) 36px;display:grid;grid-template-columns:1fr 1fr;gap:clamp(40px,6vw,90px);align-items:center;">
+      <section class="msc-why-grid" style="max-width:1320px;margin:0 auto;padding:clamp(72px,10vw,120px) 36px;display:grid;grid-template-columns:1fr 1fr;gap:clamp(40px,6vw,90px);align-items:center;">
         <div style="position:relative;aspect-ratio:4/5;border-radius:4px;overflow:hidden;background:url('assets/promenade.jpg') center/cover;">
           <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,28,46,0) 50%,rgba(10,28,46,.35));"></div>
           <div style="position:absolute;bottom:24px;left:24px;right:24px;background:rgba(255,255,255,.95);backdrop-filter:blur(6px);border-radius:4px;padding:22px 24px;">
@@ -149,8 +205,8 @@
           </div>
         </div>
         <div>
-          <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;"><span style="width:30px;height:1px;background:#c2a978;"></span><span style="font-family:'Archivo',sans-serif;font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:#7d8b97;">{{ t.why.eyebrow }}</span></div>
-          <h2 style="font-family:'Marcellus',serif;color:#122c44;font-size:clamp(30px,3.6vw,46px);font-weight:400;margin:0 0 26px;line-height:1.1;">{{ t.why.title }}</h2>
+          <div class="msc-why-heading" style="display:flex;align-items:center;gap:12px;margin-bottom:18px;"><span style="width:30px;height:1px;background:#c2a978;"></span><span style="font-family:'Archivo',sans-serif;font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:#7d8b97;">{{ t.why.eyebrow }}</span></div>
+          <h2 class="msc-why-heading" style="font-family:'Marcellus',serif;color:#122c44;font-size:clamp(30px,3.6vw,46px);font-weight:400;margin:0 0 26px;line-height:1.1;">{{ t.why.title }}</h2>
           <div style="display:flex;flex-direction:column;gap:0;">
             <sc-for list="{{ whyItems }}" as="w" hint-placeholder-count="4">
               <div style="display:flex;gap:20px;align-items:flex-start;border-top:1px solid #e6eaed;padding:22px 0;">
@@ -172,7 +228,7 @@
             <div style="display:flex;align-items:center;gap:14px;justify-content:center;margin-bottom:18px;"><span style="width:30px;height:1px;background:#c2a978;"></span><span style="font-family:'Archivo',sans-serif;font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:#7d8b97;">{{ t.testimonials.eyebrow }}</span><span style="width:30px;height:1px;background:#c2a978;"></span></div>
             <h2 style="font-family:'Marcellus',serif;color:#122c44;font-size:clamp(30px,4vw,52px);font-weight:400;margin:0;">{{ t.testimonials.title }}</h2>
           </div>
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;">
+          <div class="msc-grid-auto" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;">
             <sc-for list="{{ testimonials }}" as="r" hint-placeholder-count="3">
               <div style="background:#fff;border:1px solid #e6eaed;border-radius:6px;padding:36px 32px;">
                 <div style="color:#c2a978;letter-spacing:.25em;font-size:13px;margin-bottom:20px;">★★★★★</div>
@@ -197,7 +253,7 @@
           <h2 style="font-family:'Marcellus',serif;color:#122c44;font-size:clamp(28px,3.6vw,46px);font-weight:400;margin:0;">{{ t.affiliates.title }}</h2>
           <p style="font-size:16px;color:#5a6b78;max-width:560px;margin:18px auto 0;line-height:1.75;font-weight:300;">{{ t.affiliates.body }}</p>
         </div>
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px;">
+        <div class="msc-grid-auto" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px;">
           <sc-for list="{{ affiliates }}" as="a" hint-placeholder-count="3">
             <div style="border:1px solid #e6eaed;border-radius:6px;padding:34px 32px;background:#fff;cursor:pointer;transition:box-shadow .3s,transform .3s,border-color .3s;" style-hover="box-shadow:0 18px 44px rgba(10,28,46,.1);transform:translateY(-3px);border-color:#d3dbe1;">
               <div style="height:30px;display:flex;align-items:center;font-family:'Marcellus',serif;font-size:22px;color:#122c44;letter-spacing:.03em;">{{ a.name }}</div>
@@ -242,12 +298,12 @@
       <section style="max-width:1240px;margin:0 auto;padding:clamp(48px,6vw,84px) 36px;display:flex;flex-direction:column;gap:clamp(40px,5vw,80px);">
         <sc-for list="{{ servicesDetail }}" as="s" hint-placeholder-count="6">
           <div style="{{ s.rowStyle }}">
-            <div style="flex:1 1 360px;min-width:280px;">
+            <div class="msc-service-col" style="flex:1 1 360px;min-width:280px;">
               <div style="{{ s.imgStyle }}"></div>
               <sc-if value="{{ s.hasGallery }}" hint-placeholder-val="{{ false }}">
                 <button onClick="{{ s.onGalleryClick }}" style="margin-top:10px;background:none;border:1px solid #c2a978;color:#c2a978;border-radius:999px;cursor:pointer;font-family:'Archivo',sans-serif;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:9px 18px;" style-hover="background:#c2a978;color:#fff;">{{ s.galleryLabel }} →</button>
                 <sc-if value="{{ s.galleryOpen }}" hint-placeholder-val="{{ false }}">
-                  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;">
+                  <div class="msc-gallery-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;">
                     <sc-for list="{{ s.galleryImages }}" as="gImg">
                       <div style="aspect-ratio:4/3;border-radius:4px;overflow:hidden;background:url('{{ gImg }}') center/cover;box-shadow:0 4px 12px rgba(10,28,46,.1);"></div>
                     </sc-for>
@@ -255,7 +311,7 @@
                 </sc-if>
               </sc-if>
             </div>
-            <div style="flex:1 1 360px;min-width:280px;">
+            <div class="msc-service-col" style="flex:1 1 360px;min-width:280px;">
               <h3 style="font-family:'Marcellus',serif;color:#122c44;font-size:clamp(26px,3vw,36px);font-weight:400;margin:0 0 16px;">{{ s.title }}</h3>
               <p style="color:#5a6b78;font-size:16px;line-height:1.8;margin:0 0 28px;font-weight:300;text-wrap:pretty;">{{ s.desc }}</p>
               <button onClick="{{ s.onClick }}" style="background:none;border:1px solid #0a1c2e;color:#0a1c2e;border-radius:999px;cursor:pointer;font-family:'Archivo',sans-serif;font-weight:600;font-size:12px;letter-spacing:.12em;text-transform:uppercase;padding:14px 30px;" style-hover="background:#0a1c2e;color:#fff;">{{ s.ctaLabel }}</button>
@@ -267,7 +323,7 @@
         <div style="max-width:1100px;margin:0 auto;padding:0 36px;text-align:center;">
           <div style="display:flex;align-items:center;gap:14px;justify-content:center;margin-bottom:18px;"><span style="width:30px;height:1px;background:#c2a978;"></span><span style="font-family:'Archivo',sans-serif;font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:#7d8b97;">{{ tp.services.amenEyebrow }}</span><span style="width:30px;height:1px;background:#c2a978;"></span></div>
           <h2 style="font-family:'Marcellus',serif;color:#122c44;font-size:clamp(28px,3.6vw,46px);font-weight:400;margin:0 0 50px;">{{ tp.services.amenTitle }}</h2>
-          <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:36px 24px;">
+          <div class="msc-amenities-grid" style="display:grid;grid-template-columns:repeat(5,1fr);gap:36px 24px;">
             <sc-for list="{{ amenities }}" as="a" hint-placeholder-count="10">
               <div style="display:flex;flex-direction:column;align-items:center;gap:14px;">
                 <span style="color:#122c44;">{{ a.icon }}</span>
@@ -299,7 +355,7 @@
 
       <section style="max-width:1320px;margin:0 auto;padding:clamp(56px,7vw,96px) 36px clamp(40px,5vw,60px);">
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:30px;"><span style="width:30px;height:1px;background:#c2a978;"></span><span style="font-family:'Archivo',sans-serif;font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:#7d8b97;">{{ tp.resources.hereEyebrow }}</span></div>
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;">
+        <div class="msc-grid-auto" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;">
           <sc-for list="{{ gettingHere }}" as="g" hint-placeholder-count="3">
             <div style="border:1px solid #e6eaed;border-radius:6px;padding:34px 32px;background:#fff;">
               <h3 style="font-family:'Marcellus',serif;color:#122c44;font-size:24px;font-weight:400;margin:0 0 14px;">{{ g.t }}</h3>
@@ -323,7 +379,7 @@
         <div style="max-width:1320px;margin:0 auto;padding:0 36px;">
           <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;"><span style="width:30px;height:1px;background:#c2a978;"></span><span style="font-family:'Archivo',sans-serif;font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:#7d8b97;">{{ tp.resources.entryEyebrow }}</span></div>
           <h2 style="font-family:'Marcellus',serif;color:#122c44;font-size:clamp(28px,3.6vw,46px);font-weight:400;margin:0 0 44px;">{{ tp.resources.entryTitle }}</h2>
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:0 56px;">
+          <div class="msc-grid-auto" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:0 56px;">
             <sc-for list="{{ entryReqs }}" as="e" hint-placeholder-count="4">
               <div style="display:flex;gap:20px;align-items:flex-start;border-top:1px solid #dfe4e8;padding:26px 0;">
                 <span style="font-family:'Marcellus',serif;font-size:16px;color:#b9a079;line-height:1.4;flex-shrink:0;width:28px;">{{ e.num }}</span>
@@ -361,7 +417,7 @@
         <div style="max-width:1320px;margin:0 auto;padding:0 36px;">
           <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;"><span style="width:30px;height:1px;background:#c2a978;"></span><span style="font-family:'Archivo',sans-serif;font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:#8aa0b2;">{{ tp.resources.resEyebrow }}</span></div>
           <h2 style="font-family:'Marcellus',serif;color:#fff;font-size:clamp(28px,3.6vw,46px);font-weight:400;margin:0 0 42px;">{{ tp.resources.resTitle }}</h2>
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:1px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.1);">
+          <div class="msc-grid-auto" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:1px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.1);">
             <sc-for list="{{ resources }}" as="r" hint-placeholder-count="6">
               <div style="background:#0a1c2e;padding:30px 30px;display:flex;align-items:flex-start;gap:18px;cursor:pointer;transition:background .3s;" style-hover="background:#122c44;">
                 <span style="width:42px;height:42px;border:1px solid rgba(255,255,255,.2);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:9px;letter-spacing:.06em;color:#c2a978;flex-shrink:0;font-weight:600;">{{ r.tag }}</span>
@@ -385,7 +441,7 @@
             <h2 style="font-family:'Marcellus',serif;color:#122c44;font-size:clamp(28px,3.6vw,42px);font-weight:400;margin:0;">{{ tp.resources.chartersTitle }}</h2>
             <p style="font-size:16px;color:#5a6b78;max-width:560px;margin:14px auto 0;line-height:1.7;font-weight:300;">{{ tp.resources.chartersBody }}</p>
           </div>
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;">
+          <div class="msc-grid-auto" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;">
             <sc-for list="{{ charters }}" as="c" hint-placeholder-count="4">
               <div style="border:1px solid #e6eaed;border-radius:8px;padding:32px;background:#fff;transition:box-shadow .3s,transform .3s;display:flex;flex-direction:column;" style-hover="box-shadow:0 12px 36px rgba(10,28,46,.08);transform:translateY(-2px);">
                 <div style="background:#0a1c2e;color:#c2a978;width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:17px;margin-bottom:18px;flex-shrink:0;">{{ c.initials }}</div>
@@ -442,7 +498,7 @@
 
             <h2 style="font-family:'Marcellus',serif;color:#122c44;font-size:24px;font-weight:400;margin:0 0 6px;">{{ tp.reserve.ownerTitle }}</h2>
             <div style="width:100%;height:1px;background:#e6eaed;margin:0 0 24px;"></div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px 20px;margin-bottom:42px;">
+            <div class="msc-form-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:18px 20px;margin-bottom:42px;">
               <sc-for list="{{ ownerFields }}" as="f" hint-placeholder-count="5">
                 <div style="{{ f.wrapStyle }}">
                   <label style="display:block;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#5a6b78;font-weight:600;margin-bottom:8px;">{{ f.label }}</label>
@@ -453,7 +509,7 @@
 
             <h2 style="font-family:'Marcellus',serif;color:#122c44;font-size:24px;font-weight:400;margin:0 0 6px;">{{ tp.reserve.vesselTitle }}</h2>
             <div style="width:100%;height:1px;background:#e6eaed;margin:0 0 24px;"></div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px 20px;margin-bottom:42px;">
+            <div class="msc-form-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:18px 20px;margin-bottom:42px;">
               <sc-for list="{{ vesselFields }}" as="f" hint-placeholder-count="8">
                 <div style="{{ f.wrapStyle }}">
                   <label style="display:block;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#5a6b78;font-weight:600;margin-bottom:8px;">{{ f.label }}</label>
@@ -475,7 +531,7 @@
             <sc-if value="{{ showReservationDates }}" hint-placeholder-val="{{ false }}">
               <h2 style="font-family:'Marcellus',serif;color:#122c44;font-size:24px;font-weight:400;margin:0 0 6px;">{{ tp.reserve.datesTitle }}</h2>
               <div style="width:100%;height:1px;background:#e6eaed;margin:0 0 24px;"></div>
-              <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px 20px;margin-bottom:42px;">
+              <div class="msc-form-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:18px 20px;margin-bottom:42px;">
                 <div>
                   <label style="display:block;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#5a6b78;font-weight:600;margin-bottom:8px;">{{ tp.reserve.startDate }} *</label>
                   <input type="date" value="{{ reservationStartDate }}" onChange="{{ onStartDateChange }}" style="{{ dateInputStyle }}" style-focus="border-color:#0a1c2e;box-shadow:0 0 0 3px rgba(10,28,46,.07);">
@@ -535,7 +591,7 @@
         </div>
       </section>
 
-      <section style="max-width:1320px;margin:0 auto;padding:clamp(52px,7vw,90px) 36px;display:grid;grid-template-columns:1fr 1.05fr;gap:clamp(32px,4vw,56px);align-items:start;">
+      <section class="msc-contact-grid" style="max-width:1320px;margin:0 auto;padding:clamp(52px,7vw,90px) 36px;display:grid;grid-template-columns:1fr 1.05fr;gap:clamp(32px,4vw,56px);align-items:start;">
         <!-- LEFT: map + info -->
         <div style="display:flex;flex-direction:column;gap:28px;">
           <div style="position:relative;height:300px;border-radius:8px;overflow:hidden;border:1px solid #e6eaed;background:#e8edf0;">
@@ -576,7 +632,7 @@
           <sc-if value="{{ notContactSent }}" hint-placeholder-val="{{ true }}">
             <div>
               <div style="font-family:'Marcellus',serif;font-size:24px;color:#122c44;margin-bottom:26px;">{{ tp.contact.formTitle }}</div>
-              <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px 20px;">
+              <div class="msc-form-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:18px 20px;">
                 <sc-for list="{{ contactFields }}" as="f" hint-placeholder-count="4">
                   <div style="{{ f.wrapStyle }}">
                     <label style="display:block;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#5a6b78;font-weight:600;margin-bottom:8px;">{{ f.label }}</label>
@@ -597,9 +653,9 @@
 
     <!-- ===================== FOOTER ===================== -->
     <footer style="background:#0a1c2e;color:#8aa0b2;padding:clamp(56px,7vw,82px) 0 36px;border-top:1px solid rgba(255,255,255,.06);">
-      <div style="max-width:1320px;margin:0 auto;padding:0 36px;display:grid;grid-template-columns:1.7fr 1fr 1fr 1fr;gap:40px;">
+      <div class="msc-footer-grid" style="max-width:1320px;margin:0 auto;padding:0 36px;display:grid;grid-template-columns:1.7fr 1fr 1fr 1fr;gap:40px;">
         <div>
-          <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
+          <div class="msc-footer-brand" style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
             <span style="width:40px;height:40px;border:1px solid rgba(255,255,255,.24);border-radius:50%;display:flex;align-items:center;justify-content:center;">
               <svg width="22" height="18" viewBox="0 0 26 22" fill="none"><path d="M12.4 1.5 4.6 13.2h7.8z" fill="#fff"/><path d="M13.7 4.2v9h6.6z" fill="#cfd9e1"/><path d="M1.5 16.3c2.3 1.7 3.8 1.7 6 0 2.3 1.7 3.8 1.7 6 0 2.3 1.7 3.8 1.7 6 0 2.3 1.7 3.8 1.7 6 0" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg>
             </span>
@@ -609,7 +665,7 @@
         </div>
         <div>
           <div style="color:#fff;font-size:11px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:18px;">{{ t.footer.explore }}</div>
-          <div style="display:flex;flex-direction:column;gap:11px;font-size:14px;">
+          <div class="msc-footer-links" style="display:flex;flex-direction:column;gap:11px;font-size:14px;">
             <button onClick="{{ goHome }}" style="background:none;border:none;color:#8aa0b2;text-align:left;cursor:pointer;padding:0;font-family:inherit;font-size:14px;" style-hover="color:#fff;">{{ t.nav.home }}</button>
             <button onClick="{{ goServices }}" style="background:none;border:none;color:#8aa0b2;text-align:left;cursor:pointer;padding:0;font-family:inherit;font-size:14px;" style-hover="color:#fff;">{{ t.nav.services }}</button>
             <button onClick="{{ goResources }}" style="background:none;border:none;color:#8aa0b2;text-align:left;cursor:pointer;padding:0;font-family:inherit;font-size:14px;" style-hover="color:#fff;">{{ t.nav.resources }}</button>
@@ -618,7 +674,7 @@
         </div>
         <div>
           <div style="color:#fff;font-size:11px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:18px;">{{ t.footer.partners }}</div>
-          <div style="display:flex;flex-direction:column;gap:11px;font-size:14px;">
+          <div class="msc-footer-links" style="display:flex;flex-direction:column;gap:11px;font-size:14px;">
             <a href="#" style="color:#8aa0b2;text-decoration:none;cursor:pointer;" style-hover="color:#fff;">Star Marine</a>
             <a href="#" style="color:#8aa0b2;text-decoration:none;cursor:pointer;" style-hover="color:#fff;">Loma del Mar</a>
             <a href="#" style="color:#8aa0b2;text-decoration:none;cursor:pointer;" style-hover="color:#fff;">AMMT</a>
@@ -627,7 +683,7 @@
         </div>
         <div>
           <div style="color:#fff;font-size:11px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:18px;">{{ t.footer.contact }}</div>
-          <div style="display:flex;flex-direction:column;gap:11px;font-size:14px;">
+          <div class="msc-footer-links" style="display:flex;flex-direction:column;gap:11px;font-size:14px;">
             <span>Edificio Marina San Carlos, Sonora 85506, México</span>
             <a href="tel:+526222261202" style="color:#8aa0b2;text-decoration:none;" style-hover="color:#fff;">+52 (622) 226 12 02</a>
             <a href="tel:+526222261061" style="color:#8aa0b2;text-decoration:none;" style-hover="color:#fff;">+52 (622) 226 10 61</a>
@@ -636,7 +692,7 @@
           </div>
         </div>
       </div>
-      <div style="max-width:1320px;margin:42px auto 0;padding:24px 36px 0;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:12px;color:#5f7384;">
+      <div class="msc-footer-bottom" style="max-width:1320px;margin:42px auto 0;padding:24px 36px 0;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:12px;color:#5f7384;">
         <span>© 2026 Marina San Carlos. {{ t.footer.rights }}</span>
         <span>{{ t.footer.builtIn }}</span>
       </div>
@@ -984,10 +1040,12 @@ class Component extends DCLogic {
     resEndDate: "",
     resLaunchDate: "",
     serviceGalleries: {},
-    mapInited: false
+    mapInited: false,
+    menuOpen: false
   };
 
-  go = (p) => { try{ window.scrollTo({top:0,behavior:"instant"}); }catch(e){ window.scrollTo(0,0); } this.setState({page:p}); };
+  go = (p) => { try{ window.scrollTo({top:0,behavior:"instant"}); }catch(e){ window.scrollTo(0,0); } this.setState({page:p, menuOpen:false}); };
+  toggleMenu = () => this.setState(s=>({menuOpen:!s.menuOpen}));
   svg(markup){ return React.createElement("span",{dangerouslySetInnerHTML:{__html:markup},style:{display:"inline-flex"}}); }
 
   setField = (k,v) => this.setState(s=>({ form:{...s.form,[k]:v}, errors:{...s.errors,[k]:false} }));
@@ -1172,6 +1230,7 @@ class Component extends DCLogic {
       isHome: page==="home", isServices: page==="services",
       isResources: page==="resources", isReserve: page==="reserve", isContact: page==="contact",
       navItems,
+      menuOpen: this.state.menuOpen, menuClosed: !this.state.menuOpen, toggleMenu: this.toggleMenu,
       goHome:()=>this.go("home"), goServices:()=>this.go("services"),
       goResources:()=>this.go("resources"), goContact:()=>this.go("contact"),
       goReserve:()=>this.go("reserve"),
