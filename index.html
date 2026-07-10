@@ -67,8 +67,6 @@
           <span style="display:flex;align-items:center;gap:7px;"><span style="width:6px;height:6px;border-radius:50%;background:#6fd09b;box-shadow:0 0 0 3px rgba(111,208,155,.18);"></span>{{ t.topbar.open }}</span>
           <span style="opacity:.35;">·</span>
           <span style="opacity:.85;">{{ t.topbar.vhf }}</span>
-          <span style="opacity:.35;">·</span>
-          <button onClick="{{ goTide }}" style="background:none;border:none;padding:0;cursor:pointer;font-family:inherit;font-size:12px;letter-spacing:.06em;color:#9fb1c0;opacity:.85;" style-hover="color:#fff;">{{ t.topbar.tide }}</button>
         </div>
         <div style="display:flex;align-items:center;gap:18px;">
           <a href="tel:+526222261202" style="color:#9fb1c0;text-decoration:none;" style-hover="color:#fff;">+52 622 226 12 02</a>
@@ -134,7 +132,7 @@
 
       <!-- HERO A - centered, minimal, video background -->
       <section style="position:relative;height:90vh;min-height:640px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#0a1c2e;">
-        <video autoplay loop muted playsinline poster="assets/marina-building.jpg" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);min-width:100%;min-height:100%;width:auto;height:auto;object-fit:cover;">
+        <video id="msc-hero-video" autoplay loop muted playsinline preload="auto" poster="assets/marina-building.jpg" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);min-width:100%;min-height:100%;width:auto;height:auto;object-fit:cover;">
           <source src="assets/marina-hero.mp4" type="video/mp4">
         </video>
         <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,28,46,.62),rgba(10,28,46,.42) 45%,rgba(10,28,46,.86));"></div>
@@ -380,16 +378,6 @@
               <p style="color:#5a6b78;font-size:15px;line-height:1.75;margin:0;font-weight:300;">{{ g.d }}</p>
             </div>
           </sc-for>
-        </div>
-      </section>
-
-      <!-- Hohonu Live Water Level Widget -->
-      <section id="hohonu-widget" style="max-width:1320px;margin:0 auto;padding:0 36px clamp(56px,7vw,96px);">
-        <div style="background:#fff;border:1px solid #e6eaed;border-radius:8px;padding:36px 32px;">
-          <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;"><span style="width:30px;height:1px;background:#c2a978;"></span><span style="font-family:'Archivo',sans-serif;font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:#7d8b97;">Live Conditions</span></div>
-          <h3 style="font-family:'Marcellus',serif;color:#122c44;font-size:24px;font-weight:400;margin:0 0 6px;">{{ tp.resources.waterLevel }}</h3>
-          <p style="font-size:14px;color:#7d8b97;margin:0 0 18px;font-weight:300;">Powered by <a href="https://hohonu.io" target="_blank" rel="noopener" style="color:#7d8b97;text-decoration:underline;">Hohonu</a></p>
-          <iframe src="https://dashboard.hohonu.io/chart/hohonu-000" style="width:100%;height:750px;border:none;border-radius:6px;" frameborder="0"></iframe>
         </div>
       </section>
 
@@ -747,7 +735,7 @@
 const DICT = {
   en: {
     brand:{tag:"SONORA · MÉXICO"},
-    topbar:{open:"Mon-Sat 7:30 AM - 5 PM · Sun 8 - 5", vhf:"Monitoring VHF 16", tide:"San Carlos Tide"},
+    topbar:{open:"Mon-Sat 7:30 AM - 5 PM · Sun 8 - 5", vhf:"Monitoring VHF 16"},
     nav:{home:"Home", services:"Services", resources:"Resources", contact:"Contact", reserve:"Reserve"},
     hero:{
       variantLabel:"Hero",
@@ -788,7 +776,7 @@ const DICT = {
   },
   es: {
     brand:{tag:"SONORA · MÉXICO"},
-    topbar:{open:"Lun-Sáb 7:30 - 17:00 · Dom 8 - 17", vhf:"Monitoreo VHF 16", tide:"Marea de San Carlos"},
+    topbar:{open:"Lun-Sáb 7:30 - 17:00 · Dom 8 - 17", vhf:"Monitoreo VHF 16"},
     nav:{home:"Inicio", services:"Servicios", resources:"Recursos", contact:"Contacto", reserve:"Reservar"},
     hero:{
       variantLabel:"Portada",
@@ -1048,14 +1036,14 @@ const SERVICES_FULL = {
 const PAGES = {
   en:{
     services:{eyebrow:"Marina Services", title:"A full-service marina & boatyard", intro:"From a protected slip for the season to a full refit on the hard, everything your vessel needs lives in one place - backed by a crew that has cared for boats on the Sea of Cortez for decades.", mapLabel:"Marina Map", amenEyebrow:"On-site", amenTitle:"Featured amenities", ctaTitle:"Ready to bring your boat to San Carlos?", ctaBody:"Reserve a slip or storage, or reach out with questions about your vessel and dates.", ctaBtn:"Reserve Now"},
-    resources:{eyebrow:"Resources", title:"Everything you need to cruise to Mexico", intro:"Bringing a foreign vessel into Mexico is simpler than most cruisers expect - especially with a team that does it every day. Here's how to get here and what to have ready.", hereEyebrow:"Getting here", hereTitle:"Three ways to arrive", waterLevel:"Live Water Level at Marina San Carlos", entryEyebrow:"Before you arrive", entryTitle:"Entry requirements for Mexico", faqEyebrow:"Good to know", faqTitle:"Frequently asked questions", resEyebrow:"Resources", resTitle:"Forms & downloads", download:"Download"},
+    resources:{eyebrow:"Resources", title:"Everything you need to cruise to Mexico", intro:"Bringing a foreign vessel into Mexico is simpler than most cruisers expect - especially with a team that does it every day. Here's how to get here and what to have ready.", hereEyebrow:"Getting here", hereTitle:"Three ways to arrive", entryEyebrow:"Before you arrive", entryTitle:"Entry requirements for Mexico", faqEyebrow:"Good to know", faqTitle:"Frequently asked questions", resEyebrow:"Resources", resTitle:"Forms & downloads", download:"Download"},
     chartersPage:{eyebrow:"On the water", title:"Charter & Captains", intro:"Book a day on the water with trusted local charter operators who know the Sea of Cortez. We're growing this list - check back for more options soon.", visitWebsite:"Visit website", premium:"Premium"},
     reserve:{eyebrow:"Reservations", title:"Reserve your space", intro:"Tell us about your vessel and what you need. Submitting this form sends your request straight to our reservations team, who will confirm availability and next steps.", typeLabel:"What would you like to reserve?", ownerTitle:"Owner Information", vesselTitle:"Vessel Information", datesTitle:"Reservation Dates", startDate:"Start Date", endDate:"End Date", launchTitle:"Tractor Service", haulDateTitle:"Hydraulic Trailer Date", serviceDate:"Date", haulOutOption:"Haul Out", launchOption:"Launch", docsTitle:"Document Uploads", docsNote:"Upload clear photos or PDFs. You can also email documents to our team later.", submit:"Submit Reservation Request", sending:"Submitting...", required:"Please complete the required fields highlighted below.", sendError:"Something went wrong sending your request. Please try again or contact us directly.", successTitle:"Request received", successBody:"Thank you - your reservation request has been sent to our team.", successNote:"A confirmation has been routed to our reservations team. We'll be in touch within one business day.", another:"Submit another request", optional:"optional", choose:"Choose file", uploaded:"Uploaded"},
     contact:{eyebrow:"Contact", title:"Get in touch", intro:"Questions about slips, storage, your crossing or your boat? Reach our team directly - we're on the docks every day.", formTitle:"Send us a message", name:"Full Name", email:"Email Address", phone:"Phone", subject:"Subject", message:"Message", send:"Send Message", sending:"Sending...", sentTitle:"Message sent", sentBody:"Thanks for reaching out - we'll reply within one business day.", sendError:"Something went wrong sending your message. Please try again or email us directly.", infoTitle:"Marina office", hoursTitle:"Office hours", hours:"Mon - Sat 7:30 AM - 5 PM · Sun 8 AM - 5 PM", emergencyTitle:"After-hours & emergencies", emergencyBody:"For urgent on-water assistance, hail Marina San Carlos on VHF 16.", mapLabel:"INTERACTIVE MAP · San Carlos, Sonora", directions:"Get directions", activateMap:"Click to interact with map"}
   },
   es:{
     services:{eyebrow:"Servicios de la Marina", title:"Una marina y astillero de servicio completo", intro:"Desde un espacio protegido por temporada hasta una restauración completa en tierra, todo lo que tu embarcación necesita está en un solo lugar - con un equipo que ha cuidado barcos en el Mar de Cortés por décadas.", mapLabel:"Mapa de la Marina", amenEyebrow:"En sitio", amenTitle:"Amenidades destacadas", ctaTitle:"¿Listo para traer tu barco a San Carlos?", ctaBody:"Reserva un espacio o almacenaje, o escríbenos con dudas sobre tu embarcación y fechas.", ctaBtn:"Reservar Ahora"},
-    resources:{eyebrow:"Recursos", title:"Todo lo necesario para navegar a México", intro:"Traer una embarcación extranjera a México es más sencillo de lo que la mayoría espera - sobre todo con un equipo que lo hace a diario. Así llegas y esto es lo que debes tener listo.", hereEyebrow:"Cómo llegar", hereTitle:"Tres formas de llegar", waterLevel:"Nivel del Agua en Tiempo Real en Marina San Carlos", entryEyebrow:"Antes de llegar", entryTitle:"Requisitos de entrada a México", faqEyebrow:"Bueno saber", faqTitle:"Preguntas frecuentes", resEyebrow:"Recursos", resTitle:"Formatos y descargas", download:"Descargar"},
+    resources:{eyebrow:"Recursos", title:"Todo lo necesario para navegar a México", intro:"Traer una embarcación extranjera a México es más sencillo de lo que la mayoría espera - sobre todo con un equipo que lo hace a diario. Así llegas y esto es lo que debes tener listo.", hereEyebrow:"Cómo llegar", hereTitle:"Tres formas de llegar", entryEyebrow:"Antes de llegar", entryTitle:"Requisitos de entrada a México", faqEyebrow:"Bueno saber", faqTitle:"Preguntas frecuentes", resEyebrow:"Recursos", resTitle:"Formatos y descargas", download:"Descargar"},
     chartersPage:{eyebrow:"En el agua", title:"Charters y Capitanes", intro:"Reserva un día en el agua con operadores de charter locales de confianza que conocen el Mar de Cortés. Estamos ampliando esta lista - vuelve pronto para más opciones.", visitWebsite:"Visitar sitio web", premium:"Premium"},
     reserve:{eyebrow:"Reservaciones", title:"Reserva tu espacio", intro:"Cuéntanos sobre tu embarcación y lo que necesitas. Al enviar este formulario, tu solicitud llega directo a nuestro equipo de reservaciones, que confirmará disponibilidad y siguientes pasos.", typeLabel:"¿Qué deseas reservar?", ownerTitle:"Información del Propietario", vesselTitle:"Información de la Embarcación", datesTitle:"Fechas de Reservación", startDate:"Fecha de Inicio", endDate:"Fecha de Fin", launchTitle:"Servicio de Tractor", haulDateTitle:"Fecha de Remolque Hidráulico", serviceDate:"Fecha", haulOutOption:"Sacado", launchOption:"Botado", docsTitle:"Carga de Documentos", docsNote:"Sube fotos claras o PDFs. También puedes enviar los documentos por correo más adelante.", submit:"Enviar Solicitud de Reservación", sending:"Enviando...", required:"Por favor completa los campos requeridos marcados abajo.", sendError:"Algo salió mal al enviar tu solicitud. Intenta de nuevo o contáctanos directamente.", successTitle:"Solicitud recibida", successBody:"Gracias - tu solicitud de reservación ha sido enviada a nuestro equipo.", successNote:"Se ha enviado una confirmación a nuestro equipo de reservaciones. Te contactaremos en un día hábil.", another:"Enviar otra solicitud", optional:"opcional", choose:"Elegir archivo", uploaded:"Cargado"},
     contact:{eyebrow:"Contacto", title:"Ponte en contacto", intro:"¿Dudas sobre espacios, almacenaje, tu travesía o tu barco? Contacta a nuestro equipo directamente - estamos en los muelles todos los días.", formTitle:"Envíanos un mensaje", name:"Nombre Completo", email:"Correo Electrónico", phone:"Teléfono", subject:"Asunto", message:"Mensaje", send:"Enviar Mensaje", sending:"Enviando...", sentTitle:"Mensaje enviado", sentBody:"Gracias por escribirnos - responderemos en un día hábil.", sendError:"Algo salió mal al enviar tu mensaje. Intenta de nuevo o escríbenos directamente.", infoTitle:"Oficina de la marina", hoursTitle:"Horario", hours:"Lun - Sáb 7:30 - 17:00 · Dom 8:00 - 17:00", emergencyTitle:"Fuera de horario y emergencias", emergencyBody:"Para asistencia urgente en el agua, llama a Marina San Carlos por VHF 16.", mapLabel:"MAPA INTERACTIVO · San Carlos, Sonora", directions:"Cómo llegar", activateMap:"Haz clic para interactuar con el mapa"}
@@ -1091,7 +1079,6 @@ class Component extends DCLogic {
   };
 
   go = (p) => { try{ window.scrollTo({top:0,behavior:"instant"}); }catch(e){ window.scrollTo(0,0); } this.setState({page:p, menuOpen:false}); };
-  goTide = () => { this.go("resources"); setTimeout(()=>{ const el=document.getElementById("hohonu-widget"); if(el) el.scrollIntoView({behavior:"smooth",block:"start"}); }, 60); };
   toggleMenu = () => this.setState(s=>({menuOpen:!s.menuOpen}));
   svg(markup){ return React.createElement("span",{dangerouslySetInnerHTML:{__html:markup},style:{display:"inline-flex"}}); }
 
@@ -1332,7 +1319,7 @@ class Component extends DCLogic {
       goHome:()=>this.go("home"), goServices:()=>this.go("services"),
       goResources:()=>this.go("resources"), goContact:()=>this.go("contact"),
       goCharters:()=>this.go("charters"),
-      goReserve:()=>this.go("reserve"), goTide:this.goTide,
+      goReserve:()=>this.go("reserve"),
       setEN:()=>this.setState({lang:"en"}), setES:()=>this.setState({lang:"es"}),
       langEnStyle: langBtn(lang==="en"), langEsStyle: langBtn(lang==="es"),
       heroA: hero==="a", heroB: hero==="b", heroC: hero==="c",
@@ -1368,6 +1355,38 @@ class Component extends DCLogic {
     };
   }
 }
+</script>
+<script>
+  // Keep the hero background video playing reliably. Muted+playsinline autoplay
+  // is normally allowed, but data-saver modes or a mid-download navigation can
+  // leave it paused - so re-issue play() when it mounts, when the tab becomes
+  // visible again, and on the first user interaction (a guaranteed unblock).
+  (function () {
+    function playHero() {
+      var v = document.getElementById("msc-hero-video");
+      if (!v) return;
+      // The design-tool render runtime drops the boolean loop/muted attributes,
+      // which both stops the clip from looping AND lets the browser block
+      // autoplay. Force them as DOM properties so it reliably loops muted.
+      v.muted = true;
+      v.loop = true;
+      v.playsInline = true;
+      if (v.paused) {
+        var p = v.play();
+        if (p && typeof p.catch === "function") p.catch(function () {});
+      }
+    }
+    // Catch the video whenever the SPA (re)mounts the home page.
+    var mo = new MutationObserver(playHero);
+    mo.observe(document.body, { childList: true, subtree: true });
+    document.addEventListener("visibilitychange", function () {
+      if (!document.hidden) playHero();
+    });
+    ["pointerdown", "touchstart", "keydown"].forEach(function (evt) {
+      window.addEventListener(evt, playHero, { passive: true });
+    });
+    playHero();
+  })();
 </script>
 </body>
 </html>
