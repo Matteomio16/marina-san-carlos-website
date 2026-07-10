@@ -228,7 +228,15 @@
         <div style="max-width:1320px;margin:0 auto;padding:0 36px;">
           <div style="text-align:center;margin-bottom:56px;">
             <div style="display:flex;align-items:center;gap:14px;justify-content:center;margin-bottom:18px;"><span style="width:30px;height:1px;background:#c2a978;"></span><span style="font-family:'Archivo',sans-serif;font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:#7d8b97;">{{ t.testimonials.eyebrow }}</span><span style="width:30px;height:1px;background:#c2a978;"></span></div>
-            <h2 style="font-family:'Marcellus',serif;color:#122c44;font-size:clamp(30px,4vw,52px);font-weight:400;margin:0;">{{ t.testimonials.title }}</h2>
+            <h2 style="font-family:'Marcellus',serif;color:#122c44;font-size:clamp(30px,4vw,52px);font-weight:400;margin:0 0 22px;">{{ t.testimonials.title }}</h2>
+            <div style="display:inline-flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center;">
+              <span style="font-family:'Marcellus',serif;font-size:22px;color:#122c44;">4.7</span>
+              <span style="position:relative;display:inline-block;font-size:22px;line-height:1;letter-spacing:.14em;">
+                <span style="color:#d8dde1;">★★★★★</span>
+                <span style="position:absolute;top:0;left:0;overflow:hidden;width:94%;color:#c2a978;white-space:nowrap;">★★★★★</span>
+              </span>
+              <span style="font-size:13.5px;color:#7d8b97;">· {{ t.testimonials.googleReviews }}</span>
+            </div>
           </div>
           <div class="msc-grid-auto" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;">
             <sc-for list="{{ testimonials }}" as="r" hint-placeholder-count="3">
@@ -758,7 +766,7 @@ const DICT = {
         {title:"Drive-down convenience", desc:"Just five hours from the Arizona border - the closest blue-water cruising ground to the U.S. Southwest."}
       ]
     },
-    testimonials:{eyebrow:"Customer experiences", title:"Trusted by cruisers & captains"},
+    testimonials:{eyebrow:"Customer experiences", title:"Trusted by cruisers & captains", googleReviews:"2,765 Google reviews"},
     affiliates:{
       eyebrow:"Our network", title:"Affiliated companies & partners",
       body:"Marina San Carlos works hand-in-hand with a family of trusted marine businesses across the bay.",
@@ -799,7 +807,7 @@ const DICT = {
         {title:"Llegada por carretera", desc:"A solo cinco horas de la frontera con Arizona - el destino de navegación más cercano al suroeste de EE. UU."}
       ]
     },
-    testimonials:{eyebrow:"Experiencias de clientes", title:"La confianza de navegantes y capitanes"},
+    testimonials:{eyebrow:"Experiencias de clientes", title:"La confianza de navegantes y capitanes", googleReviews:"2,765 reseñas de Google"},
     affiliates:{
       eyebrow:"Nuestra red", title:"Empresas afiliadas y socios",
       body:"Marina San Carlos trabaja de la mano con una familia de negocios marinos de confianza en toda la bahía.",
@@ -839,14 +847,14 @@ const CONDITIONS = {
 
 const TESTIMONIALS = {
   en:[
-    {quote:"The most protected, best-run marina in the Sea of Cortez. We've kept our boat here for nine seasons.", initials:"JE", name:"John & Rita Ellis", boat:"S/V Aventura · 42'"},
-    {quote:"They handled our TIP and customs paperwork start to finish. Crossing into Mexico has never been easier.", initials:"MC", name:"Mike Carter", boat:"M/V Sea Note · 38'"},
-    {quote:"Hauled out for hurricane season and came back to a boat in perfect shape. The yard crew is exceptional.", initials:"DL", name:"Diana Lowe", boat:"S/V Halcyon · 47'"}
+    {quote:"We saw dolphins on the way and swam in a beautiful cove. Once in a lifetime experience.", initials:"I", name:"Izzy", boat:"Google review"},
+    {quote:"Great experience and great service. Awesome crew, fun and respectful. Very affordable prices.", initials:"D", name:"David", boat:"Google review"},
+    {quote:"We all had a great fun time! The two-hour boat ride was terrific.", initials:"E", name:"Elizabeth", boat:"Google review"}
   ],
   es:[
-    {quote:"La marina mejor administrada y más protegida del Mar de Cortés. Tenemos nuestro barco aquí desde hace nueve temporadas.", initials:"JE", name:"John y Rita Ellis", boat:"V/S Aventura · 42'"},
-    {quote:"Gestionaron nuestro TIP y los trámites de aduana de principio a fin. Cruzar a México nunca fue tan fácil.", initials:"MC", name:"Mike Carter", boat:"M/V Sea Note · 38'"},
-    {quote:"Lo sacamos del agua para la temporada de huracanes y regresó en perfecto estado. El equipo del astillero es excepcional.", initials:"DL", name:"Diana Lowe", boat:"V/S Halcyon · 47'"}
+    {quote:"Vimos delfines en el camino y nadamos en una cala hermosa. Una experiencia única en la vida.", initials:"I", name:"Izzy", boat:"Reseña de Google"},
+    {quote:"Gran experiencia y gran servicio. Tripulación increíble, divertida y respetuosa. Precios muy accesibles.", initials:"D", name:"David", boat:"Reseña de Google"},
+    {quote:"¡Lo pasamos muy bien! El paseo en bote de dos horas fue estupendo.", initials:"E", name:"Elizabeth", boat:"Reseña de Google"}
   ]
 };
 
@@ -1311,7 +1319,7 @@ class Component extends DCLogic {
       conditions: CONDITIONS[lang],
       servicesTop, whyItems,
       testimonials: TESTIMONIALS[lang],
-      affiliates: AFFILIATES[lang].map(a=>({...a, onClick: a.url==="internal:charters" ? this.goCharters : ()=>window.open(a.url,"_blank","noopener")})),
+      affiliates: AFFILIATES[lang].map(a=>({...a, onClick: a.url==="internal:charters" ? ()=>this.go("charters") : ()=>window.open(a.url,"_blank","noopener")})),
       tp,
       servicesAll, servicesDetail, amenities, gettingHere, entryReqs, faqs, resources, charters,
       reserveTypes, tractorActions, ownerFields, vesselFields, docUploads, showReserveError,
